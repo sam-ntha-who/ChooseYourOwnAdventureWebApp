@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Index</title>
+<title>Choose Your Own Adventure home</title>
 </head>
 <body>
 
