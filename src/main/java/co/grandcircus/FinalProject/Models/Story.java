@@ -12,6 +12,17 @@ public class Story {
 	private String title;
 	private String startingSceneId;
 
+	//constructors
+	public Story() {
+	}
+	
+	public Story(String title, String startingSceneId) {
+		this.title = title;
+		this.startingSceneId = startingSceneId;
+	}
+	
+	
+	//getters and setters
 	public String getId() {
 		return id;
 	}
@@ -36,14 +47,6 @@ public class Story {
 		this.startingSceneId = startingSceneId;
 	}
 
-	public Story(String title, String startingSceneId) {
 
-		this.title = title;
-		this.startingSceneId = startingSceneId;
-	}
-
-	public Story() {
-
-	}
 
 }

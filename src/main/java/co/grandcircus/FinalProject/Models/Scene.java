@@ -7,31 +7,29 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("scenes")
 public class Scene {
 
-	// add additional fields? + getters & setters
-	// create constructor(s) from fields
-
 	@Id
 	private String id;
-	private String title;
 	private String storyId;
 	private String parentId;
 	private String option;
 	private String description;
 
+	//constructors
+	public Scene() {
+	}
+	
+	public Scene(String parentId) {
+		super();
+		this.parentId = parentId;
+	}
+	
+	//getters and setters
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getStoryId() {
@@ -64,18 +62,6 @@ public class Scene {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Scene(String title, String storyId, String parentId, String option, String description) {
-		this.title = title;
-		this.storyId = storyId;
-		this.parentId = parentId;
-		this.option = option;
-		this.description = description;
-	}
-
-	public Scene() {
-
 	}
 
 }

@@ -7,7 +7,7 @@ import co.grandcircus.FinalProject.Repositories.SceneRepository;
 import co.grandcircus.FinalProject.Repositories.StoryRepository;
 
 @RestController
-public class HomeController {
+public class AdventureApiController {
 
 	@Autowired
 	StoryRepository storyRepo;
