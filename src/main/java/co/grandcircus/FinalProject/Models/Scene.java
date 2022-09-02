@@ -19,7 +19,6 @@ public class Scene {
 	}
 	
 	public Scene(String parentId) {
-		super();
 		this.parentId = parentId;
 	}
 	
