@@ -1,5 +1,7 @@
 package co.grandcircus.FinalProject.Models;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,15 +13,15 @@ public class Scene {
 	private String id;
 	private String storyId;
 	private String parentId;
-	private String option;
+	private List<String> options;
 	private String description;
+	
 
 	//constructors
 	public Scene() {
 	}
 	
 	public Scene(String parentId) {
-		super();
 		this.parentId = parentId;
 	}
 	
@@ -48,12 +50,12 @@ public class Scene {
 		this.parentId = parentId;
 	}
 
-	public String getOption() {
-		return option;
+	public List<String> getOptions() {
+		return options;
 	}
 
-	public void setOption(String option) {
-		this.option = option;
+	public void setOptions(List<String> options) {
+		this.options = options;
 	}
 
 	public String getDescription() {
