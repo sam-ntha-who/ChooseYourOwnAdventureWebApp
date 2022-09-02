@@ -29,7 +29,7 @@ public class AdventureApiController {
 //	@PostMapping("/createStory")
 //	@ResponseStatus(HttpStatus.CREATED)
 //	public Story createStory(@RequestBody Story story) {
-//		String storyID = StoryID.StoryID(story);
+//		String storyID = StoryID.createStoryID(story);
 //		story.setId(storyID);
 //		return storyRepo.insert(story);
 //	}
@@ -37,7 +37,7 @@ public class AdventureApiController {
 //	@PostMapping("/createScene")
 //	@ResponseStatus(HttpStatus.CREATED)
 //	public Scene createSceneOption(@RequestBody Scene scene, @RequestBody Scene parentScene, @RequestBody Story story) {
-//		String sceneID = SceneID.SceneID(story, parentScene);
+//		String sceneID = SceneID.createSceneID(story, parentScene);
 //		scene.setId(sceneID);
 //		return sceneRepo.insert(scene);
 //	}

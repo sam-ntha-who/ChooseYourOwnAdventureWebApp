@@ -6,7 +6,7 @@ public class StoryID {
 
 	private Story story;
 
-	public static String StoryID(Story story) {
+	public static String createStoryID(Story story) {
 
 		String noSpace = story.getTitle().replaceAll("\\s", "");
 
