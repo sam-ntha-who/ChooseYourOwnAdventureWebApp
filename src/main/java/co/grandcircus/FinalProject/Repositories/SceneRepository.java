@@ -10,8 +10,6 @@ import co.grandcircus.FinalProject.Models.Scene;
 public interface SceneRepository extends MongoRepository<Scene, String> {
 	
 	List<Scene> findAll();
-
-	Optional<Scene> findById(String id);
 	
 	List<Scene> findByParentId(String parentId);
 }

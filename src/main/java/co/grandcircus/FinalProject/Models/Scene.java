@@ -3,6 +3,8 @@ package co.grandcircus.FinalProject.Models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Document("scenes")
 public class Scene {
@@ -14,13 +16,15 @@ public class Scene {
 	private String option;
 	private String description;
 
+	
 	//constructors
 	public Scene() {
 	}
 	
-	public Scene(String parentId) {
-		this.parentId = parentId;
+	public Scene(String id) {
+		this.id = id;
 	}
+	
 	
 	//getters and setters
 	public String getId() {
