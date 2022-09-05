@@ -56,6 +56,7 @@ public class AdventureApiController {
 	}
 
 	// Read a scene
+	// ****** Need to add Story ID param **********
 	@GetMapping("/read-scene")
 	public Scene getScene(@RequestParam String id) {
 		return sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
@@ -64,6 +65,7 @@ public class AdventureApiController {
 	
 	
 	// Delete Scene (and all connected scenes)
+	// ****** Need to add Story ID param **********
 	@DeleteMapping("/delete-scene-tree")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteSceneTree(@RequestParam String id) {
@@ -75,13 +77,9 @@ public class AdventureApiController {
 			
 			scenesToDelete.add(sceneToDelete);
 
-		int startIndex = 0;
-
-		while (!(startIndex == scenesToDelete.size())) {
-
-			for (int i = startIndex; i < scenesToDelete.size(); i++) {
-				String currentSceneId = scenesToDelete.get(i).getId();
-				List<Scene> subList = sceneRepo.findByParentId(currentSceneId);
+				for (int i = 0; i < scenesToDelete.size(); i++) {
+				String sceneId = scenesToDelete.get(i).getId();
+				List<Scene> subList = sceneRepo.findByParentId(sceneId);
 
 				if (subList.size() > 0) {
 
@@ -90,13 +88,10 @@ public class AdventureApiController {
 					}
 				}
 			}
-			startIndex ++;
 
-		}
 		for (Scene s2d : scenesToDelete) {
 			deleteScene(s2d);
 		}
-
 	}
 
 	// deletes a specific scene. Is private so only methods within this class can
@@ -105,6 +100,7 @@ public class AdventureApiController {
 		sceneRepo.delete(s2d);
 	}
 
+	
 	// Error Handling
 	@ResponseBody
 	@ExceptionHandler(SceneNotFoundException.class)
