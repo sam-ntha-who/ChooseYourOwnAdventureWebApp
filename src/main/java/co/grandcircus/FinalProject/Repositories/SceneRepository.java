@@ -11,5 +11,7 @@ public interface SceneRepository extends MongoRepository<Scene, String> {
 	
 	List<Scene> findAll();
 	
-	List<Scene> findByParentId(String parentId);
+	List<Scene> findByStoryIdAndParentId(String storyId, String parentId);
+	
+	Optional<Scene> findByStoryIdAndId(String storyId, String id);
 }

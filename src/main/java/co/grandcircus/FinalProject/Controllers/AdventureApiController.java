@@ -21,14 +21,15 @@ public class AdventureApiController {
 	@Autowired
 	private SceneRepository sceneRepo;
 
+	
 	// CRUD Functions
 
-	// TESTING -create scene in DB via id only as requestparam
-	@PostMapping("/test-add")
-	@ResponseStatus(HttpStatus.CREATED)
-	public void testAdd(@RequestParam String id) {
-		sceneRepo.insert(new Scene(id));
-	}
+//	// TESTING -create scene in DB via id only as requestparam
+//	@PostMapping("/test-add")
+//	@ResponseStatus(HttpStatus.CREATED)
+//	public void testAdd(@RequestParam String id) {
+//		sceneRepo.insert(new Scene(id));
+//	}
 
 	// Create Story
 	@PostMapping("/create-story")
@@ -55,50 +56,62 @@ public class AdventureApiController {
 		}
 	}
 
-	// Read a scene
-	// ****** Need to add Story ID param **********
-	@GetMapping("/read-scene")
-	public Scene getScene(@RequestParam String id) {
-		return sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
-	}
 	
+	// Read a scene
+	@GetMapping("/read-scene")
+	public Scene getScene(@RequestParam String id, @RequestParam String storyId) {
+		return sceneRepo.findByStoryIdAndId(storyId, storyId).orElseThrow(() -> new SceneNotFoundException(id));
+	}
+
+	
+	// Update a scene
+	@PatchMapping("/update-scene")
+	public Scene updateScene(@RequestBody Scene scene, @RequestParam String id) {
+		
+		Scene sceneToUpdate = sceneRepo.findByStoryIdAndId(scene.getStoryId(), id)
+				.orElseThrow(() -> new SceneNotFoundException(scene.getId()));
+		
+		sceneToUpdate.setDescription(scene.getDescription());
+		sceneToUpdate.setOption(scene.getOption());
+		
+		return sceneRepo.save(sceneToUpdate);
+	}
 	
 	
 	// Delete Scene (and all connected scenes)
-	// ****** Need to add Story ID param **********
 	@DeleteMapping("/delete-scene-tree")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteSceneTree(@RequestParam String id) {
+	public void deleteSceneTree(@RequestParam String storyId, @RequestParam String id) {
 
-		// without recursion
 		ArrayList<Scene> scenesToDelete = new ArrayList<>();
 
-			Scene sceneToDelete = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
-			
-			scenesToDelete.add(sceneToDelete);
+		Scene sceneToDelete = sceneRepo.findByStoryIdAndId(storyId, id)
+				.orElseThrow(() -> new SceneNotFoundException(id));
 
-				for (int i = 0; i < scenesToDelete.size(); i++) {
-				String sceneId = scenesToDelete.get(i).getId();
-				List<Scene> subList = sceneRepo.findByParentId(sceneId);
+		scenesToDelete.add(sceneToDelete);
 
-				if (subList.size() > 0) {
+		for (int i = 0; i < scenesToDelete.size(); i++) {
+			String sceneId = scenesToDelete.get(i).getId();
+			String currentStoryId = scenesToDelete.get(i).getStoryId();
+			List<Scene> subList = sceneRepo.findByStoryIdAndParentId(currentStoryId, sceneId);
 
-					for (Scene sc : subList) {
-						scenesToDelete.add(sc);
-					}
+			if (subList.size() > 0) {
+
+				for (Scene sc : subList) {
+					scenesToDelete.add(sc);
 				}
 			}
+		}
 
 		for (Scene s2d : scenesToDelete) {
-			deleteScene(s2d);
+			sceneRepo.delete(s2d);
 		}
 	}
 
-	// deletes a specific scene. Is private so only methods within this class can
-	// call it, not API users directly.
-	private void deleteScene(Scene s2d) {
-		sceneRepo.delete(s2d);
-	}
+//	// deletes a scene from the database
+//	private void deleteScene(Scene s2d) {
+//		sceneRepo.delete(s2d);
+//	}
 
 	
 	// Error Handling
