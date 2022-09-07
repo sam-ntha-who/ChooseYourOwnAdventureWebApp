@@ -12,13 +12,9 @@ public class Scene {
 	@Id
 	private String id;
 	private String storyId;
-	// parent scene
 	private String parentId;
 	private String description;
-//  string = key - option = value (an object of option incl the description of the option and the sceneId that it points to
 	private List<Option> options;
-	
-
 	
 	//constructors
 	public Scene() {
