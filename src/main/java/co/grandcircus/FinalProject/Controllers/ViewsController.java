@@ -33,7 +33,7 @@ public class ViewsController {
 	
 	@RequestMapping("/delete")
 	public String storyDelete() {
-		return "StoryDelete";
+		return "StoryDeleted";
 	}
 	
 	@RequestMapping("/addScene")

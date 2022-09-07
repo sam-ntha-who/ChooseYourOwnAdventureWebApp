@@ -4,9 +4,19 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Story deleted</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-
+	<div class="banner"></div>
+	<div class="banner">
+		Story deleted
+	</div>
+	<div class="banner"></div>
+	
+	
+	<footer>
+		<a href="/">Back to home</a>
+	</footer>
 </body>
 </html>
