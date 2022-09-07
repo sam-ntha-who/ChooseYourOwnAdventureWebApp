@@ -1,7 +1,5 @@
 package co.grandcircus.FinalProject.Models;
 
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -55,15 +53,6 @@ public class Scene {
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-// options needs to not only display the choice, but also point to a sceneID that follows... 
-// need 
-//	public List<Option> getOptions() {
-//		return options;
-//	}
-//
-//	public void setOptions(List<Option> options) {
-//		this.options = options;
-//	}
 
 	public void setDescription(String description) {
 		this.description = description;
