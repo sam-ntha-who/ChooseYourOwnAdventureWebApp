@@ -294,6 +294,37 @@ public class AdventureApiController {
 		
 
 		
+		// TakeAHike.root
+		title = "This Is A Long Story Title";
+		story = new Story(title);
+		story.setId(StoryID.createStoryID(title));
+		startingScene = new Scene(story.getId(), "You start reading another weird story. You make some decisions, for example:", null);
+		sceneId = SceneID.createSceneID(story, startingScene, null);
+		// set scene Id
+		startingScene.setId(sceneId);
+		// set starting scene - Scene(String id, String storyId, String description)
+		story.setStartingSceneId(sceneId);
+		// add options to story.
+		options = new ArrayList();
+		option = new Option("You want a glass of lemonade", SceneID.createSceneID(story, new Scene(), startingScene));
+		options.add(option);
+		// setting each time to ensure count increments
+		startingScene.setOptions(options);
+		// add second option
+		option = new Option("Close the book. It's probably for the best.", SceneID.createSceneID(story, new Scene(), startingScene));
+		options.add(option);
+		startingScene.setOptions(options);
+		// add third option
+		option = new Option("Kill it with fire.", SceneID.createSceneID(story, new Scene(), startingScene));
+		options.add(option);
+		startingScene.setOptions(options);
+
+		parentScene = startingScene;
+		// save scene + story
+		storyRepo.save(story);
+		sceneRepo.save(startingScene);
+		
+		
 		return "Data reset.";
 	}
 }
