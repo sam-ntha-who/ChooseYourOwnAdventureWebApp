@@ -6,11 +6,11 @@ public class StoryID {
 
 	private Story story;
 
-	public static String createStoryID(Story story) {
+	public static String createStoryID(String title) {
 
-		String noSpace = story.getTitle().replaceAll("\\s", "");
+		String noSpace = title.replaceAll("\\s", "");
 
-		String storyID = noSpace.substring(0, 5);
+		String storyID = noSpace.substring(0, noSpace.length());
 
 		return storyID;
 	}

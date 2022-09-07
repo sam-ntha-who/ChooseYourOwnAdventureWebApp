@@ -47,6 +47,13 @@ public class Story {
 		this.startingSceneId = startingSceneId;
 	}
 
+	public Story(String id, String title, String startingSceneId) {
+		this.id = id;
+		this.title = title;
+		this.startingSceneId = startingSceneId;
+	}
 
-
+	public Story(String title) {
+		this.title = title;
+	}
 }
