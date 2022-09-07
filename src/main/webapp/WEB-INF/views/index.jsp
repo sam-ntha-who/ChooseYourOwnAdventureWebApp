@@ -31,24 +31,23 @@
       		<tr>
       			<th scope="row">Pic</th>
       			<td>Story 1 - discription</td>
-      			<td><button type="button" class="button-primary">Play / Edit</button></td>
-      			<td><button type="button" class="button-primary">Delete</button><div style="text-align: center;"><span style="font-size: 1rem;"></span></div></td>
+      			<td><a href="/play"><button type="button" class="button-primary">Play / Edit</button></a></td>
+      			<td><a href="/delete"><button type="button" class="button-primary">Delete</button></a><div style="text-align: center;"><span style="font-size: 1rem;"></span></div></td>
       		</tr>
       		<tr>
       			<th scope="row">Pic</th>
       			<td>Story 2 - discription</td>
-      			<td><button type="button" class="button-primary">Play / Edit</button></td>
-      			<td><button type="button" class="button-primary">Delete</button></td>
+      			<td><a href="/play"><button type="button" class="button-primary">Play / Edit</button></a></td>
+      			<td><a href="/delete"><button type="button" class="button-primary">Delete</button></a></td>
       		</tr>
       		<tr>
       			<th scope="row">Pic</th>
       			<td>Story 3 - discription</td>
-      			<td><button type="button" class="button-primary">Play / Edit</button></td>
-      			<td><button type="button" class="button-primary">Delete</button></td>
+      			<td><a href="/play"><button type="button" class="button-primary">Play / Edit</button></a></td>
+      			<td><a href="/delete"><button type="button" class="button-primary">Delete</button></a></td>
       		</tr>
       	</tbody>
       </table>
-    <footer class="footer">
 
 </body>
 </html>
