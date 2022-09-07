@@ -1,0 +1,124 @@
+body {
+	background-color: #000000;
+	color: #ff0000;
+	font-size: 20px;
+	font-family: "Courier New", monospace;
+	font-weight: bold;
+}
+
+.button-primary {
+	background-color: #ff0000;
+	color: #000000;
+	font-size: 20px;
+	font-family: "Courier New", monospace;
+	font-weight: bold;
+	border-radius: 12px;
+}
+
+.button-primary:hover {
+	background-color: #000000;
+	color: #ff0000;
+}
+
+table {
+	width: 75%;
+	text-align: center;
+	border-collapse: collapse;
+	margin: auto;
+}
+
+tr { 
+  border: solid;
+  border-width: 1px 0;
+}
+
+tr:first-child {
+  border-top: none;
+}
+tr:last-child {
+  border-bottom: none;
+}
+
+th, td {
+		padding: 10px;
+}
+
+tr:hover {
+	background-color: #ff0000;
+	color: #000000;
+	}
+
+.columns {
+	background-color: #ff0000;
+	color: #000000;
+}
+	
+.CYOA-header {
+	color: #ff0000;
+	width: 260px;
+	height: 25px;
+	text-align: center;
+	margin: auto;
+	display: flex;
+	align-items: center;
+	padding: 25px;
+}
+
+.banner {
+	width: 50%;
+	margin: auto;
+	text-align: center;
+	font-size: 45px;
+	color: white;
+	padding: 50px;
+}
+
+a {
+	color: #000000;
+	text-decoration: none;
+	background-color: #ff0000;
+	border-radius: 12px;
+	padding: 5px;
+}
+
+.story-body {
+	margin: auto;
+	width: 75%;
+	text-align: center;
+}
+
+.options {
+	margin: auto;
+	width: 75%;
+	text-align: center;
+	overflow-wrap: break-word;
+}
+
+.option {
+	height: 250px;
+	width: 300px;
+	display: inline-block;
+	
+}
+
+.home {
+	margin: left;
+}
+
+.edit {
+	margin: right;
+}
+
+input[type="text"], textarea {
+    background-color : #000000; 
+    color: #ff0000;
+  	font-size: 20px;
+	font-family: "Courier New", monospace;
+	font-weight: bold;
+	height: 100px;
+	width: 300px;
+	word-wrap: break-word;
+    word-break: break-all;
+	overflow: auto;
+	
+}
