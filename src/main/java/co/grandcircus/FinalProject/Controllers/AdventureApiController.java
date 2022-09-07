@@ -208,6 +208,21 @@ public class AdventureApiController {
 			aPathScene2.setOptions(options);
 	
 			sceneRepo.save(aPathScene2);
+			
+			// TakeAHike.option1-3
+			Scene aPathScene3 = new Scene(aPathRootScene.getOptions().get(2).getSceneId(), story.getId(), "You took the path to the right. As you're walking around a curve, you are treated to a beautiful little pond with a bench. Everyone sits down for a moment to take in the scenery. Katya is taking photos with her phone when she accidentally drops it and it tumbles into the pond. You:", aPathRootScene.getId());
+			options = new ArrayList();
+			option = new Option("Say \"Rough luck, the water looks yucky.\"", SceneID.createSceneID(story, new Scene(), aPathScene3));
+			options.add(option);
+			aPathScene3.setOptions(options);
+			option = new Option("Say \"We can probably fish it out with this suspiciously placed net over here.\"", SceneID.createSceneID(story, new Scene(), aPathScene3));
+			options.add(option);
+			aPathScene3.setOptions(options);
+			option = new Option("Say \"I could use a swim, I'll get it!\" You remove the top layer of your clothes and jump into the water after it.", SceneID.createSceneID(story, new Scene(), aPathScene3));
+			options.add(option);
+			aPathScene3.setOptions(options);
+	
+			sceneRepo.save(aPathScene3);
 		
 		// TakeAHike.option-2
 		Scene bPathRootScene = new Scene(startingScene.getOptions().get(1).getSceneId(), story.getId(), "As you're walking, Stefon, who took the lead, starts pointing out some edible berries that he says he's definitely eaten a few times before. He offers to collect some and let you try them. You:", startingScene.getId());
@@ -226,6 +241,34 @@ public class AdventureApiController {
 		bPathRootScene.setOptions(options);
 		
 		sceneRepo.save(bPathRootScene);
+		
+			// TakeAHike.option2-1
+			Scene bPathScene1 = new Scene(bPathRootScene.getOptions().get(0).getSceneId(), story.getId(), "You pop a handful of berries into your mouth. They are delicious and actually taste like blueberries. Crisis averted.", bPathRootScene.getId());
+			options = new ArrayList();
+			option = new Option("Continue exploring the path, now looking for some wild snacks to impress your friends with.", SceneID.createSceneID(story, new Scene(), bPathScene1));
+			options.add(option);
+			bPathScene1.setOptions(options);
+			option = new Option("Take a picture of the blueberry plant, just in case it wasn't blueberries.", SceneID.createSceneID(story, new Scene(), bPathScene1));
+			options.add(option);
+			bPathScene1.setOptions(options);
+			option = new Option("???", SceneID.createSceneID(story, new Scene(), bPathScene1));
+			options.add(option);
+			bPathScene1.setOptions(options);
+			sceneRepo.save(bPathScene1);
+			
+			// TakeAHike.option2-2
+			Scene bPathScene2 = new Scene(bPathRootScene.getOptions().get(1).getSceneId(), story.getId(), "Stefon eats a berry. He immediately pretends to have a reaction to it and everyone panics, until he starts laughing. You do not eat any berries, because screw that guy.", bPathRootScene.getId());
+			options = new ArrayList();
+			option = new Option("??", SceneID.createSceneID(story, new Scene(), bPathScene2));
+			options.add(option);
+			bPathScene2.setOptions(options);
+			option = new Option("?", SceneID.createSceneID(story, new Scene(), bPathScene2));
+			options.add(option);
+			bPathScene2.setOptions(options);
+			option = new Option("???", SceneID.createSceneID(story, new Scene(), bPathScene2));
+			options.add(option);
+			bPathScene2.setOptions(options);
+			sceneRepo.save(bPathScene2);
 		
 		// TakeAHike.option-3
 		Scene cPathRootScene = new Scene(startingScene.getOptions().get(2).getSceneId(), story.getId(), "You follow your friends for a while and realize you left your water in the car, you:", startingScene.getId());
