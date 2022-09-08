@@ -20,8 +20,7 @@ public class Story {
 		this.title = title;
 		this.startingSceneId = startingSceneId;
 	}
-	
-	
+		
 	//getters and setters
 	public String getId() {
 		return id;
