@@ -2,6 +2,7 @@ package co.grandcircus.FinalProject.Controllers;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,10 @@ public class ViewsController {
 
 	@RequestMapping("/")
 	public String index(Model model) {
-//		List<Story> storyList = dbService.getAllStories();
-//		model.addAttribute("storyList", storyList);
-		return "testing";
+		Story[] list = dbService.getAllStories();
+		List<Story> storyList = Arrays.asList(list);
+		model.addAttribute("storyList", storyList);
+		return "index";
 	}
 
 	@RequestMapping("/play")
@@ -52,11 +54,11 @@ public class ViewsController {
 		return "StoryEdit";
 	}
 
-	@DeleteMapping("/delete/{id}")
-	public String sceneDelete(@PathVariable String id) {
-		dbService.deleteScene(id);
-		return "StoryDeleted";
-	}
+//	@DeleteMapping("/delete/{id}")
+//	public String sceneDelete(@PathVariable String id) {
+//		sceneRepo.delete
+//		return "StoryDeleted";
+//	}
 
 	@RequestMapping("/addScene")
 	public String addScene() {
