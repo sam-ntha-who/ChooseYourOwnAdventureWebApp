@@ -45,14 +45,26 @@ public class ViewsController {
 	}
 
 	@RequestMapping("/play")
-	public String storyPlay() {
+	public String play(Model model, @RequestParam String sceneId) {
+		Scene nextScene = dbService.getScene(sceneId);
+		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
+	
 
 	@RequestMapping("/edit")
-	public String storyEdit() {
+	public String storyEdit(Model model, @RequestParam String sceneId) {
+		Scene editScene = dbService.getScene(sceneId);
+		model.addAttribute("scene", editScene);
 		return "StoryEdit";
 	}
+	
+	@RequestMapping("/save")
+	public String storySave(Model model, @RequestParam String sceneId) {
+		
+	}
+	
+	
 
 //	@DeleteMapping("/delete/{id}")
 //	public String sceneDelete(@PathVariable String id) {
