@@ -1,5 +1,7 @@
 package co.grandcircus.FinalProject.Models;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,31 +9,29 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("scenes")
 public class Scene {
 
-	// add additional fields? + getters & setters
-	// create constructor(s) from fields
-
 	@Id
 	private String id;
-	private String title;
 	private String storyId;
 	private String parentId;
-	private String option;
 	private String description;
-
+	private List<Option> options;
+	
+	//constructors
+	public Scene() {
+	}
+	
+	public Scene(String id) {
+		this.id = id;
+	}
+	
+	
+	//getters and setters
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getStoryId() {
@@ -50,32 +50,40 @@ public class Scene {
 		this.parentId = parentId;
 	}
 
-	public String getOption() {
-		return option;
+	public void setDescription(String description) {
+		this.description = description;
 	}
-
-	public void setOption(String option) {
-		this.option = option;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public List<Option> getOptions() {
+		return options;
 	}
 
-	public Scene(String title, String storyId, String parentId, String option, String description) {
-		this.title = title;
+	public void setOptions(List<Option> options) {
+		this.options = options;
+	}
+
+	public Scene(String id, String storyId, String parentId, String description, List<Option> options) {
+		this.id = id;
 		this.storyId = storyId;
 		this.parentId = parentId;
-		this.option = option;
 		this.description = description;
+		this.options = options;
 	}
+	// for setting starting scene
+	public Scene(String storyId, String description, String parentId) {
 
-	public Scene() {
-
+		this.storyId = storyId;
+		this.description = description;
+		this.parentId = parentId;
 	}
-
+	// for setting the rest of the scenes
+	public Scene(String id, String storyId, String description, String parentId) {
+		this.id = id;
+		this.storyId = storyId;
+		this.description = description;
+		this.parentId = parentId;
+	}
 }

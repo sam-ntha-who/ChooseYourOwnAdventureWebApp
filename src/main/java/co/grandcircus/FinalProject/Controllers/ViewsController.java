@@ -20,6 +20,9 @@ public class ViewsController {
 	@Autowired
 	SceneRepository sceneRepo;
 	
+	@Autowired
+	PexelService service;
+	
 	@RequestMapping("/")
 	public String index() {
 		return "index";
@@ -44,9 +47,7 @@ public class ViewsController {
 	public String addScene() {
 		return "AddScene";
 	}
-	
-	@Autowired
-	PexelService service;
+
 	
 	@RequestMapping("/test-pexel")
 	public String randomName() throws URISyntaxException, IOException, InterruptedException {
