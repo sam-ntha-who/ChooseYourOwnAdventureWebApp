@@ -9,14 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import co.grandcircus.FinalProject.Models.Photo;
 import co.grandcircus.FinalProject.Models.Scene;
+import co.grandcircus.FinalProject.Models.Story;
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
 import co.grandcircus.FinalProject.Repositories.StoryRepository;
 import co.grandcircus.FinalProject.Services.AdventureDBService;
 import co.grandcircus.FinalProject.Services.PexelService;
-import co.grandcircus.FinalProject.Services.PexelsResponse;
 
 @Controller
 public class ViewsController {
@@ -34,8 +35,10 @@ public class ViewsController {
 	AdventureDBService dbService;
 
 	@RequestMapping("/")
-	public String index() {
-		return "index";
+	public String index(Model model) {
+//		List<Story> storyList = dbService.getAllStories();
+//		model.addAttribute("storyList", storyList);
+		return "testing";
 	}
 
 	@RequestMapping("/play")
@@ -48,10 +51,11 @@ public class ViewsController {
 		return "StoryEdit";
 	}
 
-	@RequestMapping("/delete")
-	public String storyDelete() {
-		return "StoryDeleted";
-	}
+//	@DeleteMapping("/delete/{story}")
+//	public String storyDelete(@PathVariable String storyId) {
+//		dbService.deleteScene(storyId);
+//		return "StoryDeleted";
+//	}
 
 	@RequestMapping("/addScene")
 	public String addScene() {

@@ -3,8 +3,6 @@ package co.grandcircus.FinalProject.Controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +14,6 @@ import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
 import co.grandcircus.FinalProject.Repositories.StoryRepository;
-import co.grandcircus.FinalProject.Services.AdventureDBService;
 
 @RestController
 public class AdventureApiController {
@@ -61,7 +58,13 @@ public class AdventureApiController {
 			sceneRepo.insert(scene);
 		}
 	}
-
+	// Get list of stories
+	@GetMapping("/allStories")
+	public List<Story> getStories() {
+		return storyRepo.findAll();
+	}
+	
+	
 	// Read a scene
 	@GetMapping("/read-scene/{id}")
 	public Scene getScene(@PathVariable("id") String id) {

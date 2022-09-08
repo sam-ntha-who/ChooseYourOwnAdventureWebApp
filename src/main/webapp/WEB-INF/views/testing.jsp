@@ -9,14 +9,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-Scene Stuff here!
 
-${ scene.description }
-<c:forEach items="${ scene.options }" var="option">
-${ option.description } <br>
+<c:forEach items="${ storyList }" var="stories">
+${ stories.title } <br>
 </c:forEach>
 
-<h1>${ storyName }</h1>
+
 
 </body>
 </html>
