@@ -93,13 +93,13 @@ public class AdventureApiController {
 	}
 
 	// Delete Scene (and all connected scenes)
-	@DeleteMapping("/delete-scene-tree")
+	@DeleteMapping("/delete-scene-tree/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteSceneTree(@RequestParam String storyId, @RequestParam String id) {
+	public void deleteSceneTree(@PathVariable String id) {
 
 		ArrayList<Scene> scenesToDelete = new ArrayList<>();
 
-		Scene sceneToDelete = sceneRepo.findByStoryIdAndId(storyId, id)
+		Scene sceneToDelete = sceneRepo.findById(id)
 				.orElseThrow(() -> new SceneNotFoundException(id));
 
 		scenesToDelete.add(sceneToDelete);

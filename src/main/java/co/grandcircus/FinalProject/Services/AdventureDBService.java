@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 import co.grandcircus.FinalProject.Controllers.SceneNotFoundException;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
-import co.grandcircus.FinalProject.Models.StoryResponse;
 
 @Service
 public class AdventureDBService {
@@ -34,22 +33,21 @@ public class AdventureDBService {
 		return response;
 
 	}
-//	
-//	public StoryResponse[] getAllStories() {
-//		
-//		String url = "http://localhost:8080/allStories";
-//
-//		StoryResponse[] response = rt.getForObject(url, StoryResponse[].class);
-//		
-//		
-//		return response;
-//	}
 	
-	public void deleteScene(String storyId, String id) {
+	public Story[] getAllStories() {
 		
-		String url = "http://localhost:8080/delete-scene-tree";
+		String url = "http://localhost:8080/allStories";
+
+		Story[] response = rt.getForObject(url, Story[].class);
+				
+		return response;
+	}
+	
+	public void deleteScene(String id) {
+	
+		String url = "http://localhost:8080/delete-scene-tree/{id}";
 		
-		rt.delete(url, storyId, id);
+		rt.delete(url, id);
 		
 	}
 }
