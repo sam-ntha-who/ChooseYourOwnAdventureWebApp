@@ -1,11 +1,15 @@
 package co.grandcircus.FinalProject.Controllers;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
 import co.grandcircus.FinalProject.Repositories.StoryRepository;
+import co.grandcircus.FinalProject.Services.PexelService;
 
 @Controller
 public class ViewsController {
@@ -40,5 +44,15 @@ public class ViewsController {
 	public String addScene() {
 		return "AddScene";
 	}
+	
+	@Autowired
+	PexelService service;
+	
+	@RequestMapping("/test-pexel")
+	public String randomName() throws URISyntaxException, IOException, InterruptedException {
+		service.getPexels();
+		return "hello";
+	}
+	
 	
 }
