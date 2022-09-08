@@ -21,7 +21,7 @@ public class SceneID {
 		String sceneId = "";
 		Integer optionNum = 0;
 		if (parentScene == null) {
-			parentId = ".root";
+			parentId = "root";
 			sceneId = storyId + parentId;
 			return sceneId;
 		} 

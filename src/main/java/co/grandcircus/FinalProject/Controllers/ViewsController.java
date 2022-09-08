@@ -57,7 +57,7 @@ public class ViewsController {
 	public String randomName(Model model) throws URISyntaxException, IOException, InterruptedException {
 		List<Photo> response = service.getPexels("Tiger");
 		model.addAttribute("response", response);
-		return "hello";
+		return "index";
 	}
 	
 	
