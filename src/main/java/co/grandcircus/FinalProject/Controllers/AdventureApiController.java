@@ -16,6 +16,7 @@ import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
 import co.grandcircus.FinalProject.Repositories.StoryRepository;
+import co.grandcircus.FinalProject.Services.AdventureDBService;
 
 @RestController
 public class AdventureApiController {
@@ -26,6 +27,7 @@ public class AdventureApiController {
 	@Autowired
 	private SceneRepository sceneRepo;
 
+	
 	// CRUD Functions
 
 //	// TESTING -create scene in DB via id only as requestparam
@@ -153,6 +155,7 @@ public class AdventureApiController {
 		startingScene.setId(sceneId);
 		// set starting scene for story
 		story.setStartingSceneId(sceneId);
+		startingScene.setStoryTitle(title);
 		// add options to story.
 		List<Option> options = new ArrayList<Option>();
 		Option option = new Option("Confidently lead the group into the forest.",
@@ -183,6 +186,7 @@ public class AdventureApiController {
 			Scene aPathRootScene = new Scene(startingScene.getOptions().get(0).getSceneId(), story.getId(),
 					"As you're walking, you start pointing out different native plants that you recognize, excited to share your wilderness knowledge with your friends - it's gotta come in handy somewhere, right? You quickly come upon a fork in the trail, you:",
 					startingScene.getId());
+			aPathRootScene.setStoryTitle(title);
 			options = new ArrayList<Option>();
 			option = new Option("Choose the path to the left.", SceneID.createSceneID(story, new Scene(), aPathRootScene));
 			options.add(option);
@@ -199,6 +203,7 @@ public class AdventureApiController {
 				Scene aPathScene1 = new Scene(aPathRootScene.getOptions().get(0).getSceneId(), story.getId(),
 						"You took the path to the left and it starts gently winding its way around the mountain. The three of you spot a bald eagle and get pretty excited about it. Katya stops to take a picture. You:",
 						aPathRootScene.getId());
+				aPathScene1.setStoryTitle(title);
 				options = new ArrayList<Option>();
 				option = new Option(
 						"Get your phone out and take a photo. You probably won't look at it again, but hey, posterity.",
@@ -219,6 +224,7 @@ public class AdventureApiController {
 					Scene aPathScene1A = new Scene(aPathScene1.getOptions().get(0).getSceneId(), story.getId(),
 							"As you continue up the mountain, you absentmindedly trip on a root. You:",
 							aPathScene1.getId());
+					aPathScene1A.setStoryTitle(title);
 					options = new ArrayList<Option>();
 					option = new Option(
 							"Fall forward.",
@@ -243,6 +249,7 @@ public class AdventureApiController {
 						Scene aPathScene1A1 = new Scene(aPathScene1A.getOptions().get(0).getSceneId(), story.getId(),
 								"You land on an ant hill and they are crawling all over you, but they aren't fire ants so you brush them off and keep going. Eventually you come upon a smallish cabin. You:",
 								aPathScene1A.getId());
+						aPathScene1A1.setStoryTitle(title);
 						options = new ArrayList<Option>();
 						option = new Option(
 								"Nope outta there really fast and continue up the trail.",
@@ -267,6 +274,7 @@ public class AdventureApiController {
 							Scene aPathScene1A1A = new Scene(aPathScene1A1.getOptions().get(0).getSceneId(), story.getId(),
 									"You continue walking up the trail and quickly reach the peak of this tiny mountain. You are rewarded with a beautiful view of the forest.",
 									aPathScene1A1.getId());
+							aPathScene1A1A.setStoryTitle(title);
 							// if you don't create a null object you will get a null object pointer error because why not
 							options = new ArrayList<Option>();
 							option = null;
@@ -277,6 +285,7 @@ public class AdventureApiController {
 							Scene aPathScene1A1B = new Scene(aPathScene1A1.getOptions().get(1).getSceneId(), story.getId(),
 									"A single candle is flickering opposite the window. A rocking chair is rocking by itself and you're pretty sure there's music coming from inside.",
 									aPathScene1A1.getId());
+							aPathScene1A1B.setStoryTitle(title);
 							options = new ArrayList<Option>();
 							option = new Option(
 									"You run as fast as your little legs can carry you back to the car.",
@@ -299,6 +308,7 @@ public class AdventureApiController {
 								Scene aPathScene1A1B1 = new Scene(aPathScene1A1B.getOptions().get(0).getSceneId(), story.getId(),
 										"You made it to the car and survived the day.",
 										aPathScene1A1B.getId());
+								aPathScene1A1B1.setStoryTitle(title);
 								options = new ArrayList<Option>();
 								option = null;
 								options.add(option);
@@ -309,6 +319,7 @@ public class AdventureApiController {
 								Scene aPathScene1A1B2 = new Scene(aPathScene1A1B.getOptions().get(1).getSceneId(), story.getId(),
 										"You continue walking up the trail, a little faster than you would normally and arrive at the peak! You are rewarded with a beautiful view of the forest.",
 										aPathScene1A1B.getId());
+								aPathScene1A1B2.setStoryTitle(title);
 								options = new ArrayList<Option>();
 								option = null;
 								options.add(option);
@@ -319,6 +330,7 @@ public class AdventureApiController {
 								Scene aPathScene1A1B3 = new Scene(aPathScene1A1B.getOptions().get(2).getSceneId(), story.getId(),
 										"You blow out the candle and the demon swiftly steals your soul. You die.",
 										aPathScene1A1B.getId());
+								aPathScene1A1B3.setStoryTitle(title);
 								options = new ArrayList<Option>();
 								option = null;
 								options.add(option);
@@ -329,6 +341,7 @@ public class AdventureApiController {
 							Scene aPathScene1A1C = new Scene(aPathScene1A1.getOptions().get(2).getSceneId(), story.getId(),
 									"A raccoon is sitting on the mantle just staring at you. It's a real weird vibe in there. You turn around and run straight home, the car lives there now.",
 									aPathScene1A1.getId());
+							aPathScene1A1C.setStoryTitle(title);
 							options = new ArrayList<Option>();
 							option = null;
 							options.add(option);
@@ -338,6 +351,7 @@ public class AdventureApiController {
 							Scene aPathScene1A1D = new Scene(aPathScene1A1.getOptions().get(3).getSceneId(), story.getId(),
 									"You run back to the cars faster than you knew possible, get in and never come back. ",
 									aPathScene1A1.getId());
+							aPathScene1A1D.setStoryTitle(title);
 							options = new ArrayList<Option>();
 							option = null;
 							options.add(option);
@@ -347,6 +361,7 @@ public class AdventureApiController {
 						Scene aPathScene1A2 = new Scene(aPathScene1A.getOptions().get(1).getSceneId(), story.getId(),
 								"You start tumbling downhill towards certain doom and hit a tree on your way down. It stops you! You decide to be done hiking for the day.",
 								aPathScene1A.getId());
+						aPathScene1A2.setStoryTitle(title);
 						options = new ArrayList<Option>();
 						option = null;
 						options.add(option);
@@ -356,6 +371,7 @@ public class AdventureApiController {
 						Scene aPathScene1A3 = new Scene(aPathScene1A.getOptions().get(2).getSceneId(), story.getId(),
 								"You fall into some sort of greenery. Hopefully it isn't poisonous! All three of you keep heading up the trail, passing a sketchy looking cabin. Stefon wants to check it out. You say:",
 								aPathScene1A.getId());
+						aPathScene1A3.setStoryTitle(title);
 						options = new ArrayList<Option>();
 						option = new Option(
 								"\"Too bad you're not leading the hike, we're not going in there.\"",
@@ -376,6 +392,7 @@ public class AdventureApiController {
 						Scene aPathScene1A4 = new Scene(aPathScene1A.getOptions().get(3).getSceneId(), story.getId(),
 								"You hit your head and die.",
 								aPathScene1A.getId());
+						aPathScene1A4.setStoryTitle(title);
 						// do we have to add option as null or will it already be null if it's not created... turns it out it won't just be null if it doesn't exist. cute.
 						options = new ArrayList<Option>();
 						option = null;
@@ -386,6 +403,7 @@ public class AdventureApiController {
 					Scene aPathScene1B = new Scene(aPathScene1.getOptions().get(1).getSceneId(), story.getId(),
 							"The three of you keep walking, Stefon trips over his own shoelace while looking at his phone. He gets up and acts like nothing happened, but you notice him limping a little. You:",
 							aPathScene1.getId());
+					aPathScene1B.setStoryTitle(title);
 					options = new ArrayList<Option>();
 					option = new Option(
 							"Keep walking, he's a big boy, he will tell you if he needs to turn back.",
@@ -410,6 +428,7 @@ public class AdventureApiController {
 					Scene aPathScene1C = new Scene(aPathScene1.getOptions().get(2).getSceneId(), story.getId(),
 							"The three of you keep walking, Stefon trips over his own shoelace while looking at his phone. He gets up and acts like nothing happened, but you notice him limping a little. You:",
 							aPathScene1.getId());
+					aPathScene1C.setStoryTitle(title);
 					options = new ArrayList<Option>();
 					option = new Option(
 							"Keep walking, he's a big boy, he will tell you if he needs to turn back.",
@@ -434,6 +453,7 @@ public class AdventureApiController {
 				Scene aPathScene2 = new Scene(aPathRootScene.getOptions().get(1).getSceneId(), story.getId(),
 						"You took the middle path. The trail starts easy enough, but quickly starts to get pretty steep. As you keep climbing, Katya starts to fall behind. You stop and rest so she can catch up with you and Stefon.",
 						aPathRootScene.getId());
+				aPathScene2.setStoryTitle(title);
 				options = new ArrayList<Option>();
 				option = new Option(
 						"Look around a bit to gauge whether or not you should continue up the path. You decide it's fine.",
@@ -451,6 +471,7 @@ public class AdventureApiController {
 				Scene aPathScene3 = new Scene(aPathRootScene.getOptions().get(2).getSceneId(), story.getId(),
 						"You took the path to the right. As you're walking around a curve, you are treated to a beautiful little pond with a bench. Everyone sits down for a moment to take in the scenery. Katya is taking photos with her phone when she accidentally drops it and it tumbles into the pond. You:",
 						aPathRootScene.getId());
+				aPathScene3.setStoryTitle(title);
 				options = new ArrayList<Option>();
 				option = new Option("Say \"Rough luck, the water looks yucky.\"",
 						SceneID.createSceneID(story, new Scene(), aPathScene3));
@@ -471,6 +492,7 @@ public class AdventureApiController {
 			Scene bPathRootScene = new Scene(startingScene.getOptions().get(1).getSceneId(), story.getId(),
 					"As you're walking, Stefon, who took the lead, starts pointing out some edible berries that he says he's definitely eaten a few times before. He offers to collect some and let you try them. You:",
 					startingScene.getId());
+			bPathRootScene.setStoryTitle(title);
 			options = new ArrayList<Option>();
 			option = new Option("Try the berries, Stefon wouldn't lead you astray.",
 					SceneID.createSceneID(story, new Scene(), bPathRootScene));
@@ -497,6 +519,7 @@ public class AdventureApiController {
 				Scene bPathScene1 = new Scene(bPathRootScene.getOptions().get(0).getSceneId(), story.getId(),
 						"You pop a handful of berries into your mouth. They are delicious and actually taste like blueberries. Crisis averted.",
 						bPathRootScene.getId());
+				bPathScene1.setStoryTitle(title);
 				options = new ArrayList<Option>();
 				option = new Option(
 						"Continue exploring the path, now looking for some wild snacks to impress your friends with.",
@@ -516,6 +539,7 @@ public class AdventureApiController {
 				Scene bPathScene2 = new Scene(bPathRootScene.getOptions().get(1).getSceneId(), story.getId(),
 						"Stefon eats a berry. He immediately pretends to have a reaction to it and everyone panics, until he starts laughing. You do not eat any berries, because screw that guy.",
 						bPathRootScene.getId());
+				bPathScene2.setStoryTitle(title);
 				options = new ArrayList<Option>();
 				option = new Option("??", SceneID.createSceneID(story, new Scene(), bPathScene2));
 				options.add(option);
@@ -532,6 +556,7 @@ public class AdventureApiController {
 			Scene cPathRootScene = new Scene(startingScene.getOptions().get(2).getSceneId(), story.getId(),
 					"You follow your friends for a while and realize you left your water in the car, you:",
 					startingScene.getId());
+			cPathRootScene.setStoryTitle(title);
 			options = new ArrayList<Option>();
 			option = new Option("Ask the group to come back with you to the car and grab it.",
 					SceneID.createSceneID(story, new Scene(), cPathRootScene));
@@ -550,6 +575,7 @@ public class AdventureApiController {
 			// endpoint - 0 options
 			Scene dPathRootScene = new Scene(startingScene.getOptions().get(3).getSceneId(), story.getId(),
 					"You drive back towards civilization.", startingScene.getId());
+			dPathRootScene.setStoryTitle(title);
 			options = new ArrayList<Option>();
 			option = null;
 //			dPathRootScene.setOptions(options);
@@ -566,6 +592,7 @@ public class AdventureApiController {
 		startingScene.setId(sceneId);
 		// set starting scene - Scene(String id, String storyId, String description)
 		story.setStartingSceneId(sceneId);
+		startingScene.setStoryTitle(title);
 		// add options to story.
 		options = new ArrayList<Option>();
 		option = new Option("You want a glass of lemonade", SceneID.createSceneID(story, new Scene(), startingScene));
