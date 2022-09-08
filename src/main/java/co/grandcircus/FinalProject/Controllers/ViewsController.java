@@ -2,14 +2,18 @@ package co.grandcircus.FinalProject.Controllers;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import co.grandcircus.FinalProject.Models.Photo;
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
 import co.grandcircus.FinalProject.Repositories.StoryRepository;
 import co.grandcircus.FinalProject.Services.PexelService;
+import co.grandcircus.FinalProject.Services.PexelsResponse;
 
 @Controller
 public class ViewsController {
@@ -50,8 +54,9 @@ public class ViewsController {
 
 	
 	@RequestMapping("/test-pexel")
-	public String randomName() throws URISyntaxException, IOException, InterruptedException {
-		service.getPexels();
+	public String randomName(Model model) throws URISyntaxException, IOException, InterruptedException {
+		List<Photo> response = service.getPexels("Tiger");
+		model.addAttribute("response", response);
 		return "hello";
 	}
 	
