@@ -7,58 +7,72 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import co.grandcircus.FinalProject.Models.Photo;
+import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
 import co.grandcircus.FinalProject.Repositories.StoryRepository;
+import co.grandcircus.FinalProject.Services.AdventureDBService;
 import co.grandcircus.FinalProject.Services.PexelService;
 import co.grandcircus.FinalProject.Services.PexelsResponse;
 
 @Controller
 public class ViewsController {
-	
+
 	@Autowired
 	StoryRepository storyRepo;
 
 	@Autowired
 	SceneRepository sceneRepo;
-	
+
 	@Autowired
 	PexelService service;
-	
+
+	@Autowired
+	AdventureDBService dbService;
+
 	@RequestMapping("/")
 	public String index() {
 		return "index";
 	}
-	
+
 	@RequestMapping("/play")
 	public String storyPlay() {
 		return "StoryPlay";
 	}
-	
+
 	@RequestMapping("/edit")
 	public String storyEdit() {
 		return "StoryEdit";
 	}
-	
+
 	@RequestMapping("/delete")
 	public String storyDelete() {
 		return "StoryDeleted";
 	}
-	
+
 	@RequestMapping("/addScene")
 	public String addScene() {
 		return "AddScene";
 	}
 
-	
-	@RequestMapping("/test-pexel")
-	public String randomName(Model model) throws URISyntaxException, IOException, InterruptedException {
+	@RequestMapping("/test-pexel/{sceneId}")
+	public String randomName(Model model, @PathVariable("sceneId") String sceneId)
+			throws URISyntaxException, IOException, InterruptedException {
 		List<Photo> response = service.getPexels("Tiger");
+		Scene test = dbService.getScene(sceneId);
+		String title = dbService.getStoryName(sceneId);
+		model.addAttribute("storyName", title);
+		model.addAttribute("scene", test);
 		model.addAttribute("response", response);
-		return "index";
+		return "testing";
 	}
-	
-	
+
+//	@RequestMapping("/test-Story-Name/{storyId}")
+//	public String randomerName(Model model, @PathVariable("storyId") String storyId) {
+//		
+//	}
+
 }

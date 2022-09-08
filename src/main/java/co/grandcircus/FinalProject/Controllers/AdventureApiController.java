@@ -3,6 +3,8 @@ package co.grandcircus.FinalProject.Controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -59,9 +61,17 @@ public class AdventureApiController {
 	}
 
 	// Read a scene
-	@GetMapping("/read-scene")
-	public Scene getScene(@RequestParam String id, @RequestParam String storyId) {
-		return sceneRepo.findByStoryIdAndId(storyId, storyId).orElseThrow(() -> new SceneNotFoundException(id));
+	@GetMapping("/read-scene/{id}")
+	public Scene getScene(@PathVariable("id") String id) {
+		return sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+	}
+	
+	// Read a Story Name
+	public String findStoryName(@RequestParam String id) {
+		
+		Story story = storyRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+		
+		return story.getTitle();
 	}
 
 	// Update a scene
