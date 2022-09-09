@@ -31,7 +31,7 @@
 	
 	<footer>
 		<div class="edit">
-			<a href="/edit">Edit</a>
+			<a href="/edit?sceneId=${scene.id}">Edit</a>
 		</div><br><br>
 		<div class="home">
 			<a href="/">Back to home</a>
