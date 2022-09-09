@@ -80,7 +80,7 @@ public class AdventureApiController {
 	}
 
 	// Update a scene
-	@PatchMapping("/update-scene")
+	@PostMapping("/update-scene")
 	public Scene updateScene(@RequestBody Scene scene, @RequestParam String id) {
 
 		Scene sceneToUpdate = sceneRepo.findByStoryIdAndId(scene.getStoryId(), id)
