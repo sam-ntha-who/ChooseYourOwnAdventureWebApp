@@ -43,11 +43,11 @@ public class AdventureDBService {
 		return response;
 	}
 	
-	public void deleteScene(String id) {
-	
-		String url = "http://localhost:8080/delete-scene-tree/{id}";
-		
-		rt.delete(url, id);
-		
-	}
+//	public void deleteScene(String id) {
+//	
+//		String url = "http://localhost:8080/delete-scene-tree/{id}";
+//		
+//		rt.delete(url, id);
+//		
+//	}
 }

@@ -5,13 +5,19 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+import co.grandcircus.FinalProject.HelperFunctions.SceneID;
+import co.grandcircus.FinalProject.Models.Option;
 import co.grandcircus.FinalProject.Models.Photo;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
@@ -43,26 +49,62 @@ public class ViewsController {
 	}
 
 	@RequestMapping("/play")
-	public String storyPlay() {
+	public String play(Model model, @RequestParam String sceneId) {
+		Scene nextScene = dbService.getScene(sceneId);
+		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
 
 	@RequestMapping("/edit")
-	public String storyEdit() {
+	public String storyEdit(Model model, @RequestParam String sceneId) {
+		Scene editScene = dbService.getScene(sceneId);
+		model.addAttribute("scene", editScene);
 		return "StoryEdit";
 	}
 
-	@DeleteMapping("/delete/{id}")
-	public String sceneDelete(@PathVariable String id) {
-		dbService.deleteScene(id);
-		return "StoryDeleted";
-	}
+//	// call directly
+//	@PostMapping("/update")
+//	public String sceneSave(@RequestBody Scene scene) {
+//		dbService.
+//		
+//	}
 
-	@RequestMapping("/addScene")
-	public String addScene() {
+//	// call directly
+//	@DeleteMapping("/delete/{id}")
+//	public String sceneDelete(@PathVariable String id) {
+//		sceneRepo.delete
+//		return "StoryDeleted";
+//	}
+
+	@RequestMapping("/add-scene")
+	public String addScene(Model model, @PathVariable String id) {
+		model.addAttribute("id", id);
 		return "AddScene";
 	}
+	
+	
+	// id or parentId???
+	@RequestMapping("/save-scene")
+	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
+		
+	Scene sceneToUpdate = sceneRepo.findById(parentId)
+			.orElseThrow(() -> new SceneNotFoundException(scene.getId()));
+	List<Option> listToUpdate = sceneToUpdate.getOptions();
 
+	// this should be probably set to Optional<Story>
+
+	Story thisStory = storyRepo.findStoryById(sceneToUpdate.getStoryId());
+	
+	// need scene from parentId
+	Option newOption = new Option(scene.getDescription(), SceneID.createSceneID(thisStory, new Scene(), sceneRepo.findById(scene.getParentId()).orElseThrow(() -> new SceneNotFoundException(scene.getId()))));
+	
+	listToUpdate.add(newOption);
+	sceneToUpdate.setOptions(listToUpdate);
+	sceneRepo.save(sceneToUpdate);
+	// may need to add more to this for actual scene - sam
+	return "StoryEdit";
+	}
+	
 	@RequestMapping("/test-pexel/{sceneId}")
 	public String randomName(Model model, @PathVariable("sceneId") String sceneId)
 			throws URISyntaxException, IOException, InterruptedException {
@@ -79,5 +121,18 @@ public class ViewsController {
 //	public String randomerName(Model model, @PathVariable("storyId") String storyId) {
 //		
 //	}
-
+	// Error Handling
+		@ResponseBody
+		@ExceptionHandler(SceneNotFoundException.class)
+		@ResponseStatus(HttpStatus.NOT_FOUND)
+		String sceneNotFoundHandler(SceneNotFoundException ex) {
+			return ex.getMessage();
+		}
+		
+		@ResponseBody
+		@ExceptionHandler(StoryNotFoundException.class)
+		@ResponseStatus(HttpStatus.NOT_FOUND)
+		String storyNotFoundHandler(StoryNotFoundException ex) {
+			return ex.getMessage();
+		}
 }

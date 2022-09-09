@@ -12,5 +12,7 @@ public interface StoryRepository extends MongoRepository<Story, String> {
 	List<Story> findAll();
 
 	Optional<Story> findById(String id);
+	
+	Story findStoryById(String id);
 
 }
