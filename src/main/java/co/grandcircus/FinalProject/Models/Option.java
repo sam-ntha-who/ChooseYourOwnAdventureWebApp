@@ -27,6 +27,7 @@ public class Option {
 		this.nextSceneId = nextSceneId;
 	}
 	
+	public Option() {};
 	
 	
 }

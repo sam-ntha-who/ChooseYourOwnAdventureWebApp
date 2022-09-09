@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -58,15 +60,29 @@ public class ViewsController {
 	}
 
 	@RequestMapping("/play")
-	public String storyPlay() {
+	public String play(Model model, @RequestParam String sceneId) {
+		Scene nextScene = dbService.getScene(sceneId);
+		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
+	
 
 	@RequestMapping("/edit")
-	public String storyEdit() {
+	public String storyEdit(Model model, @RequestParam String sceneId) {
+		Scene editScene = dbService.getScene(sceneId);
+		model.addAttribute("scene", editScene);
 		return "StoryEdit";
 	}
-
+	
+//	// call directly
+//	@PostMapping("/update")
+//	public String sceneSave(@RequestBody Scene scene) {
+//		dbService.
+//		
+//	}
+	
+	
+//	// call directly
 //	@DeleteMapping("/delete/{id}")
 //	public String sceneDelete(@PathVariable String id) {
 //		sceneRepo.delete
@@ -74,7 +90,7 @@ public class ViewsController {
 //	}
 
 	@RequestMapping("/addScene")
-	public String addScene() {
+	public String addScene(@PathVariable(required=false) ) {
 		return "AddScene";
 	}
 
