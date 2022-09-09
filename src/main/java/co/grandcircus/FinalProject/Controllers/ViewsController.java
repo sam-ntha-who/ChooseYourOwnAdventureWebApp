@@ -60,11 +60,13 @@ public class ViewsController {
 	}
 
 	@RequestMapping("/play")
-	public String play(Model model, @RequestParam String sceneId) {
-		Scene nextScene = dbService.getScene(sceneId);
+	public String play(Model model, @RequestParam String id) {
+		Scene nextScene = dbService.getScene(id);
 		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
+	
+	
 	
 
 	@RequestMapping("/edit")
@@ -82,17 +84,17 @@ public class ViewsController {
 //	}
 	
 	
-//	// call directly
-//	@DeleteMapping("/delete/{id}")
-//	public String sceneDelete(@PathVariable String id) {
-//		sceneRepo.delete
-//		return "StoryDeleted";
-//	}
-
-	@RequestMapping("/addScene")
-	public String addScene(@PathVariable(required=false) ) {
-		return "AddScene";
+	// call directly
+	@DeleteMapping("/delete/{id}")
+	public String sceneDelete(@PathVariable String id) {
+		dbService.deleteStory(id);
+		return "StoryDeleted";
 	}
+
+//	@RequestMapping("/addScene")
+//	public String addScene(@PathVariable(required=false) ) {
+//		return "AddScene";
+//	}
 
 	@RequestMapping("/test-pexel/{sceneId}")
 	public String randomName(Model model, @PathVariable("sceneId") String sceneId)

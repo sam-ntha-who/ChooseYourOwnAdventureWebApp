@@ -32,8 +32,8 @@
       		<tr>
       			<th scope="row"><img src="${photoList[status.index]}" width="130"></th>
       			<td>${story.title}</td>
-      			<td><a href="/play"><button type="button" class="button-primary">Play / Edit</button></a></td>
-      			<td><a href="/delete-scene-tree/"><button type="button" class="button-primary">Delete</button></a><div style="text-align: center;"><span style="font-size: 1rem;"></span></div></td>
+      			<td><a href="play?id=${story.startingSceneId}"><button type="button" class="button-primary">Play / Edit</button></a></td>
+      			<td><a href="/delete?id=${story.id}"><button type="button" class="button-primary">Delete</button></a><div style="text-align: center;"><span style="font-size: 1rem;"></span></div></td>
       		</tr>
 		</c:forEach>
       	</tbody>

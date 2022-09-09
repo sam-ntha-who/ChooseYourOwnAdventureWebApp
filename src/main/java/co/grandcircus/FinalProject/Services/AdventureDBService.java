@@ -17,7 +17,7 @@ public class AdventureDBService {
 
 	public Scene getScene(String id) {
 
-		String url = "localhost:8080/read-scene/{id}";
+		String url = "http://localhost:8080/read-scene/{id}";
 
 		Scene response = rt.getForObject(url, Scene.class, id);
 
@@ -26,7 +26,7 @@ public class AdventureDBService {
 
 	public String getStoryName(String storyId) {
 		
-		String url = "localhost:8080/find-story-name/{storyId}";
+		String url = "http://localhost:8080/find-story-name/{storyId}";
 
 		String response = rt.getForObject(url, String.class, storyId);
 
@@ -43,13 +43,20 @@ public class AdventureDBService {
 		return response;
 	}
 	
-//	public void deleteScene(String id) {
-//	
-//		String url = "http://localhost:8080/delete-scene-tree/{id}";
-//		
-//		rt.delete(url, id);
-//		
-//	}
+	public void deleteScene(String id) {
+	
+		String url = "http://localhost:8080/delete-scene-tree/{id}";
+		
+		rt.delete(url, id);
+		
+	}
+	
+	public void deleteStory(String id) {
+		
+		String url = "http://localhost:8080/delete-story/{id}";
+		
+		rt.delete(url, id);
+	}
 	
 
 }

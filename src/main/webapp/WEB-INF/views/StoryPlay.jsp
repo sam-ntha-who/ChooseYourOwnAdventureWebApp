@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,28 +10,23 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-	<div class="banner">Story name</div>
+	<div class="banner">${scene.storyTitle}</div>
 	<br><br>
 	<div class="story-body">
-		Scene Description<br><br>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		${scene.description}
 	</div>
+	
+	<c:if test = "${scene.options.size() == 0}">
+	The end
+	</c:if>
 	
 	<div class="options">
+	<c:forEach items="${scene.options}" var="option">
 	<div class="option">
-	<h3>Option 1</h3>
-	Shortest/longest
+	<a href="play?id=${option.getSceneId()}">
+	${option.description}</a>
 	</div>
-	
-	<div class="option">
-	<h3>Option 2</h3>
-	Shortest/longest
-	</div>
-	
-	<div class="option">
-	<h3>Option 3</h3>
-	Shortest/longest
-	</div>
+	</c:forEach>
 	</div>
 	
 	<footer>
