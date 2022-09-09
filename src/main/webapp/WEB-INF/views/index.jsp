@@ -11,7 +11,7 @@
 </head>
 <body>
 	<div class="CYOA-header">
-		<a href="/addScene">Create your own story</a>
+		<a href="/addScene?msg=story">Create your own story</a>
 	</div>
 	<br><br>
 	<div class="banner">

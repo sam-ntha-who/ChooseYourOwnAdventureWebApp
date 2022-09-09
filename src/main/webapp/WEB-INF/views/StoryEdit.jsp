@@ -15,16 +15,16 @@
 	<br>
 	<br>
 	<div class="story-body">
-		<form action="/update-scene">
-			<input id="sceneId" type="hidden" value="${scene.id}">
+		<form action="/updateScene" method="post">
+		<input type="hidden" id="sceneId" name="sceneId" value="${scene.id}">
 			<%-- *** This code commented out because "Scene Description" shouldn't be editable 
 		with the current class structure. Currently, "scene description" or "choice" 
 		comes from an array of Option in the previous scene. ***
 			<textarea id="sceneName" name="sceneName" rows="50" cols="100">Scene description
-		--%>
 			</textarea>
+		--%>
 			<br>
-			<textarea id="sceneDescription" name="sceneDescription" rows="50"
+			<textarea id="description" name="description" rows="50"
 				cols="100">
 			${scene.description}
 		</textarea>
@@ -53,6 +53,9 @@
 						;(</button></a>
 			</div>
 		</c:forEach>
+		<div class="option">
+		<a href="/addScene?id=${scene.id}&msg=scene"><button type="button" class="button-primary">Add Option</button></a>
+		</div>
 	</div>
 
 	<footer>

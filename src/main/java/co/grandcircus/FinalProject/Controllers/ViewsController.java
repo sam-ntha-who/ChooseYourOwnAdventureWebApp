@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import co.grandcircus.FinalProject.HelperFunctions.SceneID;
+import co.grandcircus.FinalProject.HelperFunctions.StoryID;
 import co.grandcircus.FinalProject.Models.Photo;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
@@ -45,14 +47,14 @@ public class ViewsController {
 		Story[] list = dbService.getAllStories();
 		List<Story> storyList = Arrays.asList(list);
 		model.addAttribute("storyList", storyList);
-		
+
 		List<Photo> thumbnailList1 = service.getPexels("Hike");
 		List<Photo> thumbnailList2 = service.getPexels("Story");
 		List<Photo> thumbnailList3 = service.getPexels("Question");
-		
+
 		Photo thumbnail1 = thumbnailList1.get(0);
 		Photo thumbnail2 = thumbnailList2.get(0);
-		
+
 		List<String> photoList = new ArrayList<>();
 		photoList.add(thumbnail1.getSrc().getOriginal());
 		photoList.add(thumbnail2.getSrc().getOriginal());
@@ -66,9 +68,6 @@ public class ViewsController {
 		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
-	
-	
-	
 
 	@RequestMapping("/edit")
 	public String storyEdit(Model model, @RequestParam String sceneId) {
@@ -78,15 +77,14 @@ public class ViewsController {
 		model.addAttribute("scene", editScene);
 		return "StoryEdit";
 	}
-	
+
 //	// call directly
 //	@PostMapping("/update")
 //	public String sceneSave(@RequestBody Scene scene) {
 //		dbService.
 //		
 //	}
-	
-	
+
 	// call directly
 	@DeleteMapping("/delete/{id}")
 	public String sceneDelete(@PathVariable String id) {
@@ -94,10 +92,41 @@ public class ViewsController {
 		return "StoryDeleted";
 	}
 
-//	@RequestMapping("/addScene")
-//	public String addScene(@PathVariable(required=false) ) {
-//		return "AddScene";
-//	}
+	@RequestMapping("/addScene")
+	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
+		if (id != null) {
+			Scene scene = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+			model.addAttribute("id", id);
+			model.addAttribute("title", scene.getStoryTitle());
+		} else {
+			model.addAttribute("title", "Enter Story Name");
+		}
+		model.addAttribute("msg", msg);
+		return "AddScene";
+	}
+	
+	@RequestMapping("/createScene")
+	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription) {
+		Story newStory = new Story(storyName);
+		newStory.setId(StoryID.createStoryID(storyName));
+				
+		Scene newScene = new Scene(newStory.getId(), sceneDescription, null);
+		
+		String sceneId = SceneID.createSceneID(newStory, newScene, null);
+	
+		newScene.setId(sceneId);
+		
+		newStory.setStartingSceneId(sceneId);
+		newScene.setStoryTitle(storyName);
+		
+		storyRepo.save(newStory);
+		sceneRepo.save(newScene);
+		
+		model.addAttribute("scene", newScene);
+		
+		return "StoryPlay";
+		
+	}
 
 	@RequestMapping("/test-pexel/{sceneId}")
 	public String randomName(Model model, @PathVariable("sceneId") String sceneId)
@@ -115,5 +144,14 @@ public class ViewsController {
 //	public String randomerName(Model model, @PathVariable("storyId") String storyId) {
 //		
 //	}
+
+	@PostMapping("/updateScene")
+	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
+		Scene sceneToUpdate = sceneRepo.findById(sceneId).orElseThrow(() -> new SceneNotFoundException(sceneId));
+		sceneToUpdate.setDescription(description);
+		sceneRepo.save(sceneToUpdate);
+		model.addAttribute("scene", sceneToUpdate);
+		return "StoryPlay";
+	}
 
 }
