@@ -2,6 +2,7 @@ package co.grandcircus.FinalProject.Controllers;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,6 +42,18 @@ public class ViewsController {
 		Story[] list = dbService.getAllStories();
 		List<Story> storyList = Arrays.asList(list);
 		model.addAttribute("storyList", storyList);
+		
+		List<Photo> thumbnailList1 = service.getPexels("Hike");
+		List<Photo> thumbnailList2 = service.getPexels("Story");
+		List<Photo> thumbnailList3 = service.getPexels("Question");
+		
+		Photo thumbnail1 = thumbnailList1.get(0);
+		Photo thumbnail2 = thumbnailList2.get(0);
+		
+		List<String> photoList = new ArrayList<>();
+		photoList.add(thumbnail1.getSrc().getOriginal());
+		photoList.add(thumbnail2.getSrc().getOriginal());
+		model.addAttribute("photoList", photoList);
 		return "index";
 	}
 
