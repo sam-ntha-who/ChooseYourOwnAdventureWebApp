@@ -15,7 +15,7 @@
 	<form action="">
 		<textarea id="storyName" name="storyName" rows="50" cols="100">Story name
 		</textarea><br>
-		<textarea id="sceneName" name="sceneName" rows="50" cols="100">Scene name
+		<textarea id="sceneName" name="sceneName" rows="50" cols="100">Scene name (Option)
 		</textarea><br>
 		<textArea id="sceneDescription" name="sceneDescription" rows="50" cols="100">Scene description
 		</textArea><br>

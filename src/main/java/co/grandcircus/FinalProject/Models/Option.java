@@ -15,6 +15,8 @@ public class Option {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	//TODO: should be getNextSceneId
 	public String getSceneId() {
 		return nextSceneId;
 	}
@@ -27,6 +29,7 @@ public class Option {
 		this.nextSceneId = nextSceneId;
 	}
 	
+	public Option() {};
 	
 	
 }

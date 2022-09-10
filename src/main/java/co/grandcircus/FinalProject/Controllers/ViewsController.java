@@ -2,6 +2,8 @@ package co.grandcircus.FinalProject.Controllers;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,17 +46,33 @@ public class ViewsController {
 
 	@RequestMapping("/")
 	public String index(Model model) {
-//		List<Story> storyList = dbService.getAllStories();
-//		model.addAttribute("storyList", storyList);
-		return "testing";
+		Story[] list = dbService.getAllStories();
+		List<Story> storyList = Arrays.asList(list);
+		model.addAttribute("storyList", storyList);
+		
+		List<Photo> thumbnailList1 = service.getPexels("Hike");
+		List<Photo> thumbnailList2 = service.getPexels("Story");
+		List<Photo> thumbnailList3 = service.getPexels("Question");
+		
+		Photo thumbnail1 = thumbnailList1.get(0);
+		Photo thumbnail2 = thumbnailList2.get(0);
+		
+		List<String> photoList = new ArrayList<>();
+		photoList.add(thumbnail1.getSrc().getOriginal());
+		photoList.add(thumbnail2.getSrc().getOriginal());
+		model.addAttribute("photoList", photoList);
+		return "index";
 	}
 
 	@RequestMapping("/play")
-	public String play(Model model, @RequestParam String sceneId) {
-		Scene nextScene = dbService.getScene(sceneId);
+	public String play(Model model, @RequestParam String id) {
+		Scene nextScene = dbService.getScene(id);
 		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
+	
+	
+	
 
 	@RequestMapping("/edit")
 	public String storyEdit(Model model, @RequestParam String sceneId) {
@@ -61,6 +80,16 @@ public class ViewsController {
 		model.addAttribute("scene", editScene);
 		return "StoryEdit";
 	}
+	// from views-DR.M (not sure which is the one we're trying to use)
+	// @RequestMapping("/edit")
+	// public String storyEdit(Model model, @RequestParam String sceneId) {
+	// 	Scene editScene = dbService.getScene(sceneId);
+	// 	Story story = storyRepo.findById(editScene.getStoryId()).orElseThrow(() -> new SceneNotFoundException(sceneId));
+	// 	model.addAttribute("storyTitle", story.getTitle());
+	// 	model.addAttribute("scene", editScene);
+	// 	return "StoryEdit";
+	// }
+
 
 //	// call directly
 //	@PostMapping("/update")
@@ -69,19 +98,6 @@ public class ViewsController {
 //		
 //	}
 
-//	// call directly
-//	@DeleteMapping("/delete/{id}")
-//	public String sceneDelete(@PathVariable String id) {
-//		sceneRepo.delete
-//		return "StoryDeleted";
-//	}
-
-	@RequestMapping("/add-scene")
-	public String addScene(Model model, @PathVariable String id) {
-		model.addAttribute("id", id);
-		return "AddScene";
-	}
-	
 	
 	// id or parentId???
 	@RequestMapping("/save-scene")
@@ -90,9 +106,7 @@ public class ViewsController {
 	Scene sceneToUpdate = sceneRepo.findById(parentId)
 			.orElseThrow(() -> new SceneNotFoundException(scene.getId()));
 	List<Option> listToUpdate = sceneToUpdate.getOptions();
-
 	// this should be probably set to Optional<Story>
-
 	Story thisStory = storyRepo.findStoryById(sceneToUpdate.getStoryId());
 	
 	// need scene from parentId
@@ -103,8 +117,54 @@ public class ViewsController {
 	sceneRepo.save(sceneToUpdate);
 	// may need to add more to this for actual scene - sam
 	return "StoryEdit";
+
+
 	}
 	
+	// call directly
+	@DeleteMapping("/delete/{id}")
+	public String sceneDelete(@PathVariable String id) {
+		dbService.deleteStory(id);
+		return "StoryDeleted";
+	}
+
+	@RequestMapping("/addScene")
+	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
+		if (id != null) {
+			Scene scene = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+			model.addAttribute("id", id);
+			model.addAttribute("title", scene.getStoryTitle());
+		} else {
+			model.addAttribute("title", "Enter Story Name");
+		}
+		model.addAttribute("msg", msg);
+		return "AddScene";
+	}
+
+	
+	@RequestMapping("/createScene")
+	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription) {
+		Story newStory = new Story(storyName);
+		newStory.setId(StoryID.createStoryID(storyName));
+				
+		Scene newScene = new Scene(newStory.getId(), sceneDescription, null);
+		
+		String sceneId = SceneID.createSceneID(newStory, newScene, null);
+	
+		newScene.setId(sceneId);
+		
+		newStory.setStartingSceneId(sceneId);
+		newScene.setStoryTitle(storyName);
+		
+		storyRepo.save(newStory);
+		sceneRepo.save(newScene);
+		
+		model.addAttribute("scene", newScene);
+		
+		return "StoryPlay";
+		
+	}
+
 	@RequestMapping("/test-pexel/{sceneId}")
 	public String randomName(Model model, @PathVariable("sceneId") String sceneId)
 			throws URISyntaxException, IOException, InterruptedException {

@@ -28,24 +28,14 @@
       		</tr>
       	</thead>
       	<tbody>
+      	<c:forEach items="${storyList}" var="story" varStatus="status">
       		<tr>
-      			<th scope="row">Pic</th>
-      			<td>Story 1 - discription</td>
-      			<td><a href="/play"><button type="button" class="button-primary">Play / Edit</button></a></td>
-      			<td><a href="/delete"><button type="button" class="button-primary">Delete</button></a><div style="text-align: center;"><span style="font-size: 1rem;"></span></div></td>
+      			<th scope="row"><img src="${photoList[status.index]}" width="130"></th>
+      			<td>${story.title}</td>
+      			<td><a href="play?id=${story.startingSceneId}"><button type="button" class="button-primary">Play / Edit</button></a></td>
+      			<td><a href="/delete?id=${story.id}"><button type="button" class="button-primary">Delete</button></a><div style="text-align: center;"><span style="font-size: 1rem;"></span></div></td>
       		</tr>
-      		<tr>
-      			<th scope="row">Pic</th>
-      			<td>Story 2 - discription</td>
-      			<td><a href="/play"><button type="button" class="button-primary">Play / Edit</button></a></td>
-      			<td><a href="/delete"><button type="button" class="button-primary">Delete</button></a></td>
-      		</tr>
-      		<tr>
-      			<th scope="row">Pic</th>
-      			<td>Story 3 - discription</td>
-      			<td><a href="/play"><button type="button" class="button-primary">Play / Edit</button></a></td>
-      			<td><a href="/delete"><button type="button" class="button-primary">Delete</button></a></td>
-      		</tr>
+		</c:forEach>
       	</tbody>
       </table>
 

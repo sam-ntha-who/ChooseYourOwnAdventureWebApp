@@ -80,7 +80,7 @@ public class AdventureApiController {
 	}
 
 	// Update a scene
-	@PatchMapping("/update-scene")
+	@PostMapping("/update-scene")
 	public Scene updateScene(@RequestBody Scene scene, @RequestParam String id) {
 
 		Scene sceneToUpdate = sceneRepo.findByStoryIdAndId(scene.getStoryId(), id)
@@ -93,7 +93,7 @@ public class AdventureApiController {
 	}
 
 	// Delete Scene (and all connected scenes)
-	@DeleteMapping("/delete-scene-tree/{id}")
+	@GetMapping("/delete-scene-tree/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteSceneTree(@PathVariable String id) {
 
@@ -120,6 +120,16 @@ public class AdventureApiController {
 		for (Scene s2d : scenesToDelete) {
 			sceneRepo.delete(s2d);
 		}
+	}
+	
+	@GetMapping("/delete-story/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deleteStory(@PathVariable String id) {
+		
+		Story storyToDelete = storyRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+		
+		deleteSceneTree(storyToDelete.getStartingSceneId());
+		storyRepo.delete(storyToDelete);
 	}
 
 //	// deletes a scene from the database
