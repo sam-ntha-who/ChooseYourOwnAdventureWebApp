@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import co.grandcircus.FinalProject.HelperFunctions.SceneID;
 import co.grandcircus.FinalProject.Models.Option;
+import co.grandcircus.FinalProject.HelperFunctions.StoryID;
 import co.grandcircus.FinalProject.Models.Photo;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
@@ -49,14 +51,14 @@ public class ViewsController {
 		Story[] list = dbService.getAllStories();
 		List<Story> storyList = Arrays.asList(list);
 		model.addAttribute("storyList", storyList);
-		
+
 		List<Photo> thumbnailList1 = service.getPexels("Hike");
 		List<Photo> thumbnailList2 = service.getPexels("Story");
 		List<Photo> thumbnailList3 = service.getPexels("Question");
-		
+
 		Photo thumbnail1 = thumbnailList1.get(0);
 		Photo thumbnail2 = thumbnailList2.get(0);
-		
+
 		List<String> photoList = new ArrayList<>();
 		photoList.add(thumbnail1.getSrc().getOriginal());
 		photoList.add(thumbnail2.getSrc().getOriginal());
@@ -70,13 +72,12 @@ public class ViewsController {
 		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
-	
-	
-	
 
 	@RequestMapping("/edit")
 	public String storyEdit(Model model, @RequestParam String sceneId) {
 		Scene editScene = dbService.getScene(sceneId);
+		Story story = storyRepo.findById(editScene.getStoryId()).orElseThrow(() -> new SceneNotFoundException(sceneId));
+		model.addAttribute("storyTitle", story.getTitle());
 		model.addAttribute("scene", editScene);
 		return "StoryEdit";
 	}
@@ -195,4 +196,14 @@ public class ViewsController {
 		String storyNotFoundHandler(StoryNotFoundException ex) {
 			return ex.getMessage();
 		}
+
+	@PostMapping("/updateScene")
+	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
+		Scene sceneToUpdate = sceneRepo.findById(sceneId).orElseThrow(() -> new SceneNotFoundException(sceneId));
+		sceneToUpdate.setDescription(description);
+		sceneRepo.save(sceneToUpdate);
+		model.addAttribute("scene", sceneToUpdate);
+		return "StoryPlay";
+	}
+
 }
