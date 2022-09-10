@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import co.grandcircus.FinalProject.HelperFunctions.DataLoader;
 import co.grandcircus.FinalProject.HelperFunctions.SceneID;
 import co.grandcircus.FinalProject.HelperFunctions.StoryID;
 import co.grandcircus.FinalProject.Models.Option;
@@ -146,9 +147,17 @@ public class AdventureApiController {
 	}
 
 	// reset data
+	// this needs to be in its own class
 	@GetMapping("/reset")
 	public String reset() {
 
+//		DataLoader doesn't want to work unless data loader is static. doesn't wanna work when data loader is static tho...
+//		also doesn't want to work with a new instance of data loader but there may be something that we can tweak with that
+		
+//		DataLoader.resetData();
+//		
+//		return "Data Reset";
+		
 		// currently for test data
 		
 		// delete all data
@@ -614,7 +623,7 @@ public class AdventureApiController {
 					startingScene.getId());
 			s3.setStoryTitle(title);
 			sceneRepo.save(s3);
-
-		return "Data reset.";
+	
+			return "Data reset.";
 	}
 }

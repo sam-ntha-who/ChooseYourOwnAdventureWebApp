@@ -124,7 +124,7 @@ public class ViewsController {
 		dbService.deleteScene(id);
 		return "StoryDeleted";
 	}
-
+	// may need some functionality here that involves options - ie if story.option == null, should create new List<Option> then add optoins to it.
 	@RequestMapping("/addScene")
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
 		if (id != null) {
@@ -138,7 +138,8 @@ public class ViewsController {
 		return "AddScene";
 	}
 
-	
+	// create story + starting scene
+	// this is mapping to addscene... is that intentional? - may need a separate view for createStory so it does what we want, but not sure.
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription) {
 		Story newStory = new Story(storyName);
