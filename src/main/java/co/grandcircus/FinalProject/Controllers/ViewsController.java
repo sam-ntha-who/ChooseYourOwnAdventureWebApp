@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import co.grandcircus.FinalProject.HelperFunctions.SceneID;
-import co.grandcircus.FinalProject.Models.Option;
 import co.grandcircus.FinalProject.HelperFunctions.StoryID;
+import co.grandcircus.FinalProject.Models.Option;
 import co.grandcircus.FinalProject.Models.Photo;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
@@ -82,16 +81,6 @@ public class ViewsController {
 		model.addAttribute("scene", editScene);
 		return "StoryEdit";
 	}
-	// from views-DR.M (not sure which is the one we're trying to use)
-	// @RequestMapping("/edit")
-	// public String storyEdit(Model model, @RequestParam String sceneId) {
-	// 	Scene editScene = dbService.getScene(sceneId);
-	// 	Story story = storyRepo.findById(editScene.getStoryId()).orElseThrow(() -> new SceneNotFoundException(sceneId));
-	// 	model.addAttribute("storyTitle", story.getTitle());
-	// 	model.addAttribute("scene", editScene);
-	// 	return "StoryEdit";
-	// }
-
 
 //	// call directly
 //	@PostMapping("/update")
@@ -123,10 +112,16 @@ public class ViewsController {
 
 	}
 	
-	// call directly
-	@DeleteMapping("/delete/{id}")
-	public String sceneDelete(@PathVariable String id) {
+	// no longer need to call directly
+	@RequestMapping("/deleteStory")
+	public String storyDelete(@RequestParam String id) {
 		dbService.deleteStory(id);
+		return "StoryDeleted";
+	}
+	
+	@RequestMapping("/deleteScene")
+	public String sceneDelete(@RequestParam String id) {
+		dbService.deleteScene(id);
 		return "StoryDeleted";
 	}
 

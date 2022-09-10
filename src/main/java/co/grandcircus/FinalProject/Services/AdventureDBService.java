@@ -1,12 +1,11 @@
 package co.grandcircus.FinalProject.Services;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.net.URI;
+import java.net.http.HttpRequest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import co.grandcircus.FinalProject.Controllers.SceneNotFoundException;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
 
@@ -44,18 +43,30 @@ public class AdventureDBService {
 	}
 	
 	public void deleteScene(String id) {
-	
-		String url = "http://localhost:8080/delete-scene-tree/{id}";
+		 
+		String url = "http://localhost:8080/delete-scene-tree/";
+		HttpRequest httpRequest = HttpRequest
+	            .newBuilder()
+	            .DELETE()
+	            .uri(URI.create(url + id))
+	            .build();
 		
-		rt.delete(url, id);
+		rt.delete(httpRequest.uri());
+
 		
 	}
 	
 	public void deleteStory(String id) {
 		
-		String url = "http://localhost:8080/delete-story/{id}";
+		String url = "http://localhost:8080/delete-story/";
 		
-		rt.delete(url, id);
+		HttpRequest httpRequest = HttpRequest
+	            .newBuilder()
+	            .DELETE()
+	            .uri(URI.create(url + id))
+	            .build();
+		
+		rt.delete(httpRequest.uri());
 	}
 	
 

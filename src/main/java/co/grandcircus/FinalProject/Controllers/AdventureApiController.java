@@ -122,7 +122,7 @@ public class AdventureApiController {
 		}
 	}
 	
-	@GetMapping("/delete-story/{id}")
+	@DeleteMapping("/delete-story/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteStory(@PathVariable String id) {
 		
@@ -174,7 +174,7 @@ public class AdventureApiController {
 		Option option = new Option("Confidently lead the group into the forest.",
 				SceneID.createSceneID(story, new Scene(), startingScene));
 		options.add(option);
-		// setting each time to ensure count increments - surely there's another way to do this
+		// setting between each option to ensure count increments - surely there's another way to do this
 		startingScene.setOptions(options);
 		// add option
 		option = new Option("Hang back and let someone else take the lead.",
@@ -196,6 +196,7 @@ public class AdventureApiController {
 		sceneRepo.save(startingScene);
 
 			// TakeAHike.option-1
+			// need to add a way to not hardcode the index for the get(0)
 			Scene aPathRootScene = new Scene(startingScene.getOptions().get(0).getSceneId(), story.getId(),
 					"As you're walking, you start pointing out different native plants that you recognize, excited to share your wilderness knowledge with your friends - it's gotta come in handy somewhere, right? You quickly come upon a fork in the trail, you:",
 					startingScene.getId());
@@ -288,10 +289,6 @@ public class AdventureApiController {
 									"You continue walking up the trail and quickly reach the peak of this tiny mountain. You are rewarded with a beautiful view of the forest.",
 									aPathScene1A1.getId());
 							aPathScene1A1A.setStoryTitle(title);
-							// if you don't create a null object you will get a null object pointer error because why not
-							options = new ArrayList<Option>();
-							option = null;
-							options.add(option);
 							sceneRepo.save(aPathScene1A1A);
 							
 							// TakeAHike.option1111-2
@@ -322,10 +319,6 @@ public class AdventureApiController {
 										"You made it to the car and survived the day.",
 										aPathScene1A1B.getId());
 								aPathScene1A1B1.setStoryTitle(title);
-								options = new ArrayList<Option>();
-								option = null;
-								options.add(option);
-//								aPathScene1A1B1.setOptions(options);
 								sceneRepo.save(aPathScene1A1B1);
 								
 								// TakeAHike.option11112-2
@@ -333,10 +326,6 @@ public class AdventureApiController {
 										"You continue walking up the trail, a little faster than you would normally and arrive at the peak! You are rewarded with a beautiful view of the forest.",
 										aPathScene1A1B.getId());
 								aPathScene1A1B2.setStoryTitle(title);
-								options = new ArrayList<Option>();
-								option = null;
-								options.add(option);
-//								aPathScene1A1B2.setOptions(options);
 								sceneRepo.save(aPathScene1A1B2);
 								
 								// TakeAHike.option11112-3
@@ -344,10 +333,6 @@ public class AdventureApiController {
 										"You blow out the candle and the demon swiftly steals your soul. You die.",
 										aPathScene1A1B.getId());
 								aPathScene1A1B3.setStoryTitle(title);
-								options = new ArrayList<Option>();
-								option = null;
-								options.add(option);
-//								aPathScene1A1B3.setOptions(options);
 								sceneRepo.save(aPathScene1A1B3);
 								
 							// TakeAHike.option1111-3
@@ -355,9 +340,6 @@ public class AdventureApiController {
 									"A raccoon is sitting on the mantle just staring at you. It's a real weird vibe in there. You turn around and run straight home, the car lives there now.",
 									aPathScene1A1.getId());
 							aPathScene1A1C.setStoryTitle(title);
-							options = new ArrayList<Option>();
-							option = null;
-							options.add(option);
 							sceneRepo.save(aPathScene1A1C);
 							
 							// TakeAHike.option1111-4
@@ -365,9 +347,6 @@ public class AdventureApiController {
 									"You run back to the cars faster than you knew possible, get in and never come back. ",
 									aPathScene1A1.getId());
 							aPathScene1A1D.setStoryTitle(title);
-							options = new ArrayList<Option>();
-							option = null;
-							options.add(option);
 							sceneRepo.save(aPathScene1A1D);
 								
 						// TakeAHike.option111-2
@@ -375,9 +354,6 @@ public class AdventureApiController {
 								"You start tumbling downhill towards certain doom and hit a tree on your way down. It stops you! You decide to be done hiking for the day.",
 								aPathScene1A.getId());
 						aPathScene1A2.setStoryTitle(title);
-						options = new ArrayList<Option>();
-						option = null;
-						options.add(option);
 						sceneRepo.save(aPathScene1A2);
 						
 						// TakeAHike.option111-3
@@ -406,10 +382,6 @@ public class AdventureApiController {
 								"You hit your head and die.",
 								aPathScene1A.getId());
 						aPathScene1A4.setStoryTitle(title);
-						// do we have to add option as null or will it already be null if it's not created... turns it out it won't just be null if it doesn't exist. cute.
-						options = new ArrayList<Option>();
-						option = null;
-						options.add(option);
 						sceneRepo.save(aPathScene1A4);
 						
 					// TakeAHike.option11-2
@@ -589,9 +561,6 @@ public class AdventureApiController {
 			Scene dPathRootScene = new Scene(startingScene.getOptions().get(3).getSceneId(), story.getId(),
 					"You drive back towards civilization.", startingScene.getId());
 			dPathRootScene.setStoryTitle(title);
-			options = new ArrayList<Option>();
-			option = null;
-//			dPathRootScene.setOptions(options);
 			sceneRepo.save(dPathRootScene);
 
 		// Test data story #2
@@ -624,6 +593,27 @@ public class AdventureApiController {
 		// save scene + story
 		storyRepo.save(story);
 		sceneRepo.save(startingScene);
+			
+			// fake scenes so that the options aren't empty
+			Scene s1 = new Scene(startingScene.getOptions().get(0).getSceneId(), story.getId(),
+					"Words.",
+					startingScene.getId());
+			s1.setStoryTitle(title);
+			sceneRepo.save(s1);
+			
+			// fake scene #2
+			Scene s2 = new Scene(startingScene.getOptions().get(1).getSceneId(), story.getId(),
+					"Other words.",
+					startingScene.getId());
+			s2.setStoryTitle(title);
+			sceneRepo.save(s2);
+			
+			// fake scene #3
+			Scene s3 = new Scene(startingScene.getOptions().get(2).getSceneId(), story.getId(),
+					"Other words.",
+					startingScene.getId());
+			s3.setStoryTitle(title);
+			sceneRepo.save(s3);
 
 		return "Data reset.";
 	}

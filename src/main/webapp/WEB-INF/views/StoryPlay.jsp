@@ -16,7 +16,7 @@
 		${scene.description}
 	</div>
 	
-	<c:if test = "${scene.options.size() == 0}">
+	<c:if test = "${scene.options == null}">
 	The end
 	</c:if>
 	
