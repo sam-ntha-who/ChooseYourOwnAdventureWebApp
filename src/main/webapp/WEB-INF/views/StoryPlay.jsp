@@ -41,6 +41,12 @@
 				class="button-primary">Add Option</button></a>
 	</div>
 	<div class="option">
+	<a href="play?id=${option.getSceneId()}">
+	${option.description}</a>
+	</div>
+	</c:forEach>
+	</div>
+	<div class="option">
 		<a href="/addOption?id=${scene.id}"><button type="button" class="button-primary">Add Option</button></a>
 		</div>
 	<footer>
