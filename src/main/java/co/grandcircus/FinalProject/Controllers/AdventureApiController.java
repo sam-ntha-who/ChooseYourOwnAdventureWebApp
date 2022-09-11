@@ -154,12 +154,12 @@ public class AdventureApiController {
 //		DataLoader doesn't want to work unless data loader is static. doesn't wanna work when data loader is static tho...
 //		also doesn't want to work with a new instance of data loader but there may be something that we can tweak with that
 		
-//		DataLoader.resetData();
-//		
-//		return "Data Reset";
+	//		DataLoader.resetData();
+			
+	//		return "Data Reset";
 		
-		// currently for test data
-		
+// currently for test data
+
 		// delete all data
 		storyRepo.deleteAll();
 		sceneRepo.deleteAll();
@@ -205,7 +205,7 @@ public class AdventureApiController {
 		sceneRepo.save(startingScene);
 
 			// TakeAHike.option-1
-			// need to add a way to not hardcode the index for the get(0)
+			// need to add a way to not hardcode the index for the getOptions().get(index)
 			Scene aPathRootScene = new Scene(startingScene.getOptions().get(0).getSceneId(), story.getId(),
 					"As you're walking, you start pointing out different native plants that you recognize, excited to share your wilderness knowledge with your friends - it's gotta come in handy somewhere, right? You quickly come upon a fork in the trail, you:",
 					startingScene.getId());
@@ -221,7 +221,7 @@ public class AdventureApiController {
 			options.add(option);
 			aPathRootScene.setOptions(options);
 			sceneRepo.save(aPathRootScene);
-	
+
 				// TakeAHike.option1-1
 				Scene aPathScene1 = new Scene(aPathRootScene.getOptions().get(0).getSceneId(), story.getId(),
 						"You took the path to the left and it starts gently winding its way around the mountain. The three of you spot a bald eagle and get pretty excited about it. Katya stops to take a picture. You:",
@@ -386,6 +386,27 @@ public class AdventureApiController {
 						aPathScene1A3.setOptions(options);
 						sceneRepo.save(aPathScene1A3);
 						
+							// TakeAHike.option1113-1
+							Scene aPathScene1A3A = new Scene(aPathScene1A3.getOptions().get(0).getSceneId(), story.getId(),
+									"Stefon ignores you and goes inside. You peek inside and notice that he is casually chatting with a racoon. You leave.",
+									aPathScene1A3.getId());
+							aPathScene1A3A.setStoryTitle(title);
+							sceneRepo.save(aPathScene1A3A);
+							
+							// TakeAHike.option1113-2
+							Scene aPathScene1A3B = new Scene(aPathScene1A3.getOptions().get(1).getSceneId(), story.getId(),
+									"Stefon walks into the cabin and immediately turns back around and runs. You follow and everyone goes to brunch instead.",
+									aPathScene1A3.getId());
+							aPathScene1A3B.setStoryTitle(title);
+							sceneRepo.save(aPathScene1A3B);
+							
+							// TakeAHike.option1113-3
+							Scene aPathScene1A3C = new Scene(aPathScene1A3.getOptions().get(2).getSceneId(), story.getId(),
+									"Stefon walks inside and you hear a scream. You pretend you didn't hear a scream and run back to your car.",
+									aPathScene1A3.getId());
+							aPathScene1A3C.setStoryTitle(title);
+							sceneRepo.save(aPathScene1A3C);
+						
 						// TakeAHike.option111-4
 						Scene aPathScene1A4 = new Scene(aPathScene1A.getOptions().get(3).getSceneId(), story.getId(),
 								"You hit your head and die.",
@@ -394,53 +415,19 @@ public class AdventureApiController {
 						sceneRepo.save(aPathScene1A4);
 						
 					// TakeAHike.option11-2
+		
 					Scene aPathScene1B = new Scene(aPathScene1.getOptions().get(1).getSceneId(), story.getId(),
-							"The three of you keep walking, Stefon trips over his own shoelace while looking at his phone. He gets up and acts like nothing happened, but you notice him limping a little. You:",
+							"The three of you keep walking, Stefon trips over his own shoelace while looking at his phone. He gets up and acts like nothing happened, but you notice him limping a little. You casually ask if everyone wants to go to brunch instead. Everyone says yes.",
 							aPathScene1.getId());
 					aPathScene1B.setStoryTitle(title);
-					options = new ArrayList<Option>();
-					option = new Option(
-							"Keep walking, he's a big boy, he will tell you if he needs to turn back.",
-							SceneID.createSceneID(story, new Scene(), aPathScene1B));
-					options.add(option);
-					aPathScene1B.setOptions(options);
-					option = new Option("Ask if he needs a break.",
-							SceneID.createSceneID(story, new Scene(), aPathScene1B));
-					options.add(option);
-					aPathScene1B.setOptions(options);
-					option = new Option("Ask if he wants to turn back.",
-							SceneID.createSceneID(story, new Scene(), aPathScene1B));
-					options.add(option);
-					aPathScene1B.setOptions(options);
-					option = new Option("Ask if he wants a piggyback ride up the mountain.",
-							SceneID.createSceneID(story, new Scene(), aPathScene1B));
-					options.add(option);
-					aPathScene1B.setOptions(options);
 					sceneRepo.save(aPathScene1B);
 					
 					// TakeAHike.option11-3
+		
 					Scene aPathScene1C = new Scene(aPathScene1.getOptions().get(2).getSceneId(), story.getId(),
-							"The three of you keep walking, Stefon trips over his own shoelace while looking at his phone. He gets up and acts like nothing happened, but you notice him limping a little. You:",
+							"Embarassingly, you choke on your water and die.",
 							aPathScene1.getId());
 					aPathScene1C.setStoryTitle(title);
-					options = new ArrayList<Option>();
-					option = new Option(
-							"Keep walking, he's a big boy, he will tell you if he needs to turn back.",
-							SceneID.createSceneID(story, new Scene(), aPathScene1C));
-					options.add(option);
-					aPathScene1C.setOptions(options);
-					option = new Option("Ask if he needs a break.",
-							SceneID.createSceneID(story, new Scene(), aPathScene1C));
-					options.add(option);
-					aPathScene1C.setOptions(options);
-					option = new Option("Ask if he wants to turn back.",
-							SceneID.createSceneID(story, new Scene(), aPathScene1C));
-					options.add(option);
-					aPathScene1C.setOptions(options);
-					option = new Option("Ask if he wants a piggyback ride up the mountain.",
-							SceneID.createSceneID(story, new Scene(), aPathScene1C));
-					options.add(option);
-					aPathScene1C.setOptions(options);
 					sceneRepo.save(aPathScene1C);
 		
 				// TakeAHike.option1-2
@@ -460,6 +447,22 @@ public class AdventureApiController {
 				options.add(option);
 				aPathScene2.setOptions(options);
 				sceneRepo.save(aPathScene2);
+					
+					// option 1-2 endpoints
+					// TakeAHike.option12-1
+					Scene aPathScene2A = new Scene(aPathScene2.getOptions().get(0).getSceneId(), story.getId(),
+							"When you turn around, you run smack dab into the ax murderer that's been following you since you left the cars. Hopefully you out run him and make it to your car.",
+							aPathScene2.getId());
+					aPathScene2A.setStoryTitle(title);
+					sceneRepo.save(aPathScene2A);
+					
+					// TakeAHike.option12-2
+					Scene aPathScene2B = new Scene(aPathScene2.getOptions().get(1).getSceneId(), story.getId(),
+							"When you get back to the fork in the trail, you decide ulitmately that the easiest route is straight back to your car and off to brunch.",
+							aPathScene2.getId());
+					aPathScene2B.setStoryTitle(title);
+					sceneRepo.save(aPathScene2B);
+
 		
 				// TakeAHike.option1-3
 				Scene aPathScene3 = new Scene(aPathRootScene.getOptions().get(2).getSceneId(), story.getId(),
@@ -481,6 +484,30 @@ public class AdventureApiController {
 				options.add(option);
 				aPathScene3.setOptions(options);
 				sceneRepo.save(aPathScene3);
+				
+					// option 1-3 endpoints
+				
+					// TakeAHike.option13-1
+					Scene aPathScene3A = new Scene(aPathScene3.getOptions().get(0).getSceneId(), story.getId(),
+							"Katya seems reluctant to get her phone from the water and asks if we can reschedule the hike so she can go deal with her life.",
+							aPathScene3.getId());
+					aPathScene3A.setStoryTitle(title);
+					sceneRepo.save(aPathScene3A);
+					
+					// TakeAHike.option13-2
+					Scene aPathScene3B = new Scene(aPathScene3.getOptions().get(1).getSceneId(), story.getId(),
+							"Stefon grabs the net and suddenly seems as though he's been possessed by... something. You and Katya make eye contact and run all the way back to the cars. No one speaks of this again.",
+							aPathScene3.getId());
+					aPathScene3B.setStoryTitle(title);
+					sceneRepo.save(aPathScene3B);
+					
+					// TakeAHike.option13-3
+					Scene aPathScene3C = new Scene(aPathScene3.getOptions().get(2).getSceneId(), story.getId(),
+							"You jump in the water, scoop up the phone from the muck and toss it on the shore. Unfortunately, you become entangled in some seaweed and you die.",
+							aPathScene3.getId());
+					aPathScene3C.setStoryTitle(title);
+					sceneRepo.save(aPathScene3C);
+				
 		
 			// TakeAHike.option-2
 			Scene bPathRootScene = new Scene(startingScene.getOptions().get(1).getSceneId(), story.getId(),
@@ -524,27 +551,43 @@ public class AdventureApiController {
 						SceneID.createSceneID(story, new Scene(), bPathScene1));
 				options.add(option);
 				bPathScene1.setOptions(options);
-				option = new Option("???", SceneID.createSceneID(story, new Scene(), bPathScene1));
-				options.add(option);
-				bPathScene1.setOptions(options);
 				sceneRepo.save(bPathScene1);
-		
+				
+					// TakeAHike.option21-1
+					Scene bPathScene1A = new Scene(bPathScene1.getOptions().get(0).getSceneId(), story.getId(),
+							"You spot a patch of yummy looking mushrooms that are definitely not poison. Stefon eats one and all seems well until he starts talking about how much the trail is moving ahead of him. The hike is over but the trip is definitely not.",
+							bPathScene1.getId());
+					bPathScene1A.setStoryTitle(title);
+					sceneRepo.save(bPathScene1A);
+				
+					// TakeAHike.option21-2
+					Scene bPathScene1B = new Scene(bPathScene1.getOptions().get(1).getSceneId(), story.getId(),
+							"You spot a patch of yummy looking mushrooms that are definitely not poison. Stefon eats one and all seems well until he starts talking about how much the trail is moving ahead of him. The hike is over but the trip is definitely not.",
+							bPathScene1.getId());
+					bPathScene1B.setStoryTitle(title);
+					sceneRepo.save(bPathScene1B);
+					
+					
 				// TakeAHike.option2-2
 				Scene bPathScene2 = new Scene(bPathRootScene.getOptions().get(1).getSceneId(), story.getId(),
-						"Stefon eats a berry. He immediately pretends to have a reaction to it and everyone panics, until he starts laughing. You do not eat any berries, because screw that guy.",
+						"Stefon eats a berry. He immediately pretends to have a reaction to it and everyone panics, until he starts laughing. You do not eat any berries and you walk back to your car, because Stefon sucks.",
 						bPathRootScene.getId());
 				bPathScene2.setStoryTitle(title);
-				options = new ArrayList<Option>();
-				option = new Option("??", SceneID.createSceneID(story, new Scene(), bPathScene2));
-				options.add(option);
-				bPathScene2.setOptions(options);
-				option = new Option("?", SceneID.createSceneID(story, new Scene(), bPathScene2));
-				options.add(option);
-				bPathScene2.setOptions(options);
-				option = new Option("???", SceneID.createSceneID(story, new Scene(), bPathScene2));
-				options.add(option);
-				bPathScene2.setOptions(options);
 				sceneRepo.save(bPathScene2);
+				
+				// TakeAHike.option2-3
+				Scene bPathScene3 = new Scene(bPathRootScene.getOptions().get(2).getSceneId(), story.getId(),
+						"Stefon eats a handful of berries and you all keep walking. Moments later, he keels over on the trail. Looks like your hike is over for today.",
+						bPathRootScene.getId());
+				bPathScene3.setStoryTitle(title);
+				sceneRepo.save(bPathScene3);
+				
+				// TakeAHike.option2-4
+				Scene bPathScene4 = new Scene(bPathRootScene.getOptions().get(3).getSceneId(), story.getId(),
+						"Your mouth starts tingling a bit even though you spit the berry out and didn't chew it. Your probably being dramatic but you run back to civilization shouting about an epipen.",
+						bPathRootScene.getId());
+				bPathScene4.setStoryTitle(title);
+				sceneRepo.save(bPathScene4);
 	
 			// TakeAHike.option-3
 			Scene cPathRootScene = new Scene(startingScene.getOptions().get(2).getSceneId(), story.getId(),
@@ -564,9 +607,26 @@ public class AdventureApiController {
 			options.add(option);
 			cPathRootScene.setOptions(options);
 			sceneRepo.save(cPathRootScene);
+				
+				// Option 3 endpoints 
+			
+				Scene cPathScene1 = new Scene(cPathRootScene.getOptions().get(0).getSceneId(), story.getId(),
+						"You all get back to the cars and decide to go to brunch instead.", cPathRootScene.getId());
+				cPathScene1.setStoryTitle(title);
+				sceneRepo.save(cPathScene1);
+				
+				Scene cPathScene2 = new Scene(cPathRootScene.getOptions().get(1).getSceneId(), story.getId(),
+						"You get back to the car, text Stefon and Katya and tell them that you're going to brunch instead.", cPathRootScene.getId());
+				cPathScene2.setStoryTitle(title);
+				sceneRepo.save(cPathScene2);
+				
+				Scene cPathScene3 = new Scene(cPathRootScene.getOptions().get(2).getSceneId(), story.getId(),
+						"You go back to the car and get your water, head back towards them but get lost trying to find them. A boy scout finds you and takes you to your car.", cPathRootScene.getId());
+				cPathScene3.setStoryTitle(title);
+				sceneRepo.save(cPathScene3);
 	
 			// TakeAHike.option-4
-			// endpoint - 0 options
+			// has its own readymade endpoint - 0 options
 			Scene dPathRootScene = new Scene(startingScene.getOptions().get(3).getSceneId(), story.getId(),
 					"You drive back towards civilization.", startingScene.getId());
 			dPathRootScene.setStoryTitle(title);
@@ -612,14 +672,14 @@ public class AdventureApiController {
 			
 			// fake scene #2
 			Scene s2 = new Scene(startingScene.getOptions().get(1).getSceneId(), story.getId(),
-					"Other words.",
+					"These are certainly words.",
 					startingScene.getId());
 			s2.setStoryTitle(title);
 			sceneRepo.save(s2);
 			
 			// fake scene #3
 			Scene s3 = new Scene(startingScene.getOptions().get(2).getSceneId(), story.getId(),
-					"Other words.",
+					"These are also certainly words.",
 					startingScene.getId());
 			s3.setStoryTitle(title);
 			sceneRepo.save(s3);
