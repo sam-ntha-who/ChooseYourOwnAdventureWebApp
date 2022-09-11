@@ -58,10 +58,12 @@ public class ViewsController {
 
 		Photo thumbnail1 = thumbnailList1.get(0);
 		Photo thumbnail2 = thumbnailList2.get(0);
+		Photo thumbnail3 = thumbnailList3.get(0);
 
 		List<String> photoList = new ArrayList<>();
 		photoList.add(thumbnail1.getSrc().getOriginal());
 		photoList.add(thumbnail2.getSrc().getOriginal());
+		photoList.add(thumbnail3.getSrc().getOriginal());
 		model.addAttribute("photoList", photoList);
 		return "index";
 	}
@@ -89,24 +91,23 @@ public class ViewsController {
 //		
 //	}
 
-	
-	// id or parentId???
+
 	@RequestMapping("/save-scene")
 	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
 		
 	Scene sceneToUpdate = sceneRepo.findById(parentId)
 			.orElseThrow(() -> new SceneNotFoundException(scene.getId()));
 	List<Option> listToUpdate = sceneToUpdate.getOptions();
-	// this should be probably set to Optional<Story>
+	
 	Story thisStory = storyRepo.findStoryById(sceneToUpdate.getStoryId());
 	
-	// need scene from parentId
+
 	Option newOption = new Option(scene.getDescription(), SceneID.createSceneID(thisStory, new Scene(), sceneRepo.findById(scene.getParentId()).orElseThrow(() -> new SceneNotFoundException(scene.getId()))));
 	
 	listToUpdate.add(newOption);
 	sceneToUpdate.setOptions(listToUpdate);
 	sceneRepo.save(sceneToUpdate);
-	// may need to add more to this for actual scene - sam
+
 	return "StoryEdit";
 
 
@@ -119,11 +120,20 @@ public class ViewsController {
 		return "StoryDeleted";
 	}
 	
+	// this will wind up in story edit jsp
+	// might need to backtrack to parentScene to avoid error of showing scene that doesn't exist
 	@RequestMapping("/deleteScene")
-	public String sceneDelete(@RequestParam String id) {
+	public String sceneDelete(@RequestParam String id, @RequestParam String optionId) {
+		Scene thisScene = dbService.getScene(id);
+		Scene parentScene = dbService.getScene(thisScene.getParentId());
+		List<Option> optionsToChange = parentScene.getOptions();
+		optionsToChange.remove(Integer.parseInt(optionId));
+		parentScene.setOptions(optionsToChange);
+		sceneRepo.save(parentScene);
 		dbService.deleteScene(id);
 		return "StoryDeleted";
 	}
+	
 	// may need some functionality here that involves options - ie if story.option == null, should create new List<Option> then add optoins to it.
 	@RequestMapping("/addScene")
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
@@ -179,6 +189,7 @@ public class ViewsController {
 //	public String randomerName(Model model, @PathVariable("storyId") String storyId) {
 //		
 //	}
+	
 	// Error Handling
 		@ResponseBody
 		@ExceptionHandler(SceneNotFoundException.class)

@@ -94,7 +94,7 @@ public class AdventureApiController {
 	}
 
 	// Delete Scene (and all connected scenes)
-	@GetMapping("/delete-scene-tree/{id}")
+	@DeleteMapping("/delete-scene-tree/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteSceneTree(@PathVariable String id) {
 

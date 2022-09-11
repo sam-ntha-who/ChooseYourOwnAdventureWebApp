@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="options">
-		<c:forEach items="${scene.options}" var="option">
+		<c:forEach items="${scene.options}" var="option" varStatus="status">
 			<br>
 	<%-- editing of options removed since this would require editing 
 		both this Scene's list of Options and the subsequent Scenes edited 
@@ -46,11 +46,10 @@
 				<br> <input type="submit" value="Save" />
 				</form>
 	--%>
-			<div class="option">
+						<div class="option">
 				${option.description} <br>
-				<a href="/delete-option-and-scene"><button
-						type="button" class="button-primary">Delete --flex-goal
-						;(</button></a>
+				<a href="/deleteScene?id=${option.getSceneId()}&optionId=${status.index}"><button
+						type="button" class="button-primary">Delete</button></a>
 			</div>
 		</c:forEach>
 		<div class="option">
