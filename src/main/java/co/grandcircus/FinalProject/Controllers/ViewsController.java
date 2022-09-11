@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+
 import co.grandcircus.FinalProject.HelperFunctions.SceneID;
 import co.grandcircus.FinalProject.HelperFunctions.StoryID;
 import co.grandcircus.FinalProject.Models.Option;
@@ -67,7 +69,7 @@ public class ViewsController {
 		model.addAttribute("photoList", photoList);
 		return "index";
 	}
-
+	// add "add option" to the play function as last option
 	@RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
 		Scene nextScene = dbService.getScene(id);
@@ -134,7 +136,7 @@ public class ViewsController {
 		return "StoryDeleted";
 	}
 	
-	// may need some functionality here that involves options - ie if story.option == null, should create new List<Option> then add optoins to it.
+	// may need some functionality here that involves options - ie if story.option == null, should create new List<Option> then add options to it.
 	@RequestMapping("/addScene")
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
 		if (id != null) {
@@ -147,9 +149,62 @@ public class ViewsController {
 		model.addAttribute("msg", msg);
 		return "AddScene";
 	}
+	@RequestMapping("/addOption")
+	public String showAddOption(Model model, @RequestParam String id) {
+		model.addAttribute("id", id);
+		return "AddOption";
+	}
+	
+	// add option
+	@PostMapping("/addOption")
+	public String addOption(Model model, @RequestParam String id, @RequestParam String option, @RequestParam String description) {
+			model.addAttribute("id", id);
+			model.addAttribute("option", option);
+			model.addAttribute("description", description);
+			// so far the option being added works. the form is not yet there but we have a new option at least.
+			Scene scene = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+			Story thisStory = storyRepo.findStoryById(scene.getStoryId());
+			List<Option> addOptions = scene.getOptions();
+			Option newOption = new Option(option, SceneID.createSceneID(thisStory, new Scene(), scene));
+			addOptions.add(newOption);
+			scene.setOptions(addOptions);
+			sceneRepo.save(scene);
+			// scene description
 
+			String newSceneId = newOption.getSceneId();
+			model.addAttribute("newSceneId", newSceneId);
+			// set scene info based on this new sceneId
+			Scene optionScene = new Scene(newSceneId, thisStory.getId(), description, scene.getId());
+			sceneRepo.save(optionScene);
+			
+			
+			
+//			public Scene(String id, String storyId, String description, String parentId) 
+			
+//			if (scene.getOptions() == null) {
+//			
+//				scene.setOptions(addOptions);
+//				sceneRepo.save(scene);
+//			} else {
+//				
+//				scene.setOptions(addOptions);
+//				sceneRepo.save(scene);
+//			}
+					
+					
+//			model.addAttribute("id", id);
+//			model.addAttribute("title", scene.getStoryTitle());
+//
+//			model.addAttribute("title", "Enter Story Name");
+//		
+//			model.addAttribute("msg", msg);
+		return "StoryPlay";
+	}
+
+	
+	
 	// create story + starting scene
-	// this is mapping to addscene... is that intentional? - may need a separate view for createStory so it does what we want, but not sure.
+
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription) {
 		Story newStory = new Story(storyName);

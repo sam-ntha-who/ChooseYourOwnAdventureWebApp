@@ -28,7 +28,9 @@
 	</div>
 	</c:forEach>
 	</div>
-	
+	<div class="option">
+		<a href="/addOption?id=${scene.id}"><button type="button" class="button-primary">Add Option</button></a>
+		</div>
 	<footer>
 		<div class="edit">
 			<a href="/edit?sceneId=${scene.id}">Edit</a>
