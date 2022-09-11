@@ -16,7 +16,7 @@
 	<br>
 	<div class="story-body">
 		<form action="/updateScene" method="post">
-		<input type="hidden" id="sceneId" name="sceneId" value="${scene.id}">
+			<input type="hidden" id="sceneId" name="sceneId" value="${scene.id}">
 			<%-- *** This code commented out because "Scene Description" shouldn't be editable 
 		with the current class structure. Currently, "scene description" or "choice" 
 		comes from an array of Option in the previous scene. ***
@@ -24,18 +24,14 @@
 			</textarea>
 		--%>
 			<br>
-			<textarea id="description" name="description" rows="50"
-				cols="100">
-			${scene.description}
+			<textarea id="description" name="description" rows="100" cols="400">${scene.description}
 		</textarea>
 			<br> <input type="submit" value="Save" />
 		</form>
 		<br> <br>
 	</div>
 
-	<div class="options">
-		<c:forEach items="${scene.options}" var="option" varStatus="status">
-			<br>
+
 	<%-- editing of options removed since this would require editing 
 		both this Scene's list of Options and the subsequent Scenes edited 
 		due to current Scene structure. flex goal = allow delete
@@ -46,15 +42,21 @@
 				<br> <input type="submit" value="Save" />
 				</form>
 	--%>
-						<div class="option">
-				${option.description} <br>
-				<a href="/deleteScene?id=${option.getSceneId()}&optionId=${status.index}"><button
+	<div class="options">
+		<c:forEach items="${scene.options}" var="option" varStatus="status">
+			<br>
+			<div class="option">
+				${option.description} <br> <a
+					href="/deleteScene?id=${option.getSceneId()}&optionId=${status.index}"><br><br><button
 						type="button" class="button-primary">Delete</button></a>
-			</div>
+			</div><br>
 		</c:forEach>
-		<div class="option">
-		<a href="/addScene?id=${scene.id}&msg=scene"><button type="button" class="button-primary">Add Option</button></a>
-		</div>
+	</div>
+
+	<div class="addOption">
+	<br>
+		<a href="/addScene?id=${scene.id}&msg=scene"><button type="button"
+				class="button-primary">Add Option</button></a>
 	</div>
 
 	<footer>
