@@ -15,7 +15,7 @@
 	<br>
 	<br>
 	<div class="story-body">
-		<form action="/addOption" method="post">
+		<form action="/StoryPlay" method="post">
 		<input type="hidden" id="id" name="id" value="${scene.id}">
 			<%-- *** This code commented out because "Scene Description" shouldn't be editable 
 		with the current class structure. Currently, "scene description" or "choice" 

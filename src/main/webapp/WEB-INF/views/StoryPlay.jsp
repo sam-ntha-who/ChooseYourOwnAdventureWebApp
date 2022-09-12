@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
@@ -10,7 +10,7 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-	<div class="banner">${scene.storyTitle}</div>
+		<div class="banner">${scene.storyTitle}</div>
 	<br><br>
 	<div class="story-body">
 		${scene.description}
@@ -36,7 +36,8 @@
 	<footer>
 		<div class="edit">
 			<a href="/edit?sceneId=${scene.id}">Edit</a>
-		</div><br><br>
+		</div>
+		<br> <br>
 		<div class="home">
 			<a href="/">Back to home</a>
 		</div>
