@@ -104,7 +104,8 @@ public class ViewsController {
 
 		listToUpdate.add(newOption);
 		sceneToUpdate.setOptions(listToUpdate);
-		sceneRepo.save(sceneToUpdate);
+	//	sceneRepo.save(sceneToUpdate);
+		dbService.saveScene(sceneToUpdate);
 
 		return "StoryEdit";
 
@@ -119,8 +120,7 @@ public class ViewsController {
 	}
 
 	// this will wind up in story edit jsp
-	// might need to backtrack to parentScene to avoid error of showing scene that
-	// doesn't exist
+
 	@RequestMapping("/deleteScene")
 	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
@@ -134,12 +134,12 @@ public class ViewsController {
 		return "StoryDeleted";
 	}
 
-	// may need some functionality here that involves options - ie if story.option
-	// == null, should create new List<Option> then add options to it.
+
 	@RequestMapping("/addScene")
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
 		if (id != null) {
-			Scene scene = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+			//Scene scene = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+			Scene scene = dbService.getScene(id);
 			model.addAttribute("id", id);
 			model.addAttribute("title", scene.getStoryTitle());
 		} else {
@@ -155,30 +155,29 @@ public class ViewsController {
 		return "AddOption";
 	}
 
-	// @ Heather have fun with this nonsense
-	// add option
-	@PostMapping("/addOption")
-	public String addOption(Model model, @RequestParam String id, @RequestParam String option,
-			@RequestParam String description) {
-		model.addAttribute("id", id);
-		model.addAttribute("option", option);
-		model.addAttribute("description", description);
-		// so far the option being added works. the form is not yet there but we have a
-		// new option at least.
-		Scene scene = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
-		Story thisStory = storyRepo.findStoryById(scene.getStoryId());
-		List<Option> addOptions = scene.getOptions();
-		Option newOption = new Option(option, SceneID.createSceneID(thisStory, new Scene(), scene));
-		addOptions.add(newOption);
-		scene.setOptions(addOptions);
-		sceneRepo.save(scene);
-		// scene description
-
-		String newSceneId = newOption.getSceneId();
-		model.addAttribute("newSceneId", newSceneId);
-		// set scene info based on this new sceneId
-		Scene optionScene = new Scene(newSceneId, thisStory.getId(), description, scene.getId());
-		sceneRepo.save(optionScene);
+	
+//	@PostMapping("/addOption")
+//	public String addOption(Model model, @RequestParam String id, @RequestParam String option,
+//			@RequestParam String description) {
+//		model.addAttribute("id", id);
+//		model.addAttribute("option", option);
+//		model.addAttribute("description", description);
+//		// so far the option being added works. the form is not yet there but we have a
+//		// new option at least.
+//		Scene scene = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+//		Story thisStory = storyRepo.findStoryById(scene.getStoryId());
+//		List<Option> addOptions = scene.getOptions();
+//		Option newOption = new Option(option, SceneID.createSceneID(thisStory, new Scene(), scene));
+//		addOptions.add(newOption);
+//		scene.setOptions(addOptions);
+//		sceneRepo.save(scene);
+//		// scene description
+//
+//		String newSceneId = newOption.getSceneId();
+//		model.addAttribute("newSceneId", newSceneId);
+//		// set scene info based on this new sceneId
+//		Scene optionScene = new Scene(newSceneId, thisStory.getId(), description, scene.getId());
+//		sceneRepo.save(optionScene);
 
 //			public Scene(String id, String storyId, String description, String parentId) 
 
@@ -198,8 +197,8 @@ public class ViewsController {
 //			model.addAttribute("title", "Enter Story Name");
 //		
 //			model.addAttribute("msg", msg);
-		return "StoryPlay";
-	}
+//		return "StoryPlay";
+//	}
 
 	// create story + starting scene
 
@@ -222,7 +221,8 @@ public class ViewsController {
 
 			storyRepo.save(newStory);
 			sceneRepo.save(newScene);
-
+			// dbServices.save(newScene);
+			
 			model.addAttribute("scene", newScene);
 
 		} else {

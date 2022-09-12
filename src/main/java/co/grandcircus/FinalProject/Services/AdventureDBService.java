@@ -27,6 +27,15 @@ public class AdventureDBService {
 
 	private RestTemplate rt = new RestTemplate();
 
+	public Scene saveScene(Scene scene) {
+		
+		String url = "http://localhost:8080/save-scene";
+		
+		Scene response = rt.postForObject(url, rt, Scene.class, scene);
+		
+		return response;
+	}
+	
 	public Scene getScene(String id) {
 
 		String url = "http://localhost:8080/read-scene/{id}";
@@ -36,6 +45,10 @@ public class AdventureDBService {
 		return setPathLength(response);
 	}
 
+//	public Story getStory(String sceneId) {
+//	String url = "http://localhost:8080/";
+//}
+	
 	public String getStoryName(String storyId) {
 
 		String url = "http://localhost:8080/find-story-name/{storyId}";

@@ -17,5 +17,4 @@ public interface SceneRepository extends MongoRepository<Scene, String> {
 	
 	Scene findSceneById(String id);
 
-	
 }
