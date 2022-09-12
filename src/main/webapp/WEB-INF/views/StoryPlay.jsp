@@ -35,11 +35,8 @@
 		</c:forEach>
 	</div>
 
-	<div class="addOption">
-	<br>
-		<a href="/addScene?id=${scene.id}&msg=scene"><button type="button"
-				class="button-primary">Add Option</button></a>
-	</div>
+	<div class="options">
+	<c:forEach items="${scene.options}" var="option">
 	<div class="option">
 	<a href="play?id=${option.getSceneId()}">
 	${option.description}</a>
