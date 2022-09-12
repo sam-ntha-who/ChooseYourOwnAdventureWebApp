@@ -31,7 +31,7 @@
 	</c:forEach>
 	</div>
 	<div class="option"><br>
-		<a href="/addOption?id=${scene.id}"><button type="button" class="button-primary">Add Option</button></a>
+		<a href="/addScene?id=${scene.id}&msg=scene"><button type="button" class="button-primary">Add Option</button></a>
 		</div>
 	<footer>
 		<div class="edit">

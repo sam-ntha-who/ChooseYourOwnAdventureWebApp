@@ -69,6 +69,7 @@ public class ViewsController {
 		model.addAttribute("photoList", photoList);
 		return "index";
 	}
+
 	// add "add option" to the play function as last option
 	@RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
@@ -93,28 +94,25 @@ public class ViewsController {
 //		
 //	}
 
-
 	@RequestMapping("/save-scene")
 	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
-		
-	Scene sceneToUpdate = sceneRepo.findById(parentId)
-			.orElseThrow(() -> new SceneNotFoundException(scene.getId()));
-	List<Option> listToUpdate = sceneToUpdate.getOptions();
-	
-	Story thisStory = storyRepo.findStoryById(sceneToUpdate.getStoryId());
-	
 
-	Option newOption = new Option(scene.getDescription(), SceneID.createSceneID(thisStory, new Scene(), sceneRepo.findById(scene.getParentId()).orElseThrow(() -> new SceneNotFoundException(scene.getId()))));
-	
-	listToUpdate.add(newOption);
-	sceneToUpdate.setOptions(listToUpdate);
-	sceneRepo.save(sceneToUpdate);
+		Scene sceneToUpdate = sceneRepo.findById(parentId).orElseThrow(() -> new SceneNotFoundException(scene.getId()));
+		List<Option> listToUpdate = sceneToUpdate.getOptions();
 
-	return "StoryEdit";
+		Story thisStory = storyRepo.findStoryById(sceneToUpdate.getStoryId());
 
+		Option newOption = new Option(scene.getDescription(), SceneID.createSceneID(thisStory, new Scene(),
+				sceneRepo.findById(scene.getParentId()).orElseThrow(() -> new SceneNotFoundException(scene.getId()))));
+
+		listToUpdate.add(newOption);
+		sceneToUpdate.setOptions(listToUpdate);
+		sceneRepo.save(sceneToUpdate);
+
+		return "StoryEdit";
 
 	}
-	
+
 	// no longer need to call directly
 	@RequestMapping("/deleteStory")
 	public String storyDelete(Model model, @RequestParam String id) {
@@ -122,9 +120,10 @@ public class ViewsController {
 		model.addAttribute("type", "Story");
 		return "StoryDeleted";
 	}
-	
+
 	// this will wind up in story edit jsp
-	// might need to backtrack to parentScene to avoid error of showing scene that doesn't exist
+	// might need to backtrack to parentScene to avoid error of showing scene that
+	// doesn't exist
 	@RequestMapping("/deleteScene")
 	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
@@ -137,8 +136,9 @@ public class ViewsController {
 		model.addAttribute("type", "Scene");
 		return "StoryDeleted";
 	}
-	
-	// may need some functionality here that involves options - ie if story.option == null, should create new List<Option> then add options to it.
+
+	// may need some functionality here that involves options - ie if story.option
+	// == null, should create new List<Option> then add options to it.
 	@RequestMapping("/addScene")
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
 		if (id != null) {
@@ -151,38 +151,40 @@ public class ViewsController {
 		model.addAttribute("msg", msg);
 		return "AddScene";
 	}
+
 	@RequestMapping("/addOption")
 	public String showAddOption(Model model, @RequestParam String id) {
 		model.addAttribute("id", id);
 		return "AddOption";
 	}
-	// @ Heather have fun with this nonsense 
+
+	// @ Heather have fun with this nonsense
 	// add option
 	@PostMapping("/addOption")
-	public String addOption(Model model, @RequestParam String id, @RequestParam String option, @RequestParam String description) {
-			model.addAttribute("id", id);
-			model.addAttribute("option", option);
-			model.addAttribute("description", description);
-			// so far the option being added works. the form is not yet there but we have a new option at least.
-			Scene scene = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
-			Story thisStory = storyRepo.findStoryById(scene.getStoryId());
-			List<Option> addOptions = scene.getOptions();
-			Option newOption = new Option(option, SceneID.createSceneID(thisStory, new Scene(), scene));
-			addOptions.add(newOption);
-			scene.setOptions(addOptions);
-			sceneRepo.save(scene);
-			// scene description
+	public String addOption(Model model, @RequestParam String id, @RequestParam String option,
+			@RequestParam String description) {
+		model.addAttribute("id", id);
+		model.addAttribute("option", option);
+		model.addAttribute("description", description);
+		// so far the option being added works. the form is not yet there but we have a
+		// new option at least.
+		Scene scene = sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+		Story thisStory = storyRepo.findStoryById(scene.getStoryId());
+		List<Option> addOptions = scene.getOptions();
+		Option newOption = new Option(option, SceneID.createSceneID(thisStory, new Scene(), scene));
+		addOptions.add(newOption);
+		scene.setOptions(addOptions);
+		sceneRepo.save(scene);
+		// scene description
 
-			String newSceneId = newOption.getSceneId();
-			model.addAttribute("newSceneId", newSceneId);
-			// set scene info based on this new sceneId
-			Scene optionScene = new Scene(newSceneId, thisStory.getId(), description, scene.getId());
-			sceneRepo.save(optionScene);
-			
-			
-			
+		String newSceneId = newOption.getSceneId();
+		model.addAttribute("newSceneId", newSceneId);
+		// set scene info based on this new sceneId
+		Scene optionScene = new Scene(newSceneId, thisStory.getId(), description, scene.getId());
+		sceneRepo.save(optionScene);
+
 //			public Scene(String id, String storyId, String description, String parentId) 
-			
+
 //			if (scene.getOptions() == null) {
 //			
 //				scene.setOptions(addOptions);
@@ -192,8 +194,7 @@ public class ViewsController {
 //				scene.setOptions(addOptions);
 //				sceneRepo.save(scene);
 //			}
-					
-					
+
 //			model.addAttribute("id", id);
 //			model.addAttribute("title", scene.getStoryTitle());
 //
@@ -203,31 +204,52 @@ public class ViewsController {
 		return "StoryPlay";
 	}
 
-	
-	
 	// create story + starting scene
 
 	@RequestMapping("/createScene")
-	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription) {
-		Story newStory = new Story(storyName);
-		newStory.setId(StoryID.createStoryID(storyName));
-				
-		Scene newScene = new Scene(newStory.getId(), sceneDescription, null);
-		
-		String sceneId = SceneID.createSceneID(newStory, newScene, null);
-	
-		newScene.setId(sceneId);
-		
-		newStory.setStartingSceneId(sceneId);
-		newScene.setStoryTitle(storyName);
-		
-		storyRepo.save(newStory);
-		sceneRepo.save(newScene);
-		
-		model.addAttribute("scene", newScene);
+	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription,
+			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice) {
+
+		if (parentId == null) {
+			Story newStory = new Story(storyName);
+			newStory.setId(StoryID.createStoryID(storyName));
+
+			Scene newScene = new Scene(newStory.getId(), sceneDescription, null);
+
+			String sceneId = SceneID.createSceneID(newStory, newScene, null);
+
+			newScene.setId(sceneId);
+
+			newStory.setStartingSceneId(sceneId);
+			newScene.setStoryTitle(storyName);
+
+			storyRepo.save(newStory);
+			sceneRepo.save(newScene);
+
+			model.addAttribute("scene", newScene);
+
+		} else {
+			List<Option> addOptions = new ArrayList<Option>();
+
+			Scene scene = sceneRepo.findById(parentId).orElseThrow(() -> new SceneNotFoundException(parentId));
+			Story thisStory = storyRepo.findStoryById(scene.getStoryId());
+			if (scene.getOptions() != null) {
+				addOptions = scene.getOptions();
+			}
+			Option newOption = new Option(sceneChoice, SceneID.createSceneID(thisStory, new Scene(), scene));
+			addOptions.add(newOption);
+			scene.setOptions(addOptions);
+			sceneRepo.save(scene);
+
+			String newSceneId = newOption.getSceneId();
+			Scene childScene = new Scene(newSceneId, thisStory.getId(), sceneDescription, scene.getId());
+			sceneRepo.save(childScene);
+			model.addAttribute("scene", scene);
+		}
+
 		
 		return "StoryPlay";
-		
+
 	}
 
 	@RequestMapping("/test-pexel/{sceneId}")
@@ -246,21 +268,21 @@ public class ViewsController {
 //	public String randomerName(Model model, @PathVariable("storyId") String storyId) {
 //		
 //	}
-	
+
 	// Error Handling
-		@ResponseBody
-		@ExceptionHandler(SceneNotFoundException.class)
-		@ResponseStatus(HttpStatus.NOT_FOUND)
-		String sceneNotFoundHandler(SceneNotFoundException ex) {
-			return ex.getMessage();
-		}
-		
-		@ResponseBody
-		@ExceptionHandler(StoryNotFoundException.class)
-		@ResponseStatus(HttpStatus.NOT_FOUND)
-		String storyNotFoundHandler(StoryNotFoundException ex) {
-			return ex.getMessage();
-		}
+	@ResponseBody
+	@ExceptionHandler(SceneNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	String sceneNotFoundHandler(SceneNotFoundException ex) {
+		return ex.getMessage();
+	}
+
+	@ResponseBody
+	@ExceptionHandler(StoryNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	String storyNotFoundHandler(StoryNotFoundException ex) {
+		return ex.getMessage();
+	}
 
 	@PostMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
