@@ -24,6 +24,7 @@
 	
 	<div class="options">
 	<c:forEach items="${scene.options}" var="option">
+	${option.pathLength}
 	<div class="option"><br>
 	<a href="play?id=${option.getSceneId()}">
 	${option.description}</a>

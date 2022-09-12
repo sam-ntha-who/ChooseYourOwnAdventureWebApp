@@ -8,6 +8,17 @@ public class Option {
 	// sceneId we need to show next scene 
 	private String nextSceneId;
 	
+	private int pathLength;
+	
+	
+	public int getPathLength() {
+		return pathLength;
+	}
+
+	public void setPathLength(int pathLength) {
+		this.pathLength = pathLength;
+	}
+
 	public String getDescription() {
 		return description;
 	}
