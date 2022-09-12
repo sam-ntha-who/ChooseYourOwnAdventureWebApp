@@ -128,4 +128,7 @@ input[type="text"], textarea {
 .addOption {
 	margin: auto;
 	text-align: center;
+	background-color: #ff0000;
+	height: 150px;
+	width: 300px;
 }

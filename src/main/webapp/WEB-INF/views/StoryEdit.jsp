@@ -44,7 +44,7 @@
 	--%>
 	<div class="options">
 		<c:forEach items="${scene.options}" var="option" varStatus="status">
-			<br>
+			
 			<div class="option">
 				${option.description} <br> <a
 					href="/deleteScene?id=${option.getSceneId()}&optionId=${status.index}"><br><br><button
@@ -52,7 +52,6 @@
 			</div><br>
 		</c:forEach>
 	</div>
-
 	<div class="addOption">
 	<br>
 		<a href="/addScene?id=${scene.id}&msg=scene"><button type="button"
