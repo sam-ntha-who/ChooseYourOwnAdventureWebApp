@@ -25,8 +25,7 @@
 		--%>
 			<br>
 			<textarea id="description" name="description" rows="50"
-				cols="100">
-			${scene.description}
+				cols="100">${scene.description}
 		</textarea>
 			<br> <input type="submit" value="Save" />
 		</form>
@@ -47,12 +46,12 @@
 				</form>
 	--%>
 						<div class="option">
-				${option.description} <br>
+				${option.description} <br><br>
 				<a href="/deleteScene?id=${option.getSceneId()}&optionId=${status.index}"><button
 						type="button" class="button-primary">Delete</button></a>
 			</div>
-		</c:forEach>
-		<div class="option">
+		</c:forEach><br>
+		<div class="option"><br>
 		<a href="/addScene?id=${scene.id}&msg=scene"><button type="button" class="button-primary">Add Option</button></a>
 		</div>
 	</div>

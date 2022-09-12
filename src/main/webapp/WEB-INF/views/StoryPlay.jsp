@@ -16,19 +16,21 @@
 		${scene.description}
 	</div>
 	
+	<center><br><br>
 	<c:if test = "${scene.options == null}">
 	The end
-	</c:if>
+	</c:if><br><br>
+	</center>
 	
 	<div class="options">
 	<c:forEach items="${scene.options}" var="option">
-	<div class="option">
+	<div class="option"><br>
 	<a href="play?id=${option.getSceneId()}">
 	${option.description}</a>
-	</div>
+	</div><br>
 	</c:forEach>
 	</div>
-	<div class="option">
+	<div class="option"><br>
 		<a href="/addOption?id=${scene.id}"><button type="button" class="button-primary">Add Option</button></a>
 		</div>
 	<footer>

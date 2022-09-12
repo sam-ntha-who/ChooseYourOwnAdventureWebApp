@@ -117,15 +117,16 @@ public class ViewsController {
 	
 	// no longer need to call directly
 	@RequestMapping("/deleteStory")
-	public String storyDelete(@RequestParam String id) {
+	public String storyDelete(Model model, @RequestParam String id) {
 		dbService.deleteStory(id);
+		model.addAttribute("type", "Story");
 		return "StoryDeleted";
 	}
 	
 	// this will wind up in story edit jsp
 	// might need to backtrack to parentScene to avoid error of showing scene that doesn't exist
 	@RequestMapping("/deleteScene")
-	public String sceneDelete(@RequestParam String id, @RequestParam String optionId) {
+	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
 		Scene parentScene = dbService.getScene(thisScene.getParentId());
 		List<Option> optionsToChange = parentScene.getOptions();
@@ -133,6 +134,7 @@ public class ViewsController {
 		parentScene.setOptions(optionsToChange);
 		sceneRepo.save(parentScene);
 		dbService.deleteScene(id);
+		model.addAttribute("type", "Scene");
 		return "StoryDeleted";
 	}
 	

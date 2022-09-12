@@ -10,7 +10,7 @@
 <body>
 	<div class="banner"></div>
 	<div class="banner">
-		Story deleted
+		${type} deleted
 	</div>
 	<div class="banner"></div>
 	
