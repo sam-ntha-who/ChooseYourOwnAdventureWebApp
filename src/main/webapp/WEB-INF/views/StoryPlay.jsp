@@ -10,36 +10,18 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-	<div class="banner">${scene.storyTitle}</div>
-	<br>
-	<br>
-	<div class="story-body">${scene.description}<br>
-		<br>
+		<div class="banner">${scene.storyTitle}</div>
+	<br><br>
+	<div class="story-body">
+		${scene.description}
 	</div>
-
-	<c:if test="${scene.options == null}">
-		<center>
-			<br>
-			<br>The end<br>
-			<br>
-		</center>
+	
+	<c:if test = "${scene.options == null}">
+	The end
 	</c:if>
-
+	
 	<div class="options">
-		<c:forEach items="${scene.options}" var="option">
-			<div class="option">
-				<br> <a href="play?id=${option.getSceneId()}">
-					${option.description}</a>
-			</div>
-			<br><br>
-		</c:forEach>
-	</div>
-
-	<div class="addOption">
-	<br>
-		<a href="/addScene?id=${scene.id}&msg=scene"><button type="button"
-				class="button-primary">Add Option</button></a>
-	</div>
+	<c:forEach items="${scene.options}" var="option">
 	<div class="option">
 	<a href="play?id=${option.getSceneId()}">
 	${option.description}</a>

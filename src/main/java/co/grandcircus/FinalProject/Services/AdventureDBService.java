@@ -19,6 +19,7 @@ public class AdventureDBService {
 		String url = "http://localhost:8080/read-scene/{id}";
 
 		Scene response = rt.getForObject(url, Scene.class, id);
+	
 
 		return response;
 	}
@@ -67,7 +68,13 @@ public class AdventureDBService {
 	            .build();
 		
 		rt.delete(httpRequest.uri());
+		
 	}
 	
-
+//	public void saveScene(Scene scene) {
+//		String url = "http://localhost:8080/save-scene/";
+//		
+//		rt.postForEntity(url, scene, null, null);
+//	
+//	}
 }
