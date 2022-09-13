@@ -34,13 +34,9 @@
 	<div class="option"><br>
 		<a href="/addScene?id=${scene.id}&msg=scene"><button type="button" class="button-primary">Add Option</button></a>
 		</div>
-	<footer>
-		<div class="edit">
-			<a href="/edit?sceneId=${scene.id}">Edit</a>
-		</div>
-		<br> <br>
-		<div class="home">
-			<a href="/">Back to home</a>
+	<footer><br><br>
+		<div class="footer">
+			<a href="/play?id=${scene.parentId}">&#8612; Back</a>&emsp;&emsp;<a href="/edit?sceneId=${scene.id}">&#128393; Edit</a>&emsp;&emsp;<a href="/">&#8962; Home</a>
 		</div>
 	</footer>
 </body>

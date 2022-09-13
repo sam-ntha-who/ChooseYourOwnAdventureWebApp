@@ -16,7 +16,7 @@
 	
 	
 	<footer>
-		<a href="/">Back to home</a>
+		<a href="/">&#8962; Home</a>
 	</footer>
 </body>
 </html>

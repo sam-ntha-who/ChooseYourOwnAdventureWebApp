@@ -24,8 +24,7 @@
 			</textarea>
 		--%>
 			<br>
-			<textarea id="description" name="description" rows="100" cols="400">${scene.description}
-		</textarea>
+			<textarea id="description" name="description" rows="100" cols="400">${scene.description}</textarea>
 			<br> <input type="submit" value="Save" />
 		</form>
 		<br> <br>
@@ -58,13 +57,8 @@
 				class="button-primary">Add Option</button></a>
 	</div>
 
-	<footer>
-		<div class="edit">
-			<a href="/play?id=${scene.id}">Stop Editing</a>
-		</div>
-		<br> <br>
-		<div class="home">
-			<a href="/">Back to home</a>
+	<footer><br><br>
+		<a href="/play?id=${scene.id}">&#9746; Stop Editing</a>&emsp;&emsp;<a href="/">&#8962; Home</a>
 		</div>
 	</footer>
 </body>
