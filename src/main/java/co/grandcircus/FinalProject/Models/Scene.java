@@ -10,12 +10,23 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Scene{
 
 	@Id
+	// sceneId
 	private String id;
 	private String storyId;
 	private String storyTitle;
+	// previous sceneId
 	private String parentId;
+	// actual scene
 	private String description;
-	private List<Option> options;
+	// wording for the choice that the user is making to get to this scene ie "turn left" "open the door" etc (to be accessed from parentScene)
+	private String option;
+	// photo url
+	private String photoUrl;
+	// scene tree
+	List<Scene> childList;
+	// for the DB this may need to wind up being Integer v int	
+	private int pathLength;
+	
 	
 	
 	//constructors
@@ -25,25 +36,32 @@ public class Scene{
 	public Scene(String id) {
 		this.id = id;
 	}
-	public Scene(String id, String storyId, String parentId, String description, List<Option> options) {
+	
+	// constructor for setting a scene that isn't startingScene
+	public Scene(String id, String storyId, String parentId, String option, String description) {
 		this.id = id;
 		this.storyId = storyId;
 		this.parentId = parentId;
+		this.option = option;
 		this.description = description;
-		this.options = options;
 	}
 	
-	// for setting starting scene
-	public Scene(String storyId, String description, String parentId) {
 
+	// constructor with current fields
+	public Scene(String id, String storyId, String storyTitle, String parentId, String description,
+		String option, String photoUrl, List<Scene> childList) {
+		this.id = id;
 		this.storyId = storyId;
-		this.description = description;
+		this.storyTitle = storyTitle;
 		this.parentId = parentId;
+		this.description = description;
+		this.option = option;
+		this.photoUrl = photoUrl;
+		this.childList = childList;
 	}
 	
-	// for setting the rest of the scenes
-	public Scene(String id, String storyId, String description, String parentId) {
-		this.id = id;
+	// for setting starting scene - will stay the same post treeConversion
+	public Scene(String storyId, String description, String parentId) {
 		this.storyId = storyId;
 		this.description = description;
 		this.parentId = parentId;
@@ -81,14 +99,6 @@ public class Scene{
 		return description;
 	}
 
-	public List<Option> getOptions() {
-		return options;
-	}
-
-	public void setOptions(List<Option> options) {
-		this.options = options;
-	}
-
 	public String getStoryTitle() {
 		return storyTitle;
 	}
@@ -97,5 +107,36 @@ public class Scene{
 		this.storyTitle = storyTitle;
 	}
 
+	public String getOption() {
+		return option;
+	}
+
+	public void setOption(String option) {
+		this.option = option;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
+
+	public List<Scene> getChildList() {
+		return childList;
+	}
+
+	public void setChildList(List<Scene> childList) {
+		this.childList = childList;
+	}
+
+	public int getPathLength() {
+		return pathLength;
+	}
+
+	public void setPathLength(int pathLength) {
+		this.pathLength = pathLength;
+	}
 
 }

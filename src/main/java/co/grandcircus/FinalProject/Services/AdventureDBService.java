@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
 
 import co.grandcircus.FinalProject.Controllers.SceneNotFoundException;
-import co.grandcircus.FinalProject.Models.Option;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
@@ -96,35 +95,52 @@ public class AdventureDBService {
 
 	public Scene setPathLength(Scene scene) {
 
-		if (scene.getOptions() == null) {
+		if (scene.getChildList() == null) {
 			return scene;
 		}
+	
+// Dustin have a look		
 		
-		for (Option o : scene.getOptions()) {
-			Scene s = sceneRepo.findSceneById(o.getSceneId());
-			int plength = getScenePathLength(s);
-			o.setPathLength(plength);
-		}
+//		for (Option o : scene.getOptions()) {
+//			Scene s = sceneRepo.findSceneById(o.getSceneId());
+//			int plength = getScenePathLength(s);
+//			o.setPathLength(plength);
+//		}
 
+		for(Scene s : scene.getChildList()) {
+		
+			int plength = getScenePathLength(s);
+			
+		}
+		
 		return scene;
 	}
 
 	private int getScenePathLength(Scene scene) {
 		int pathLength = 0;
 
-		if (scene.getOptions() == null) {
+		if (scene.getChildList() == null) {
 			return pathLength;
 		}
 
 		List<Scene> childList = new ArrayList<>();
-
-		for (Option o : scene.getOptions()) {
-			childList.add(sceneRepo.findSceneById(o.getSceneId()));
+		
+		for (Scene s : scene.getChildList()) {
+			childList.add(s);
 		}
+		
 		for (Scene s : childList) {
 			pathLength = Math.max(pathLength, getScenePathLength(s));
 		}
+
 		return pathLength + 1;
+//		for (Option o : scene.getOptions()) {
+//			childList.add(sceneRepo.findSceneById(o.getSceneId()));
+//		}
+//		for (Scene s : childList) {
+//			pathLength = Math.max(pathLength, getScenePathLength(s));
+//		}
+//		return pathLength + 1;
 	}
 
 ////		public int getTreeHeight(Node<Integer> root) {
@@ -168,14 +184,5 @@ public class AdventureDBService {
 		return ex.getMessage();
 	}
 
-//	private String id;
-//	private String storyId;
-//	private String storyTitle;
-//	private String parentId;
-//	private String description;
-//	private List<Option> options;
-//	
-//	private String description;
-//	private String nextSceneId;
 
 }

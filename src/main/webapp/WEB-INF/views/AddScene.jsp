@@ -13,6 +13,7 @@
 <body>
 	<div class="banner">Create your own ${msg}</div>
 	<div class="story-body">
+	<!-- stuff is getting weirdly centered here and not showing the placeholder -->
 		<form action="/createScene">
 			<c:if test="${id == null}">
 				<textarea id="storyName" name="storyName" rows="50" cols="100">${title}
@@ -22,13 +23,13 @@
 				<input type="hidden" id="storyName" name="storyName" value="${title}" >
 				<input type="hidden" id="parentId" name="parentId" value="${id}" >
 				<h3>${title}</h3>
-				<textArea id="sceneChoice" name="sceneChoice" rows="50"
-				cols="100">Choice
+				<textArea id="sceneChoice" name="sceneChoice" placeholder="choice" rows="50"
+				cols="100">
 		</textArea>
 			</c:if>
 			<br>
-			<textArea id="sceneDescription" name="sceneDescription" rows="50"
-				cols="100">Scene description (where does this choice lead?)
+			<textArea id="sceneDescription" name="sceneDescription" placeholder="Scene Description, (where does this choice lead)" rows="50"
+				cols="100">
 		</textArea>
 			<br>
 			<%-- 			<textarea id="sceneName" name="sceneName" rows="50" cols="100">Option

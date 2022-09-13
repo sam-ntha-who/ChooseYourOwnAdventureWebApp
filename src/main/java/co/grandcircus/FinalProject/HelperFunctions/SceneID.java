@@ -29,14 +29,14 @@ public class SceneID {
 		// following should increment based on size of scene.options
 		
 		// are we trying to get the size of options for the parentScene or the Scene???
-		if(parentScene.getOptions() == null) {
+		if(parentScene.getChildList() == null) {
 			optionNum = 1;
 			sceneId = storyId + parentId + optionNum;
 			// works with an else if but not an else smh
-		} else if (parentScene.getOptions() != null){
+		} else if (parentScene.getChildList() != null){
 			// increments work when it is parentscene
 			
-		optionNum = parentScene.getOptions().size() + 1;
+		optionNum = parentScene.getChildList().size() + 1;
 		sceneId = storyId + parentId + optionNum;
 		}
 		

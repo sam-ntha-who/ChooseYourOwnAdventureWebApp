@@ -43,11 +43,11 @@
 				</form>
 	--%>
 	<div class="options">
-		<c:forEach items="${scene.options}" var="option" varStatus="status">
+		<c:forEach items="${scene.childList}" var="child" varStatus="status">
 			
 			<div class="option">
-				${option.description} <br> <a
-					href="/deleteScene?id=${option.getSceneId()}&optionId=${status.index}"><br><br><button
+				${child.option} <br> <a
+					href="/deleteScene?id=${child.id}&optionId=${status.index}"><br><br><button
 						type="button" class="button-primary">Delete</button></a>
 			</div><br>
 		</c:forEach>

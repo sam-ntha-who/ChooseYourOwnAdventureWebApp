@@ -28,6 +28,7 @@
       		</tr>
       	</thead>
       	<tbody>
+			
       	<c:forEach items="${storyList}" var="story" varStatus="status">
       		<tr>
       			<th scope="row"><img src="${photoList[status.index]}" width="130"></th>
@@ -36,8 +37,11 @@
       			<td><a href="deleteStory?id=${story.id}"><button type="button" class="button-primary">Delete</button></a><div style="text-align: center;"><span style="font-size: 1rem;"></span></div></td>
       		</tr>
 		</c:forEach>
+			
+		      		
       	</tbody>
       </table>
+
 
 </body>
 </html>

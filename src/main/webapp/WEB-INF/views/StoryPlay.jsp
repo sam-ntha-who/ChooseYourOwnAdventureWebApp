@@ -17,17 +17,17 @@
 	</div>
 	
 	<center><br><br>
-	<c:if test = "${scene.options == null}">
+	<c:if test = "${scene.childList == null}">
 	The end
 	</c:if><br><br>
 	</center>
 	
 	<div class="options">
-	<c:forEach items="${scene.options}" var="option">
-	${option.pathLength}
+	<c:forEach items="${scene.childList}" var="child">
+	${child.pathLength}
 	<div class="option"><br>
-	<a href="play?id=${option.getSceneId()}">
-	${option.description}</a>
+	<a href="play?id=${child.id}">
+	${child.option}</a>
 	</div><br>
 	</c:forEach>
 	</div>
