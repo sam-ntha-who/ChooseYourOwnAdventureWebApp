@@ -99,82 +99,46 @@ public class AdventureDBService {
 			return scene;
 		}
 	
-// Dustin have a look		
-		
-//		for (Option o : scene.getOptions()) {
-//			Scene s = sceneRepo.findSceneById(o.getSceneId());
-//			int plength = getScenePathLength(s);
-//			o.setPathLength(plength);
-//		}
+
 
 		for(Scene s : scene.getChildList()) {
-		
-			int plength = getScenePathLength(s);
 			
+			//testing
+			System.out.println(s);
+		
+			int pathLength = getScenePathLength(s);
+			
+			s.setPathLength(pathLength);
+			//testing
+			System.out.println("path length from setPathLength " + s.getPathLength());
 		}
 		
 		return scene;
 	}
 
 	private int getScenePathLength(Scene scene) {
+		//testing
+		System.out.println("getScenePathLength method runs...I promise");
 		int pathLength = 0;
-
+		List<Scene> childList = sceneRepo.findByParentId(scene.getId());
+		scene.setChildList(childList);
+		
 		if (scene.getChildList() == null) {
+			//testing
+			System.out.println("childless yo!");
 			return pathLength;
 		}
 
-		List<Scene> childList = new ArrayList<>();
 		
 		for (Scene s : scene.getChildList()) {
-			childList.add(s);
-		}
-		
-		for (Scene s : childList) {
+			//testing
+			System.out.println("Pathlength is currently "+ pathLength);
 			pathLength = Math.max(pathLength, getScenePathLength(s));
 		}
 
 		return pathLength + 1;
-//		for (Option o : scene.getOptions()) {
-//			childList.add(sceneRepo.findSceneById(o.getSceneId()));
-//		}
-//		for (Scene s : childList) {
-//			pathLength = Math.max(pathLength, getScenePathLength(s));
-//		}
-//		return pathLength + 1;
 	}
 
-////		public int getTreeHeight(Node<Integer> root) {
-//			   int height = 0;
-//			    if (root == null ) {
-//			    return height;
-//			    }
-//			    if (root.childern == null) {
-//			    return 1;
-//			  }
-//			   for (Node<Integer> child : root.childern) {
-//			    height = Math.max(height, getTreeHeight(child));
-//			  }
-//			   return height + 1;
-//			}
-
-//		ArrayList<Integer> counters = new ArrayList();
-//		
-//		ArrayList<Scene> scenesToCheckPaths = new ArrayList<>();
-//		
-//		Scene sceneToCheck = scene;
-//		
-//		scenesToCheckPaths.add(sceneToCheck);
-//		for (int i=0; i < scene.getOptions().size(); i++) {
-//			counters.add(0);
-//			List<Option> optionList = sceneRepo.findSceneById(scene.getOptions().get(i).getSceneId()).getOptions();
-//			if (optionList.size() != 0 || optionList != null ) {
-//				counters.set(i, counters.get(i)+1);
-//				for (Option o : optionList) {
-//					
-//				}
-//			}
-//		}
-//	}
 
 	// Error Handling
 	@ResponseBody

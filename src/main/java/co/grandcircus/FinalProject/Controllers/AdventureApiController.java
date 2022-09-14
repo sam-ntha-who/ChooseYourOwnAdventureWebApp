@@ -107,7 +107,7 @@ public class AdventureApiController {
 		for (int i = 0; i < scenesToDelete.size(); i++) {
 			String sceneId = scenesToDelete.get(i).getId();
 			String currentStoryId = scenesToDelete.get(i).getStoryId();
-			List<Scene> subList = sceneRepo.findByStoryIdAndParentId(currentStoryId, sceneId);
+			List<Scene> subList = sceneRepo.findByParentId(currentStoryId, sceneId);
 
 			if (subList.size() > 0) {
 
