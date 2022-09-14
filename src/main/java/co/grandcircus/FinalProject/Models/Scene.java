@@ -29,10 +29,10 @@ public class Scene{
 	
 	
 	
-	@Override
-	public String toString() {
-		return "Scene [storyTitle=" + storyTitle + ", option=" + option + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Scene [storyTitle=" + storyTitle + ", option=" + option + "]";
+//	}
 
 	//constructors
 	public Scene() {
