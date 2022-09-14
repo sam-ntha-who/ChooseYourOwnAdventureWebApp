@@ -103,36 +103,36 @@ public class AdventureDBService {
 
 		for(Scene s : scene.getChildList()) {
 			
-			//testing
-			System.out.println(s);
+//			//testing
+//			System.out.println(s);
 		
 			int pathLength = getScenePathLength(s);
 			
 			s.setPathLength(pathLength);
-			//testing
-			System.out.println("path length from setPathLength " + s.getPathLength());
+//			//testing
+//			System.out.println("path length from setPathLength " + s.getPathLength());
 		}
 		
 		return scene;
 	}
 
 	private int getScenePathLength(Scene scene) {
-		//testing
-		System.out.println("getScenePathLength method runs...I promise");
+//		//testing
+//		System.out.println("getScenePathLength method runs...I promise");
 		int pathLength = 0;
 		List<Scene> childList = sceneRepo.findByParentId(scene.getId());
 		scene.setChildList(childList);
 		
 		if (scene.getChildList() == null) {
-			//testing
-			System.out.println("childless yo!");
+//			//testing
+//			System.out.println("childless yo!");
 			return pathLength;
 		}
 
 		
 		for (Scene s : scene.getChildList()) {
-			//testing
-			System.out.println("Pathlength is currently "+ pathLength);
+//			//testing
+//			System.out.println("Pathlength is currently "+ pathLength);
 			pathLength = Math.max(pathLength, getScenePathLength(s));
 		}
 
