@@ -16,7 +16,7 @@
 	<br><br>
 	<div class="banner">
 		Choose Your Own Adventure
-	</div>
+	</div><br>
 
       <table class="table" style="">
       	<thead>

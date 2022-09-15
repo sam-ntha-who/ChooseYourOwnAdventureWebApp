@@ -9,21 +9,18 @@
 <title>Choose your own adventure</title>
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
-<body style="background-image: url('${ scene.photoUrl }');">
+<body style="background-image: url('${ scene.photoUrl }'); background-repeat: no-repeat; background-position: center top;">
 
 
 	<div class="banner">${scene.storyTitle}</div>
 	<br>
-	<br>
-	<div class="story-body">${scene.description}</div><br><br>
+	<div class="story-body"><br>${scene.description}<br></div>
 
 	<div class="story-body">
 		<c:if test="${scene.childList == null}">
-	<h2>The end</h2>
+	<h2><br>The end<br></h2><br>
 	</c:if>
-		<br>
-		<br>
-	</div>
+	</div><br>
 
 	<div class="options">
 

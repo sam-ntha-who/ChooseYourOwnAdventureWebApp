@@ -190,6 +190,7 @@ public class ViewsController {
 					thisStory.getId(), scene.getId(), sceneChoice, sceneDescription);
 			
 			newOption.setPhotoUrl(service.getRandomLandscapePhotoUrl(photoUrl));
+			newOption.setStoryTitle(storyName);
 		//	Option newOption = new Option(sceneChoice, SceneID.createSceneID(thisStory, new Scene(), scene));
 			addOptions.add(newOption);
 			scene.setChildList(addOptions);
