@@ -44,10 +44,7 @@ public class AdventureDBService {
 		return setPathLength(response);
 	}
 
-//	public Story getStory(String sceneId) {
-//	String url = "http://localhost:8080/";
-//}
-	
+	// will likely remove and replace with logic from getStory and pull storyName from that
 	public String getStoryName(String storyId) {
 
 		String url = "http://localhost:8080/find-story-name/{storyId}";
@@ -56,6 +53,15 @@ public class AdventureDBService {
 
 		return response;
 
+	}
+	
+	public Story getStory(String storyId) {
+
+		String url = "http://localhost:8080/story/{storyId}";
+
+		Story response = rt.getForObject(url, Story.class, storyId);
+
+		return response;
 	}
 
 	public Story[] getAllStories() {
@@ -86,13 +92,6 @@ public class AdventureDBService {
 
 	}
 
-//	public void saveScene(Scene scene) {
-//		String url = "http://localhost:8080/save-scene/";
-//		
-//		rt.postForEntity(url, scene, null, null);
-//	
-//	}
-
 	public Scene setPathLength(Scene scene) {
 
 		if (scene.getChildList() == null) {
@@ -102,37 +101,31 @@ public class AdventureDBService {
 
 
 		for(Scene s : scene.getChildList()) {
-			
-//			//testing
-//			System.out.println(s);
-		
+				
 			int pathLength = getScenePathLength(s);
 			
 			s.setPathLength(pathLength);
-//			//testing
-//			System.out.println("path length from setPathLength " + s.getPathLength());
+
 		}
 		
 		return scene;
 	}
 
 	private int getScenePathLength(Scene scene) {
-//		//testing
-//		System.out.println("getScenePathLength method runs...I promise");
+
 		int pathLength = 0;
+		// will likely be changed to a call of the method within this class instead of repo
 		List<Scene> childList = sceneRepo.findByParentId(scene.getId());
 		scene.setChildList(childList);
 		
 		if (scene.getChildList() == null) {
-//			//testing
-//			System.out.println("childless yo!");
+
 			return pathLength;
 		}
 
 		
 		for (Scene s : scene.getChildList()) {
-//			//testing
-//			System.out.println("Pathlength is currently "+ pathLength);
+
 			pathLength = Math.max(pathLength, getScenePathLength(s));
 		}
 

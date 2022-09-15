@@ -27,13 +27,6 @@ public class AdventureApiController {
 	
 	// CRUD Functions
 
-//	// TESTING -create scene in DB via id only as requestparam
-//	@PostMapping("/test-add")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public void testAdd(@RequestParam String id) {
-//		sceneRepo.insert(new Scene(id));
-//	}
-
 	// Create Story
 	@PostMapping("/create-story")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -49,7 +42,8 @@ public class AdventureApiController {
 		sceneRepo.insert(scene);
 		return scene;
 	}
-
+	
+	// so far unused
 	// Create Multiple Scenes
 	@PostMapping("/create-all-scenes")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -64,13 +58,19 @@ public class AdventureApiController {
 		return storyRepo.findAll();
 	}
 	
+	// get a single story
+	@GetMapping("story/{storyId}")
+	public Story getStory(@PathVariable String storyId) {
+		return storyRepo.findStoryById(storyId);
+	}
 	
 	// Read a scene
 	@GetMapping("/read-scene/{id}")
 	public Scene getScene(@PathVariable("id") String id) {
 		return sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
 	}
-	
+
+	// may be replaced in views controller by calling getStory(id).getId()
 	// Read a Story Name
 	public String findStoryName(@RequestParam String id) {
 		
