@@ -2,7 +2,6 @@ package co.grandcircus.FinalProject.Services;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
-
 import co.grandcircus.FinalProject.Controllers.SceneNotFoundException;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
@@ -21,8 +19,6 @@ import co.grandcircus.FinalProject.Repositories.SceneRepository;
 @Service
 public class AdventureDBService {
 
-	@Autowired
-	SceneRepository sceneRepo;
 
 	private RestTemplate rt = new RestTemplate();
 
@@ -114,8 +110,8 @@ public class AdventureDBService {
 	private int getScenePathLength(Scene scene) {
 
 		int pathLength = 0;
-		// will likely be changed to a call of the method within this class instead of repo
-		List<Scene> childList = sceneRepo.findByParentId(scene.getId());
+
+		List<Scene> childList = getScene(scene.getId()).getChildList();
 		scene.setChildList(childList);
 		
 		if (scene.getChildList() == null) {
@@ -131,15 +127,5 @@ public class AdventureDBService {
 
 		return pathLength + 1;
 	}
-
-
-	// Error Handling
-	@ResponseBody
-	@ExceptionHandler(SceneNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	String sceneNotFoundHandler(SceneNotFoundException ex) {
-		return ex.getMessage();
-	}
-
 
 }
