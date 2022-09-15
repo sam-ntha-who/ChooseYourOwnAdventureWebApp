@@ -9,6 +9,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -31,11 +32,9 @@ public class PexelService {
 
 	@Value("${apiKey}")
 	private String apiKey;
-	
-	private RestTemplate restTemplate = new RestTemplate();
-	
 
-	
+	private RestTemplate restTemplate = new RestTemplate();
+
 	public List<Photo> getPexels(String search) {
 		String url = "https://api.pexels.com/v1/search?query={search}";
 
@@ -44,22 +43,83 @@ public class PexelService {
 
 		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-		ResponseEntity<PexelsResponse> result = restTemplate.exchange (url, HttpMethod.GET, requestEntity, PexelsResponse.class, search);
+		ResponseEntity<PexelsResponse> result = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+				PexelsResponse.class, search);
 		return result.getBody().getPhotos();
 	}
+
+//	Depreciated
+//	public String getThumbnailUrl(String keyword) {
+//		String url = "https://api.pexels.com/v1/search?query={keyword}&per_page=1";
+//
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.set("Authorization", apiKey);
+//
+//		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+//
+//		ResponseEntity<PexelsResponse> result = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+//				PexelsResponse.class, keyword);
+//		return result.getBody().getPhotos().get(0).getSrc().getTiny();
+//	}
+
 	
-	public String getThumbnailUrl(String keyword) {
-		String url = "https://api.pexels.com/v1/search?query={keyword}&per_page=1";
+	public String getRandomTinyPhotoUrl(String keyword) {
+
+		Random num = new Random();
+
+		String url = "https://api.pexels.com/v1/search?query={keyword}";
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", apiKey);
 
 		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-		ResponseEntity<PexelsResponse> result = restTemplate.exchange (url, HttpMethod.GET, requestEntity, PexelsResponse.class, keyword);
-		return result.getBody().getPhotos().get(0).getSrc().getTiny();
+		ResponseEntity<PexelsResponse> result = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+				PexelsResponse.class, keyword);
+
+		List<Photo> photoList = result.getBody().getPhotos();
+
+		if (photoList.size() == 0) {
+
+			return "https://images.pexels.com/photos/4271933/pexels-photo-4271933.jpeg?auto=compress&cs=tinysrgb&h=650&w=940";
+		}
+		
+		int i = num.nextInt(photoList.size());
+
+		String photoUrl = photoList.get(i).getSrc().getTiny();
+
+		return photoUrl;
 	}
-	//TODO -- handle exceptions
+	
+	public String getRandomLandscapePhotoUrl(String keyword) {
+
+		Random num = new Random();
+
+		String url = "https://api.pexels.com/v1/search?query={keyword}";
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", apiKey);
+
+		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		ResponseEntity<PexelsResponse> result = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+				PexelsResponse.class, keyword);
+
+		List<Photo> photoList = result.getBody().getPhotos();
+
+		if (photoList.size() == 0) {
+
+			return "https://images.pexels.com/photos/4271933/pexels-photo-4271933.jpeg?auto=compress&cs=tinysrgb&h=650&w=940";
+		}
+		
+		int i = num.nextInt(photoList.size());
+
+		String photoUrl = photoList.get(i).getSrc().getLandscape();
+
+		return photoUrl;
+	}
+
+	// TODO -- handle exceptions
 //	public PexelsResponse getPexels() throws URISyntaxException, IOException, InterruptedException {
 //		
 //	HttpClient client = HttpClient.newHttpClient();
@@ -74,6 +134,6 @@ public class PexelService {
 //	System.out.println(response.body());
 //	return null;
 //	}
-	
-	//public 
+
+	// public
 }
