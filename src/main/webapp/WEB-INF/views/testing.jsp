@@ -10,9 +10,7 @@
 </head>
 <body>
 
-<c:forEach items="${ storyList }" var="stories">
-${ stories.title } <br>
-</c:forEach>
+<img alt="" src="${ photo }">
 
 
 

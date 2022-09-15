@@ -16,35 +16,20 @@
 	<!-- stuff is getting weirdly centered here and not showing the placeholder -->
 		<form action="/createScene">
 			<c:if test="${id == null}">
-<<<<<<< Updated upstream
 				<textarea id="storyName" name="storyName" rows="50" cols="100" placeholder="${title}"></textarea>
-=======
-<<<<<<< HEAD
-				<textarea id="storyName" name="storyName" rows="50" cols="100">${title}</textarea>
-=======
-				<textarea id="storyName" name="storyName" rows="50" cols="100" placeholder="${title}"></textarea>
->>>>>>> main
->>>>>>> Stashed changes
 			</c:if>
 			<c:if test="${id != null}">
 				<input type="hidden" id="storyName" name="storyName" value="${title}" >
 				<input type="hidden" id="parentId" name="parentId" value="${id}" >
 				<h3>${title}</h3>
-<<<<<<< Updated upstream
 				<textArea id="sceneChoice" name="sceneChoice" placeholder="Choice" rows="50"
-=======
-<<<<<<< HEAD
-				<textArea id="sceneChoice" name="sceneChoice" placeholder="choice" rows="50"
-=======
-				<textArea id="sceneChoice" name="sceneChoice" placeholder="Choice" rows="50"
->>>>>>> main
->>>>>>> Stashed changes
 				cols="100"></textArea>
 			</c:if>
 			<br>
 			<textArea id="sceneDescription" name="sceneDescription" placeholder="Scene Description, (where does this choice lead)" rows="50"
 				cols="100"></textArea>
 			<br>
+			<textArea id="photoUrl" name="photoUrl" placeholder="Keyword for image associated with ${msg}" rows="50" cols="100"></textArea><br>
 			<%-- 			<textarea id="sceneName" name="sceneName" rows="50" cols="100">Option
 		</textarea>
 			<br>

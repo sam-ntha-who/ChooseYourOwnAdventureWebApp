@@ -69,8 +69,9 @@ tr:hover {
 	margin: auto;
 	text-align: center;
 	font-size: 45px;
-	color: white;
+	color: black;
 	padding: 50px;
+	background-color: red;
 }
 
 a {
@@ -85,6 +86,9 @@ a {
 	margin: auto;
 	width: 75%;
 	text-align: center;
+	background-color: black;
+	color: red;
+	width: 50%;
 }
 
 .options {

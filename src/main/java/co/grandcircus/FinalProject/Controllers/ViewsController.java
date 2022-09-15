@@ -51,19 +51,6 @@ public class ViewsController {
 		List<Story> storyList = Arrays.asList(list);
 		model.addAttribute("storyList", storyList);
 
-		List<Photo> thumbnailList1 = service.getPexels("Hike");
-		List<Photo> thumbnailList2 = service.getPexels("Story");
-		List<Photo> thumbnailList3 = service.getPexels("Question");
-
-		Photo thumbnail1 = thumbnailList1.get(0);
-		Photo thumbnail2 = thumbnailList2.get(0);
-		Photo thumbnail3 = thumbnailList3.get(0);
-
-		List<String> photoList = new ArrayList<>();
-		photoList.add(thumbnail1.getSrc().getOriginal());
-		photoList.add(thumbnail2.getSrc().getOriginal());
-		photoList.add(thumbnail3.getSrc().getOriginal());
-		model.addAttribute("photoList", photoList);
 		return "index";
 	}
 
@@ -118,9 +105,28 @@ public class ViewsController {
 	// api service call done
 	@RequestMapping("/deleteStory")
 	public String storyDelete(Model model, @RequestParam String id) {
+		
 		dbService.deleteStory(id);
-		model.addAttribute("type", "Story");
-		return "StoryDeleted";
+		//model.addAttribute("type", "Story");
+		Story[] list = dbService.getAllStories();
+		List<Story> storyList = Arrays.asList(list);
+		model.addAttribute("storyList", storyList);
+
+		List<Photo> thumbnailList1 = service.getPexels("Hike");
+		List<Photo> thumbnailList2 = service.getPexels("Story");
+		List<Photo> thumbnailList3 = service.getPexels("Question");
+
+		Photo thumbnail1 = thumbnailList1.get(0);
+		Photo thumbnail2 = thumbnailList2.get(0);
+		Photo thumbnail3 = thumbnailList3.get(0);
+
+		List<String> photoList = new ArrayList<>();
+		photoList.add(thumbnail1.getSrc().getOriginal());
+		photoList.add(thumbnail2.getSrc().getOriginal());
+		photoList.add(thumbnail3.getSrc().getOriginal());
+		model.addAttribute("photoList", photoList);
+		
+		return "index";
 	}
 
 
@@ -130,6 +136,7 @@ public class ViewsController {
 	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
 		Scene parentScene = dbService.getScene(thisScene.getParentId());
+		Story story = storyRepo.findById(thisScene.getStoryId()).orElseThrow(() -> new SceneNotFoundException(id));
 		List<Scene> optionsToChange = parentScene.getChildList();
 //		List<Option> optionsToChange = parentScene.getOptions();
 		optionsToChange.remove(Integer.parseInt(optionId));
@@ -137,8 +144,11 @@ public class ViewsController {
 		//dbService.saveScene(parentScene);
 		sceneRepo.save(parentScene);
 		dbService.deleteScene(id);
-		model.addAttribute("type", "Scene");
-		return "StoryDeleted";
+		//model.addAttribute("type", "Scene");
+		model.addAttribute("storyTitle", story.getTitle());
+		model.addAttribute("scene", parentScene);
+		
+		return "StoryEdit";
 	}
 
 	// api service call done
@@ -161,7 +171,7 @@ public class ViewsController {
 	// get story needs testing
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription,
-			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice) {
+			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice, @RequestParam String photoUrl) {
 		// if no parentId then you are creating a new story and a new scene.
 		if (parentId == null) {
 			Story newStory = new Story(storyName);
@@ -175,13 +185,13 @@ public class ViewsController {
 
 			newStory.setStartingSceneId(sceneId);
 			newScene.setStoryTitle(storyName);
-
-			dbService.saveScene(newScene);
-			dbService.saveStory(newStory);
-//			
-//			storyRepo.save(newStory);
-//			sceneRepo.save(newScene);
-			// dbServices.save(newScene);
+			newStory.setPhotoUrl(service.getRandomTinyPhotoUrl(photoUrl));
+			newScene.setPhotoUrl(service.getRandomLandscapePhotoUrl(photoUrl));
+			
+			storyRepo.save(newStory);
+			sceneRepo.save(newScene);
+// dbService.saveScene(newScene);
+// dbService.saveStory(newStory);
 			
 			model.addAttribute("scene", newScene);
 
@@ -199,7 +209,10 @@ public class ViewsController {
 			newOption = new Scene(SceneID.createSceneID(thisStory, newOption,
 					dbService.getScene(scene.getId())), 
 					thisStory.getId(), scene.getId(), sceneChoice, sceneDescription);
-
+			
+			newOption.setPhotoUrl(service.getRandomLandscapePhotoUrl(photoUrl));
+			newOption.setStoryTitle(storyName);
+		//	Option newOption = new Option(sceneChoice, SceneID.createSceneID(thisStory, new Scene(), scene));
 			addOptions.add(newOption);
 			scene.setChildList(addOptions);
 			sceneRepo.save(scene);
@@ -213,16 +226,14 @@ public class ViewsController {
 
 	}
 
-	// api service calls done
-	@RequestMapping("/test-pexel/{sceneId}")
-	public String randomName(Model model, @PathVariable("sceneId") String sceneId)
+	@RequestMapping("/test-pexel")
+	public String randomName(Model model)
 			throws URISyntaxException, IOException, InterruptedException {
-		List<Photo> response = service.getPexels("Tiger");
-		Scene test = dbService.getScene(sceneId);
-		String title = dbService.getStoryName(sceneId);
-		model.addAttribute("storyName", title);
-		model.addAttribute("scene", test);
-		model.addAttribute("response", response);
+		
+		String photo = service.getRandomTinyPhotoUrl("asdfkjhalkjherfkjlhio3e89743");
+		
+		model.addAttribute("photo", photo);
+
 		return "testing";
 	}
 
