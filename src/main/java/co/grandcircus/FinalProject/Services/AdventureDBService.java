@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
 
 import co.grandcircus.FinalProject.Controllers.SceneNotFoundException;
+import co.grandcircus.FinalProject.Controllers.StoryNotFoundException;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
@@ -155,11 +156,10 @@ public class AdventureDBService {
 //		//testing
 //		System.out.println("getScenePathLength method runs...I promise");
 		int pathLength = 0;
-<<<<<<< Updated upstream
+
 		// test
-		List<Scene> kidList = getScene(scene.getParentId()).getChildList();
-=======
->>>>>>> Stashed changes
+	//	List<Scene> kidList = getScene(scene.getParentId()).getChildList();
+
 		List<Scene> childList = sceneRepo.findByParentId(scene.getId());
 		scene.setChildList(childList);
 		
@@ -179,10 +179,6 @@ public class AdventureDBService {
 		return pathLength + 1;
 	}
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 	// Error Handling
 	@ResponseBody
 	@ExceptionHandler(SceneNotFoundException.class)
@@ -191,5 +187,10 @@ public class AdventureDBService {
 		return ex.getMessage();
 	}
 
-
+	@ResponseBody
+	@ExceptionHandler(StoryNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	String storyNotFoundHandler(StoryNotFoundException ex) {
+		return ex.getMessage();
+	}
 }
