@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,19 +23,11 @@ import co.grandcircus.FinalProject.HelperFunctions.StoryID;
 import co.grandcircus.FinalProject.Models.Photo;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
-import co.grandcircus.FinalProject.Repositories.SceneRepository;
-import co.grandcircus.FinalProject.Repositories.StoryRepository;
 import co.grandcircus.FinalProject.Services.AdventureDBService;
 import co.grandcircus.FinalProject.Services.PexelService;
 
 @Controller
 public class ViewsController {
-
-	@Autowired
-	StoryRepository storyRepo;
-
-	@Autowired
-	SceneRepository sceneRepo;
 
 	@Autowired
 	PexelService service;
@@ -72,8 +63,10 @@ public class ViewsController {
 		return "StoryEdit";
 	}
 
-	// api call needs to be done for save
-	@RequestMapping("/save-scene")
+	// api service call needs to be checked for save? update instead maybe
+	// api service call needs to be made for get sceneid instead of repo - done but see if it works
+	
+	@RequestMapping("/saveScene")
 	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
 
 		Scene sceneToUpdate = dbService.getScene(parentId);
@@ -93,8 +86,8 @@ public class ViewsController {
 
 		listToUpdate.add(newOption);
 		sceneToUpdate.setChildList(listToUpdate);
-		sceneRepo.save(sceneToUpdate);
-	//	dbService.saveScene(sceneToUpdate);
+
+		dbService.saveScene(newOption);
 
 		return "StoryEdit";
 
@@ -138,10 +131,9 @@ public class ViewsController {
 		List<Scene> optionsToChange = parentScene.getChildList();
 		optionsToChange.remove(Integer.parseInt(optionId));
 		parentScene.setChildList(optionsToChange);
-		// this one!
-		sceneRepo.save(parentScene);
+		dbService.saveScene(parentScene);
 		dbService.deleteScene(id);
-		//model.addAttribute("type", "Scene");
+
 		model.addAttribute("storyTitle", story.getTitle());
 		model.addAttribute("scene", parentScene);
 		
@@ -184,10 +176,9 @@ public class ViewsController {
 			newScene.setStoryTitle(storyName);
 			newStory.setPhotoUrl(service.getRandomTinyPhotoUrl(photoUrl));
 			newScene.setPhotoUrl(service.getRandomLandscapePhotoUrl(photoUrl));
-			
-			storyRepo.save(newStory);
-			sceneRepo.save(newScene);
-			// dbServices.save(newScene);
+
+			dbService.saveScene(newScene);
+			dbService.saveStory(newStory);
 			
 			model.addAttribute("scene", newScene);
 
@@ -210,10 +201,9 @@ public class ViewsController {
 			addOptions.add(newOption);
 			scene.setChildList(addOptions);
 			// still need to test further
-			sceneRepo.save(scene);
-			sceneRepo.save(newOption);
 
-
+			dbService.saveScene(scene);
+			dbService.saveScene(newOption);
 			model.addAttribute("scene", scene);
 		}
 
@@ -233,10 +223,6 @@ public class ViewsController {
 		return "testing";
 	}
 
-//	@RequestMapping("/test-Story-Name/{storyId}")
-//	public String randomerName(Model model, @PathVariable("storyId") String storyId) {
-//		
-//	}
 
 	// Error Handling
 	@ResponseBody
@@ -254,12 +240,16 @@ public class ViewsController {
 	}
 	// save api call needs to be done
 	// other api call good to go
-	@PostMapping("/updateScene")
+	// seems to be creating a new scene thats essentially empty.
+	@RequestMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
-		Scene sceneToUpdate = dbService.getScene(sceneId);
-		sceneToUpdate.setDescription(description);
-		sceneRepo.save(sceneToUpdate);
-		model.addAttribute("scene", sceneToUpdate);
+		Scene scene = dbService.getScene(sceneId);
+		model.addAttribute("scene", scene);
+		scene.setDescription(description);
+		
+		dbService.saveScene(scene);
+	//	sceneRepo.save(sceneToUpdate);
+		
 		return "StoryPlay";
 	}
 

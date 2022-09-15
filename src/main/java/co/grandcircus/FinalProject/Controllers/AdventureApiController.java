@@ -2,6 +2,7 @@ package co.grandcircus.FinalProject.Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ public class AdventureApiController {
 		sceneRepo.insert(scene);
 		return scene;
 	}
-	
+
 	// so far unused
 	// Create Multiple Scenes
 	@PostMapping("/create-all-scenes")
@@ -52,6 +53,7 @@ public class AdventureApiController {
 			sceneRepo.insert(scene);
 		}
 	}
+
 	// Get list of stories
 	@GetMapping("/allStories")
 	public List<Story> getStories() {
@@ -64,7 +66,8 @@ public class AdventureApiController {
 		return storyRepo.findStoryById(storyId);
 	}
 	
-	// Read a scene
+	
+	// get a scene
 	@GetMapping("/read-scene/{id}")
 	public Scene getScene(@PathVariable("id") String id) {
 		return sceneRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
@@ -82,7 +85,7 @@ public class AdventureApiController {
 	// Update a scene
 	@PostMapping("/update-scene")
 	public Scene updateScene(@RequestBody Scene scene, @RequestParam String id) {
-
+		// maybe change findByStoryIdAndId to a diff method
 		Scene sceneToUpdate = sceneRepo.findByStoryIdAndId(scene.getStoryId(), id)
 				.orElseThrow(() -> new SceneNotFoundException(scene.getId()));
 
@@ -92,6 +95,18 @@ public class AdventureApiController {
 		return sceneRepo.save(sceneToUpdate);
 	}
 
+	@PostMapping("/save-scene")
+	public Scene saveScene(@RequestBody Scene scene) {
+		return sceneRepo.save(scene);
+		
+	}
+	
+	@PostMapping("/save-story")
+	public Story saveStory(@RequestBody Story story) {
+		return storyRepo.save(story);
+		
+	}
+	
 	// Delete Scene (and all connected scenes)
 	@DeleteMapping("/delete-scene-tree/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -126,16 +141,11 @@ public class AdventureApiController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteStory(@PathVariable String id) {
 		
-		Story storyToDelete = storyRepo.findById(id).orElseThrow(() -> new SceneNotFoundException(id));
+		Story storyToDelete = storyRepo.findById(id).orElseThrow(() -> new StoryNotFoundException(id));
 		
 		deleteSceneTree(storyToDelete.getStartingSceneId());
 		storyRepo.delete(storyToDelete);
 	}
-
-//	// deletes a scene from the database
-//	private void deleteScene(Scene s2d) {
-//		sceneRepo.delete(s2d);
-//	}
 
 	// Error Handling
 	@ResponseBody
@@ -145,6 +155,13 @@ public class AdventureApiController {
 		return ex.getMessage();
 	}
 
+	@ResponseBody
+	@ExceptionHandler(StoryNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	String storyNotFoundHandler(StoryNotFoundException ex) {
+		return ex.getMessage();
+	}
+	
 	// reset data
 	// this needs to be in its own class
 	@GetMapping("/reset")

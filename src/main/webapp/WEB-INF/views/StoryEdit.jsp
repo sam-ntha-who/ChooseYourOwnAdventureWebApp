@@ -24,7 +24,7 @@
 			</textarea>
 		--%>
 			<br>
-			<textarea id="description" name="description" rows="100" cols="400">${scene.description}</textarea>
+			<textarea id="description" name="description" "rows="100" cols="400">${scene.description}</textarea>
 			<br> <input type="submit" value="Save" />
 		</form>
 		<br> <br>

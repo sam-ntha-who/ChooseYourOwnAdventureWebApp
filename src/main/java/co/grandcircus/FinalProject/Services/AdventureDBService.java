@@ -1,17 +1,23 @@
 package co.grandcircus.FinalProject.Services;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
 import co.grandcircus.FinalProject.Controllers.SceneNotFoundException;
+import co.grandcircus.FinalProject.Controllers.StoryNotFoundException;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
@@ -26,8 +32,40 @@ public class AdventureDBService {
 		
 		String url = "http://localhost:8080/save-scene";
 		
-		Scene response = rt.postForObject(url, rt, Scene.class, scene);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		try {
+			URI uri = new URI(url);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		HttpEntity<Scene> httpEntity = new HttpEntity<>(scene, headers);
+
+		Scene response = rt.postForObject(url, httpEntity, Scene.class);
+		return response;
+				
+	}
+	
+	public Story saveStory(Story story) {
 		
+		String url = "http://localhost:8080/save-story";
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		try {
+			URI uri = new URI(url);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		HttpEntity<Story> httpEntity = new HttpEntity<>(story, headers);
+
+		Story response = rt.postForObject(url, httpEntity, Story.class);
 		return response;
 	}
 	
@@ -38,17 +76,6 @@ public class AdventureDBService {
 		Scene response = rt.getForObject(url, Scene.class, id);
 
 		return setPathLength(response);
-	}
-
-	// will likely remove and replace with logic from getStory and pull storyName from that
-	public String getStoryName(String storyId) {
-
-		String url = "http://localhost:8080/find-story-name/{storyId}";
-
-		String response = rt.getForObject(url, String.class, storyId);
-
-		return response;
-
 	}
 	
 	public Story getStory(String storyId) {
@@ -94,8 +121,6 @@ public class AdventureDBService {
 			return scene;
 		}
 	
-
-
 		for(Scene s : scene.getChildList()) {
 				
 			int pathLength = getScenePathLength(s);
