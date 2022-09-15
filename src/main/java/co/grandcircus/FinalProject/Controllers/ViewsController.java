@@ -44,6 +44,7 @@ public class ViewsController {
 	@Autowired
 	AdventureDBService dbService;
 
+	// api service call done
 	@RequestMapping("/")
 	public String index(Model model) {
 		Story[] list = dbService.getAllStories();
@@ -66,7 +67,7 @@ public class ViewsController {
 		return "index";
 	}
 
-	// add "add option" to the play function as last option
+	// api service call done
 	@RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
 		Scene nextScene = dbService.getScene(id);
@@ -74,26 +75,22 @@ public class ViewsController {
 		return "StoryPlay";
 	}
 
+	// api service call done 
 	@RequestMapping("/edit")
 	public String storyEdit(Model model, @RequestParam String sceneId) {
 		Scene editScene = dbService.getScene(sceneId);
-		Story story = storyRepo.findById(editScene.getStoryId()).orElseThrow(() -> new SceneNotFoundException(sceneId));
+		Story story = dbService.getStory(editScene.getStoryId());
 		model.addAttribute("storyTitle", story.getTitle());
 		model.addAttribute("scene", editScene);
 		return "StoryEdit";
 	}
 
-//	// call directly
-//	@PostMapping("/update")
-//	public String sceneSave(@RequestBody Scene scene) {
-//		dbService.
-//		
-//	}
-
+	// api service call needs to be checked for save? update instead maybe
+	// api service call needs to be made for get sceneid instead of repo - done but see if it works
 	@RequestMapping("/save-scene")
 	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
 
-		Scene sceneToUpdate = sceneRepo.findById(parentId).orElseThrow(() -> new SceneNotFoundException(scene.getId()));
+		Scene sceneToUpdate = dbService.getScene(parentId);
 		List<Scene> listToUpdate;
 		if (sceneToUpdate.getChildList()== null) {
 			listToUpdate = new ArrayList<>();
@@ -101,16 +98,13 @@ public class ViewsController {
 			listToUpdate = sceneToUpdate.getChildList();
 		}
 
-		Story thisStory = storyRepo.findStoryById(sceneToUpdate.getStoryId());
-// check this logic!! especially newOption.getCurrentSceneChoice
+		Story thisStory = dbService.getStory(sceneToUpdate.getStoryId());
+
 		Scene newOption = new Scene();
 		newOption = new Scene(SceneID.createSceneID(thisStory, newOption,
-				sceneRepo.findById(scene.getParentId()).orElseThrow(() -> new SceneNotFoundException(scene.getId()))), 
+				dbService.getScene(scene.getParentId())), 
 				thisStory.getId(), sceneToUpdate.getParentId(), sceneToUpdate.getDescription(), newOption.getOption());
 		
-//
-//		Option newOption = new Option(scene.getDescription(), SceneID.createSceneID(thisStory, new Scene(),
-//				sceneRepo.findById(scene.getParentId()).orElseThrow(() -> new SceneNotFoundException(scene.getId()))));
 
 		listToUpdate.add(newOption);
 		sceneToUpdate.setChildList(listToUpdate);
@@ -121,7 +115,7 @@ public class ViewsController {
 
 	}
 
-	// no longer need to call directly
+	// api service call done
 	@RequestMapping("/deleteStory")
 	public String storyDelete(Model model, @RequestParam String id) {
 		dbService.deleteStory(id);
@@ -129,8 +123,9 @@ public class ViewsController {
 		return "StoryDeleted";
 	}
 
-	// this will wind up in story edit jsp
 
+	// delete api service call done
+	// parent scene api call needs to be done - again might be update and not save
 	@RequestMapping("/deleteScene")
 	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
@@ -139,13 +134,14 @@ public class ViewsController {
 //		List<Option> optionsToChange = parentScene.getOptions();
 		optionsToChange.remove(Integer.parseInt(optionId));
 		parentScene.setChildList(optionsToChange);
+		//dbService.saveScene(parentScene);
 		sceneRepo.save(parentScene);
 		dbService.deleteScene(id);
 		model.addAttribute("type", "Scene");
 		return "StoryDeleted";
 	}
 
-
+	// api service call done
 	@RequestMapping("/addScene")
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
 		if (id != null) {
@@ -161,7 +157,8 @@ public class ViewsController {
 	}
 
 	// create story + starting scene
-
+	// api service call needs to be done
+	// get story needs testing
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription,
 			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice) {
@@ -179,8 +176,11 @@ public class ViewsController {
 			newStory.setStartingSceneId(sceneId);
 			newScene.setStoryTitle(storyName);
 
-			storyRepo.save(newStory);
-			sceneRepo.save(newScene);
+			dbService.saveScene(newScene);
+			dbService.saveStory(newStory);
+//			
+//			storyRepo.save(newStory);
+//			sceneRepo.save(newScene);
 			// dbServices.save(newScene);
 			
 			model.addAttribute("scene", newScene);
@@ -188,8 +188,8 @@ public class ViewsController {
 		} else {
 			List<Scene> addOptions = new ArrayList<Scene>();
 			// scene that we are adding a new option to 
-			Scene scene = sceneRepo.findById(parentId).orElseThrow(() -> new SceneNotFoundException(parentId));
-			Story thisStory = storyRepo.findStoryById(scene.getStoryId());
+			Scene scene = dbService.getScene(parentId);
+			Story thisStory = dbService.getStory(scene.getStoryId());
 			if (scene.getChildList() != null) {
 			//	addOptions = scene.getOption();
 				addOptions = scene.getChildList();
@@ -197,18 +197,14 @@ public class ViewsController {
 			// check this logic
 			Scene newOption = new Scene();
 			newOption = new Scene(SceneID.createSceneID(thisStory, newOption,
-					sceneRepo.findById(scene.getId()).orElseThrow(() -> new SceneNotFoundException(scene.getId()))), 
+					dbService.getScene(scene.getId())), 
 					thisStory.getId(), scene.getId(), sceneChoice, sceneDescription);
-			
-		//	Option newOption = new Option(sceneChoice, SceneID.createSceneID(thisStory, new Scene(), scene));
+
 			addOptions.add(newOption);
 			scene.setChildList(addOptions);
 			sceneRepo.save(scene);
 			sceneRepo.save(newOption);
 
-//			String newSceneId = newOption.getId();
-//			Scene childScene = new Scene(newSceneId, thisStory.getId(), sceneDescription, scene.getId());
-//			sceneRepo.save(childScene);
 			model.addAttribute("scene", scene);
 		}
 
@@ -217,6 +213,7 @@ public class ViewsController {
 
 	}
 
+	// api service calls done
 	@RequestMapping("/test-pexel/{sceneId}")
 	public String randomName(Model model, @PathVariable("sceneId") String sceneId)
 			throws URISyntaxException, IOException, InterruptedException {
@@ -229,10 +226,6 @@ public class ViewsController {
 		return "testing";
 	}
 
-//	@RequestMapping("/test-Story-Name/{storyId}")
-//	public String randomerName(Model model, @PathVariable("storyId") String storyId) {
-//		
-//	}
 
 	// Error Handling
 	@ResponseBody
@@ -249,6 +242,7 @@ public class ViewsController {
 		return ex.getMessage();
 	}
 
+	// api calls need to be done
 	@PostMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
 		Scene sceneToUpdate = sceneRepo.findById(sceneId).orElseThrow(() -> new SceneNotFoundException(sceneId));
