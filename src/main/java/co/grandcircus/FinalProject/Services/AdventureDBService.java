@@ -155,8 +155,11 @@ public class AdventureDBService {
 //		//testing
 //		System.out.println("getScenePathLength method runs...I promise");
 		int pathLength = 0;
+<<<<<<< Updated upstream
 		// test
 		List<Scene> kidList = getScene(scene.getParentId()).getChildList();
+=======
+>>>>>>> Stashed changes
 		List<Scene> childList = sceneRepo.findByParentId(scene.getId());
 		scene.setChildList(childList);
 		
@@ -176,6 +179,10 @@ public class AdventureDBService {
 		return pathLength + 1;
 	}
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 	// Error Handling
 	@ResponseBody
 	@ExceptionHandler(SceneNotFoundException.class)
