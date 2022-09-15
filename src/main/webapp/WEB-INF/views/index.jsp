@@ -31,7 +31,7 @@
 			
       	<c:forEach items="${storyList}" var="story" varStatus="status">
       		<tr>
-      			<th scope="row"><img src="${photoList[status.index]}" width="130"></th>
+      			<th scope="row"><img src="${story.photoUrl}" width="130"></th>
       			<td>${story.title}</td>
       			<td><a href="play?id=${story.startingSceneId}"><button type="button" class="button-primary">Play / Edit</button></a></td>
       			<td><a href="deleteStory?id=${story.id}"><button type="button" class="button-primary">Delete</button></a><div style="text-align: center;"><span style="font-size: 1rem;"></span></div></td>

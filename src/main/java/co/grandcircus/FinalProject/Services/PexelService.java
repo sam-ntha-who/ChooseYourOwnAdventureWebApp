@@ -47,6 +47,18 @@ public class PexelService {
 		ResponseEntity<PexelsResponse> result = restTemplate.exchange (url, HttpMethod.GET, requestEntity, PexelsResponse.class, search);
 		return result.getBody().getPhotos();
 	}
+	
+	public String getThumbnailUrl(String keyword) {
+		String url = "https://api.pexels.com/v1/search?query={keyword}&per_page=1";
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", apiKey);
+
+		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+		ResponseEntity<PexelsResponse> result = restTemplate.exchange (url, HttpMethod.GET, requestEntity, PexelsResponse.class, keyword);
+		return result.getBody().getPhotos().get(0).getSrc().getTiny();
+	}
 	//TODO -- handle exceptions
 //	public PexelsResponse getPexels() throws URISyntaxException, IOException, InterruptedException {
 //		

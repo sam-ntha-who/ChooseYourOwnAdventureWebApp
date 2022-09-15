@@ -51,12 +51,12 @@ public class ViewsController {
 		model.addAttribute("storyList", storyList);
 
 		List<Photo> thumbnailList1 = service.getPexels("Hike");
-		List<Photo> thumbnailList2 = service.getPexels("Story");
-		List<Photo> thumbnailList3 = service.getPexels("Question");
+		List<Photo> thumbnailList2 = service.getPexels("Stormy");
+		List<Photo> thumbnailList3 = service.getPexels("holding hands");
 
 		Photo thumbnail1 = thumbnailList1.get(0);
 		Photo thumbnail2 = thumbnailList2.get(0);
-		Photo thumbnail3 = thumbnailList3.get(0);
+		Photo thumbnail3 = thumbnailList3.get(2);
 
 		List<String> photoList = new ArrayList<>();
 		photoList.add(thumbnail1.getSrc().getOriginal());
@@ -164,7 +164,7 @@ public class ViewsController {
 
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription,
-			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice) {
+			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice, @RequestParam String photoUrl) {
 		// if no parentId then you are creating a new story and a new scene.
 		if (parentId == null) {
 			Story newStory = new Story(storyName);
@@ -178,7 +178,8 @@ public class ViewsController {
 
 			newStory.setStartingSceneId(sceneId);
 			newScene.setStoryTitle(storyName);
-
+			newStory.setPhotoUrl(service.getThumbnailUrl(photoUrl));
+			
 			storyRepo.save(newStory);
 			sceneRepo.save(newScene);
 			// dbServices.save(newScene);
