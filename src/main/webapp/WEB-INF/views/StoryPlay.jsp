@@ -15,11 +15,11 @@
 	<div class="banner">${scene.storyTitle}</div>
 	<br>
 	<br>
-	<div class="story-body">${scene.description}</div>
+	<div class="story-body">${scene.description}</div><br><br>
 
-	<div style="margin: auto">
+	<div class="story-body">
 		<c:if test="${scene.childList == null}">
-	The end
+	<h2>The end</h2>
 	</c:if>
 		<br>
 		<br>
