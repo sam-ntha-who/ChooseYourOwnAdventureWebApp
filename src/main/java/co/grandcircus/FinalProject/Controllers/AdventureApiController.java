@@ -96,8 +96,14 @@ public class AdventureApiController {
 	}
 
 	@PostMapping("/save-scene")
-	public Scene saveScene(Scene scene) {
+	public Scene saveScene(@RequestBody Scene scene) {
 		return sceneRepo.save(scene);
+		
+	}
+	
+	@PostMapping("/save-story")
+	public Story saveStory(@RequestBody Story story) {
+		return storyRepo.save(story);
 		
 	}
 	

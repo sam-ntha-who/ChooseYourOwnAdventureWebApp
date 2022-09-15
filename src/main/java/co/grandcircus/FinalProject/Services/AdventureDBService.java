@@ -32,14 +32,6 @@ public class AdventureDBService {
 
 	private RestTemplate rt = new RestTemplate();
 
-//	public Scene saveScene(Scene scene) {
-//		
-//		String url = "http://localhost:8080/save-scene";
-//		Scene response = rt.postForObject(url, rt, Scene.class, scene);
-//
-//		return response;
-//	}
-
 	public Scene saveScene(Scene scene) {
 		
 		String url = "http://localhost:8080/save-scene";
@@ -63,10 +55,21 @@ public class AdventureDBService {
 	
 	public Story saveStory(Story story) {
 		
-		String url = "http://localhost:8080/save-story";
+		String url = "http://localhost:8080/save-scene";
 		
-		Story response = rt.postForObject(url, rt, Story.class, story);
-		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		try {
+			URI uri = new URI(url);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		HttpEntity<Story> httpEntity = new HttpEntity<>(story, headers);
+
+		Story response = rt.postForObject(url, httpEntity, Story.class);
 		return response;
 	}
 	
@@ -77,17 +80,6 @@ public class AdventureDBService {
 		Scene response = rt.getForObject(url, Scene.class, id);
 
 		return setPathLength(response);
-	}
-
-	// will likely remove and replace with logic from getStory and pull storyName from that
-	public String getStoryName(String storyId) {
-
-		String url = "http://localhost:8080/find-story-name/{storyId}";
-
-		String response = rt.getForObject(url, String.class, storyId);
-
-		return response;
-
 	}
 	
 	public Story getStory(String storyId) {
@@ -133,8 +125,6 @@ public class AdventureDBService {
 			return scene;
 		}
 	
-
-
 		for(Scene s : scene.getChildList()) {
 				
 			int pathLength = getScenePathLength(s);
@@ -151,11 +141,11 @@ public class AdventureDBService {
 		int pathLength = 0;
 
 		// test
-	//	List<Scene> kidList = getScene(scene.getParentId()).getChildList();
+		List<Scene> kidList = getScene(scene.getParentId()).getChildList();
 
 		// will likely be changed to a call of the method within this class instead of repo
-		List<Scene> childList = sceneRepo.findByParentId(scene.getId());
-		scene.setChildList(childList);
+//		List<Scene> childList = sceneRepo.findByParentId(scene.getId());
+		scene.setChildList(kidList);
 		
 		if (scene.getChildList() == null) {
 
