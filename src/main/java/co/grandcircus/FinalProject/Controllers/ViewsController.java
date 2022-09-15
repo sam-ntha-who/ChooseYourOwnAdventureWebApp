@@ -72,11 +72,11 @@ public class ViewsController {
 		return "StoryEdit";
 	}
 
-	// api call needs to be done
+	// api call needs to be done for save
 	@RequestMapping("/save-scene")
 	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
 
-		Scene sceneToUpdate = sceneRepo.findById(parentId).orElseThrow(() -> new SceneNotFoundException(scene.getId()));
+		Scene sceneToUpdate = dbService.getScene(parentId);
 		List<Scene> listToUpdate;
 		if (sceneToUpdate.getChildList()== null) {
 			listToUpdate = new ArrayList<>();
@@ -84,17 +84,17 @@ public class ViewsController {
 			listToUpdate = sceneToUpdate.getChildList();
 		}
 
-		Story thisStory = storyRepo.findStoryById(sceneToUpdate.getStoryId());
+		Story thisStory = dbService.getStory(sceneToUpdate.getStoryId());
 
 		Scene newOption = new Scene();
 		newOption = new Scene(SceneID.createSceneID(thisStory, newOption,
-				sceneRepo.findById(scene.getParentId()).orElseThrow(() -> new SceneNotFoundException(scene.getId()))), 
+				dbService.getScene(scene.getParentId())), 
 				thisStory.getId(), sceneToUpdate.getParentId(), sceneToUpdate.getDescription(), newOption.getOption());
 
 		listToUpdate.add(newOption);
 		sceneToUpdate.setChildList(listToUpdate);
-	//	sceneRepo.save(sceneToUpdate);
-		dbService.saveScene(sceneToUpdate);
+		sceneRepo.save(sceneToUpdate);
+	//	dbService.saveScene(sceneToUpdate);
 
 		return "StoryEdit";
 
@@ -128,13 +128,13 @@ public class ViewsController {
 	}
 
 
-	// check api call for story first
+	// api call needs to be done for save
+	// all other api calls good to go
 	@RequestMapping("/deleteScene")
 	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
 		Scene parentScene = dbService.getScene(thisScene.getParentId());
-		// check this first
-		Story story = storyRepo.findById(thisScene.getStoryId()).orElseThrow(() -> new SceneNotFoundException(id));
+		Story story = dbService.getStory(thisScene.getStoryId());
 		List<Scene> optionsToChange = parentScene.getChildList();
 		optionsToChange.remove(Integer.parseInt(optionId));
 		parentScene.setChildList(optionsToChange);
@@ -252,10 +252,11 @@ public class ViewsController {
 	String storyNotFoundHandler(StoryNotFoundException ex) {
 		return ex.getMessage();
 	}
-	// needs to be tested
+	// save api call needs to be done
+	// other api call good to go
 	@PostMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
-		Scene sceneToUpdate = sceneRepo.findById(sceneId).orElseThrow(() -> new SceneNotFoundException(sceneId));
+		Scene sceneToUpdate = dbService.getScene(sceneId);
 		sceneToUpdate.setDescription(description);
 		sceneRepo.save(sceneToUpdate);
 		model.addAttribute("scene", sceneToUpdate);
