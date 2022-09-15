@@ -35,9 +35,8 @@ public class AdventureDBService {
 //	public Scene saveScene(Scene scene) {
 //		
 //		String url = "http://localhost:8080/save-scene";
-//		
 //		Scene response = rt.postForObject(url, rt, Scene.class, scene);
-//		
+//
 //		return response;
 //	}
 
@@ -58,9 +57,8 @@ public class AdventureDBService {
 		HttpEntity<Scene> httpEntity = new HttpEntity<>(scene, headers);
 
 		Scene response = rt.postForObject(url, httpEntity, Scene.class);
-		
 		return response;
-		
+				
 	}
 	
 	public Story saveStory(Story story) {

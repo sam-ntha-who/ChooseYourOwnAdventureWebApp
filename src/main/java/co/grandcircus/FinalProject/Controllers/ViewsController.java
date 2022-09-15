@@ -74,6 +74,7 @@ public class ViewsController {
 
 	// api service call needs to be checked for save? update instead maybe
 	// api service call needs to be made for get sceneid instead of repo - done but see if it works
+	
 	@RequestMapping("/save-scene")
 	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
 
@@ -251,12 +252,16 @@ public class ViewsController {
 	}
 	// save api call needs to be done
 	// other api call good to go
-	@PostMapping("/updateScene")
+	// seems to be creating a new scene thats essentially empty.
+	@RequestMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
-		Scene sceneToUpdate = dbService.getScene(sceneId);
-		sceneToUpdate.setDescription(description);
-		sceneRepo.save(sceneToUpdate);
-		model.addAttribute("scene", sceneToUpdate);
+		Scene scene = dbService.getScene(sceneId);
+		model.addAttribute("scene", scene);
+		scene.setDescription(description);
+		
+		dbService.saveScene(scene);
+	//	sceneRepo.save(sceneToUpdate);
+		
 		return "StoryPlay";
 	}
 

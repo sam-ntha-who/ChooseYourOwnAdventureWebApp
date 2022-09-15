@@ -53,6 +53,7 @@ public class AdventureApiController {
 			sceneRepo.insert(scene);
 		}
 	}
+
 	// Get list of stories
 	@GetMapping("/allStories")
 	public List<Story> getStories() {
@@ -96,7 +97,6 @@ public class AdventureApiController {
 
 	@PostMapping("/save-scene")
 	public Scene saveScene(Scene scene) {
-		
 		return sceneRepo.save(scene);
 		
 	}
