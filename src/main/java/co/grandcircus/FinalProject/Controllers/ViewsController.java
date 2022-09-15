@@ -50,19 +50,6 @@ public class ViewsController {
 		List<Story> storyList = Arrays.asList(list);
 		model.addAttribute("storyList", storyList);
 
-		List<Photo> thumbnailList1 = service.getPexels("Hike");
-		List<Photo> thumbnailList2 = service.getPexels("Story");
-		List<Photo> thumbnailList3 = service.getPexels("Question");
-
-		Photo thumbnail1 = thumbnailList1.get(0);
-		Photo thumbnail2 = thumbnailList2.get(0);
-		Photo thumbnail3 = thumbnailList3.get(0);
-
-		List<String> photoList = new ArrayList<>();
-		photoList.add(thumbnail1.getSrc().getOriginal());
-		photoList.add(thumbnail2.getSrc().getOriginal());
-		photoList.add(thumbnail3.getSrc().getOriginal());
-		model.addAttribute("photoList", photoList);
 		return "index";
 	}
 
@@ -187,7 +174,7 @@ public class ViewsController {
 
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription,
-			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice) {
+			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice, @RequestParam String photoUrl) {
 		// if no parentId then you are creating a new story and a new scene.
 		if (parentId == null) {
 			Story newStory = new Story(storyName);
@@ -201,7 +188,9 @@ public class ViewsController {
 
 			newStory.setStartingSceneId(sceneId);
 			newScene.setStoryTitle(storyName);
-
+			newStory.setPhotoUrl(service.getRandomTinyPhotoUrl(photoUrl));
+			newScene.setPhotoUrl(service.getRandomLandscapePhotoUrl(photoUrl));
+			
 			storyRepo.save(newStory);
 			sceneRepo.save(newScene);
 			// dbServices.save(newScene);
@@ -223,6 +212,8 @@ public class ViewsController {
 					sceneRepo.findById(scene.getId()).orElseThrow(() -> new SceneNotFoundException(scene.getId()))), 
 					thisStory.getId(), scene.getId(), sceneChoice, sceneDescription);
 			
+			newOption.setPhotoUrl(service.getRandomLandscapePhotoUrl(photoUrl));
+			newOption.setStoryTitle(storyName);
 		//	Option newOption = new Option(sceneChoice, SceneID.createSceneID(thisStory, new Scene(), scene));
 			addOptions.add(newOption);
 			scene.setChildList(addOptions);
@@ -240,15 +231,14 @@ public class ViewsController {
 
 	}
 
-	@RequestMapping("/test-pexel/{sceneId}")
-	public String randomName(Model model, @PathVariable("sceneId") String sceneId)
+	@RequestMapping("/test-pexel")
+	public String randomName(Model model)
 			throws URISyntaxException, IOException, InterruptedException {
-		List<Photo> response = service.getPexels("Tiger");
-		Scene test = dbService.getScene(sceneId);
-		String title = dbService.getStoryName(sceneId);
-		model.addAttribute("storyName", title);
-		model.addAttribute("scene", test);
-		model.addAttribute("response", response);
+		
+		String photo = service.getRandomTinyPhotoUrl("asdfkjhalkjherfkjlhio3e89743");
+		
+		model.addAttribute("photo", photo);
+
 		return "testing";
 	}
 

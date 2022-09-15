@@ -11,6 +11,7 @@ public class Story {
 	private String id;
 	private String title;
 	private String startingSceneId;
+	private String photoUrl;
 
 	//constructors
 	public Story() {
@@ -22,6 +23,14 @@ public class Story {
 	}
 		
 	//getters and setters
+	
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+	
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
+	}
 	public String getId() {
 		return id;
 	}
