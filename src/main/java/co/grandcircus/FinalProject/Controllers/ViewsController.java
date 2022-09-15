@@ -63,9 +63,7 @@ public class ViewsController {
 		return "StoryEdit";
 	}
 
-	// api service call needs to be checked for save? update instead maybe
-	// api service call needs to be made for get sceneid instead of repo - done but see if it works
-	
+	// api call good to go
 	@RequestMapping("/saveScene")
 	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
 
@@ -86,7 +84,7 @@ public class ViewsController {
 
 		listToUpdate.add(newOption);
 		sceneToUpdate.setChildList(listToUpdate);
-
+		dbService.saveScene(sceneToUpdate);
 		dbService.saveScene(newOption);
 
 		return "StoryEdit";
@@ -120,9 +118,7 @@ public class ViewsController {
 		return "index";
 	}
 
-
-	// api call needs to be done for save
-	// all other api calls good to go
+	// all api calls good to go
 	@RequestMapping("/deleteScene")
 	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
@@ -155,8 +151,7 @@ public class ViewsController {
 		return "AddScene";
 	}
 
-	// api call is needs to be done for save scene/story
-	// all other api calls good to go
+	// all api calls good to go
 	// create story + starting scene
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription,
@@ -238,9 +233,8 @@ public class ViewsController {
 	String storyNotFoundHandler(StoryNotFoundException ex) {
 		return ex.getMessage();
 	}
-	// save api call needs to be done
-	// other api call good to go
-	// seems to be creating a new scene thats essentially empty.
+
+	// api call good to go
 	@RequestMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
 		Scene scene = dbService.getScene(sceneId);

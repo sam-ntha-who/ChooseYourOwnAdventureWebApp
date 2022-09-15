@@ -63,7 +63,7 @@ public class AdventureApiController {
 	// get a single story
 	@GetMapping("story/{storyId}")
 	public Story getStory(@PathVariable String storyId) {
-		return storyRepo.findStoryById(storyId);
+		return storyRepo.findById(storyId).orElseThrow(() -> new StoryNotFoundException(storyId));
 	}
 	
 	
@@ -163,7 +163,7 @@ public class AdventureApiController {
 	}
 	
 	// reset data
-	// this needs to be in its own class
+	// pretty much depricated at this point
 	@GetMapping("/reset")
 	public String reset() {
 
