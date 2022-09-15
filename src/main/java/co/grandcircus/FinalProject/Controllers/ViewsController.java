@@ -124,9 +124,28 @@ public class ViewsController {
 	// no longer need to call directly
 	@RequestMapping("/deleteStory")
 	public String storyDelete(Model model, @RequestParam String id) {
+		
 		dbService.deleteStory(id);
-		model.addAttribute("type", "Story");
-		return "StoryDeleted";
+		//model.addAttribute("type", "Story");
+		Story[] list = dbService.getAllStories();
+		List<Story> storyList = Arrays.asList(list);
+		model.addAttribute("storyList", storyList);
+
+		List<Photo> thumbnailList1 = service.getPexels("Hike");
+		List<Photo> thumbnailList2 = service.getPexels("Story");
+		List<Photo> thumbnailList3 = service.getPexels("Question");
+
+		Photo thumbnail1 = thumbnailList1.get(0);
+		Photo thumbnail2 = thumbnailList2.get(0);
+		Photo thumbnail3 = thumbnailList3.get(0);
+
+		List<String> photoList = new ArrayList<>();
+		photoList.add(thumbnail1.getSrc().getOriginal());
+		photoList.add(thumbnail2.getSrc().getOriginal());
+		photoList.add(thumbnail3.getSrc().getOriginal());
+		model.addAttribute("photoList", photoList);
+		
+		return "index";
 	}
 
 	// this will wind up in story edit jsp
@@ -135,14 +154,18 @@ public class ViewsController {
 	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
 		Scene parentScene = dbService.getScene(thisScene.getParentId());
+		Story story = storyRepo.findById(thisScene.getStoryId()).orElseThrow(() -> new SceneNotFoundException(id));
 		List<Scene> optionsToChange = parentScene.getChildList();
 //		List<Option> optionsToChange = parentScene.getOptions();
 		optionsToChange.remove(Integer.parseInt(optionId));
 		parentScene.setChildList(optionsToChange);
 		sceneRepo.save(parentScene);
 		dbService.deleteScene(id);
-		model.addAttribute("type", "Scene");
-		return "StoryDeleted";
+		//model.addAttribute("type", "Scene");
+		model.addAttribute("storyTitle", story.getTitle());
+		model.addAttribute("scene", parentScene);
+		
+		return "StoryEdit";
 	}
 
 

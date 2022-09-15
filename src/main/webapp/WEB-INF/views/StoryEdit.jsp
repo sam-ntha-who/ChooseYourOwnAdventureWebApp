@@ -46,7 +46,7 @@
 			
 			<div class="option">
 				${child.option} <br> <a
-					href="/deleteScene?id=${child.id}&optionId=${status.index}"><br><br><button
+					href="/deleteScene?id=${child.id}&optionId=${status.index}"  onclick="return confirm('Are you Sure?')"><br><br><button
 						type="button" class="button-primary">Delete</button></a>
 			</div><br>
 		</c:forEach>
