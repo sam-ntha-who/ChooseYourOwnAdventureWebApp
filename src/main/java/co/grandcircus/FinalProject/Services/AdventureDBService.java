@@ -58,11 +58,7 @@ public class AdventureDBService {
 		try {
 			URI uri = new URI(url);
 		} catch (URISyntaxException e) {
-<<<<<<< HEAD
-			
-=======
-	
->>>>>>> deletePopUp
+
 			e.printStackTrace();
 		}
 	
