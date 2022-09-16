@@ -30,7 +30,7 @@ public class AdventureDBService {
 
 	public Scene saveScene(Scene scene) {
 		
-		String url = "http://localhost:8080/save-scene";
+		String url = "http://localhost:8081/save-scene";
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -51,7 +51,7 @@ public class AdventureDBService {
 	
 	public Story saveStory(Story story) {
 		
-		String url = "http://localhost:8080/save-story";
+		String url = "http://localhost:8081/save-story";
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -71,7 +71,7 @@ public class AdventureDBService {
 	
 	public Scene getScene(String id) {
 
-		String url = "http://localhost:8080/read-scene/{id}";
+		String url = "http://localhost:8081/read-scene/{id}";
 
 		Scene response = rt.getForObject(url, Scene.class, id);
 
@@ -80,7 +80,7 @@ public class AdventureDBService {
 	
 	public Story getStory(String storyId) {
 
-		String url = "http://localhost:8080/story/{storyId}";
+		String url = "http://localhost:8081/story/{storyId}";
 
 		Story response = rt.getForObject(url, Story.class, storyId);
 
@@ -89,7 +89,7 @@ public class AdventureDBService {
 
 	public Story[] getAllStories() {
 
-		String url = "http://localhost:8080/allStories";
+		String url = "http://localhost:8081/allStories";
 
 		Story[] response = rt.getForObject(url, Story[].class);
 
@@ -98,7 +98,7 @@ public class AdventureDBService {
 
 	public void deleteScene(String id) {
 
-		String url = "http://localhost:8080/delete-scene-tree/";
+		String url = "http://localhost:8081/delete-scene-tree/";
 		HttpRequest httpRequest = HttpRequest.newBuilder().DELETE().uri(URI.create(url + id)).build();
 
 		rt.delete(httpRequest.uri());
@@ -107,7 +107,7 @@ public class AdventureDBService {
 
 	public void deleteStory(String id) {
 
-		String url = "http://localhost:8080/delete-story/";
+		String url = "http://localhost:8081/delete-story/";
 
 		HttpRequest httpRequest = HttpRequest.newBuilder().DELETE().uri(URI.create(url + id)).build();
 
