@@ -25,6 +25,10 @@
 	<div class="options">
 	<c:forEach items="${scene.childList}" var="child">
 	${child.pathLength}
+	<c:if test="${child.longest != child.shortest}">
+	<c:if test ="${child.longest == true}" >Longest </c:if>
+	<c:if test ="${child.shortest == true}" >Shortest </c:if>
+	</c:if>
 	<div class="option"><br>
 	<a href="play?id=${child.id}">
 	${child.option}</a>

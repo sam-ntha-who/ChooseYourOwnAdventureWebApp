@@ -107,8 +107,13 @@ public class AdventureDBService {
 //			System.out.println(s);
 		
 			int pathLength = getScenePathLength(s);
-			
 			s.setPathLength(pathLength);
+			//boolean pathlenght test
+			
+			setPathBool(scene.getChildList());
+			
+			
+			
 //			//testing
 //			System.out.println("path length from setPathLength " + s.getPathLength());
 		}
@@ -137,6 +142,33 @@ public class AdventureDBService {
 		}
 
 		return pathLength + 1;
+	}
+	//path boolean method
+	
+	private static void setPathBool(List<Scene> childList) {
+		for(Scene s : childList) {
+			s.setLongest(false);
+			s.setShortest(false);
+		}
+		Scene shortest = childList.get(0);
+		Scene longest = childList.get(0);
+		for(Scene s : childList) {
+			if(shortest.getPathLength() > s.getPathLength()) {
+				shortest = s;
+			}
+			if(longest.getPathLength() < s.getPathLength()) {
+				longest = s;
+			}
+		}
+		for(Scene s : childList) {
+			if(shortest.getPathLength() == s.getPathLength()) {
+				s.setShortest(true);
+			}
+			if(longest.getPathLength() == s.getPathLength()) {
+				s.setLongest(true);
+			}
+		}
+		
 	}
 
 
