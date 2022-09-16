@@ -1,0 +1,142 @@
+package co.grandcircus.FinalProject.Services;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+@Service
+public class WordService {
+
+	@Value("${apiKey2}")
+	private String apiKey;
+
+	private RestTemplate restTemplate = new RestTemplate();
+
+	public String getExtractedKeywords(String text) {
+		
+		//build HttpEntity
+		String url = "https://twinword-topic-tagging.p.rapidapi.com/generate/?text={text}";
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("X-RapidAPI-Key", apiKey);
+		headers.set("X-RapidAPI-Host", "twinword-topic-tagging.p.rapidapi.com");
+
+		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+		
+		//use HttpEntity in restTemplate response and return as JsonNode
+		JsonNode jsonResponse = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+				JsonNode.class, text).getBody(); // this is a key-value list of all properties for this object
+		
+		// map JSON response ('topic' of key-value pairs) to a Map<String, Double>
+		// 'topic' is a map of words that most closely relate to the input text and a score (Double)
+		// of how well those topics relate to the overall text meaning.
+		// additional logic can be added to better use this score, for now, we'll use the top-scoring topic.
+		ObjectMapper topicMapper = new ObjectMapper();
+		Map<String, Double> topicsMap = topicMapper.convertValue(jsonResponse.get("topic"),
+				new TypeReference<Map<String, Double>>() {});
+		
+		// map JSON response ('keyword' of key-value pairs) to a Map<String, Intger>
+		// 'keyword' is a map of words and their frequency (Integer) in the text
+		ObjectMapper keywordMapper = new ObjectMapper();
+		Map<String, Integer> keywordsMap = keywordMapper.convertValue(jsonResponse.get("keyword"),
+				new TypeReference<Map<String, Integer>>() {});
+		
+		// convert key in the first key-value pair in topicsMap to a string
+		Map.Entry<String, Double> topicsMapEntry1 = topicsMap.entrySet().iterator().next();
+		String mainTopic = topicsMapEntry1.getKey();
+		
+		// convert key in the first 2 key-value pairs in keywordsMap to a string
+		List<Entry<String, Integer>> keywordsMapEntry1and2 = keywordsMap.entrySet()
+		        .stream()
+		        .limit(2)
+		        .collect(Collectors.toList());
+		
+		// build extractedKeywords
+		String extractedKeywords = topicsMapEntry1.getKey() + " "
+				+ keywordsMapEntry1and2.get(0).getKey() + " "
+				+ keywordsMapEntry1and2.get(1).getKey();
+		
+		return extractedKeywords;
+	}
+	
+	
+//	public Map<String, Double> thingie(String text) {
+//		
+//		String url = "https://twinword-topic-tagging.p.rapidapi.com/generate/?text={text}";
+//
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.set("X-RapidAPI-Key", apiKey);
+//		headers.set("X-RapidAPI-Host", "twinword-topic-tagging.p.rapidapi.com");
+//
+//		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+//
+////		ResponseEntity<JsonNode> result = restTemplate.getForEntity(url, JsonNode.class, text);
+////		ResponseEntity<JsonNode> e = restTemplate.getForEntity(API_URL, JsonNode.class);
+//		JsonNode jsonResponse = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+//				JsonNode.class, text).getBody();
+//		
+////		ResponseEntity<JsonNode> result = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+////				JsonNode.class, text);
+////		
+////		JsonNode map = result.getBody(); // this is a key-value list of all properties for this object
+//		//test
+//		System.out.println(jsonResponse);
+//
+//		ObjectMapper mapper = new ObjectMapper();
+//		Map<String, Double> topics = mapper.convertValue(jsonResponse.get("topic"),
+//				new TypeReference<Map<String, Double>>() {});
+//		//test
+//		System.out.println(topics);
+//		return topics;
+//	}
+//
+//	public WordResponse getWordResponse(String text) {
+//
+//		String url = "https://twinword-topic-tagging.p.rapidapi.com/generate/?text={text}";
+//
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.set("X-RapidAPI-Key", apiKey);
+//		headers.set("X-RapidAPI-Host", "twinword-topic-tagging.p.rapidapi.com");
+//
+//		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+//
+//		ResponseEntity<WordResponse> result = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+//				WordResponse.class, text);
+//		// testing map
+//
+//		System.out.println(result.getBody().toString());
+//
+//		return result.getBody();
+//
+//	}
+//
+//	public String getKeywords(String text) {
+//
+//		String url = "https://twinword-topic-tagging.p.rapidapi.com/generate/?text={text}";
+//
+//		HttpHeaders headers = new HttpHeaders();
+//		headers.set("X-RapidAPI-Key", apiKey);
+//		headers.set("X-RapidAPI-Host", "twinword-topic-tagging.p.rapidapi.com");
+//
+//		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+//
+//		ResponseEntity<WordResponse> result = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+//				WordResponse.class, text);
+//		System.out.println(result.getBody().toString());
+//
+//		return null;
+//
+//	}
+}

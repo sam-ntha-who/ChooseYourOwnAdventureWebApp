@@ -10,7 +10,9 @@
 </head>
 <body>
 
-<img alt="" src="${ photo }">
+Keyword
+${keywords}
+
 
 
 
