@@ -38,7 +38,7 @@ public class AdventureDBService {
 		try {
 			URI uri = new URI(url);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 	
@@ -59,7 +59,7 @@ public class AdventureDBService {
 		try {
 			URI uri = new URI(url);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	
@@ -115,6 +115,7 @@ public class AdventureDBService {
 
 	}
 
+	// can this be moved out of the api service
 	public Scene setPathLength(Scene scene) {
 
 		if (scene.getChildList() == null) {
@@ -131,7 +132,7 @@ public class AdventureDBService {
 		
 		return scene;
 	}
-
+	// could the path functionality move out of the controller while keeping the tree function?
 	private int getScenePathLength(Scene scene) {
 
 		int pathLength = 0;
@@ -144,7 +145,6 @@ public class AdventureDBService {
 			return pathLength;
 		}
 
-		
 		for (Scene s : scene.getChildList()) {
 
 			pathLength = Math.max(pathLength, getScenePathLength(s));

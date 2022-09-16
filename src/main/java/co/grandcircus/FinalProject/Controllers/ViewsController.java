@@ -35,7 +35,6 @@ public class ViewsController {
 	@Autowired
 	AdventureDBService dbService;
 
-	// api call good to go
 	@RequestMapping("/")
 	public String index(Model model) {
 		Story[] list = dbService.getAllStories();
@@ -45,7 +44,6 @@ public class ViewsController {
 		return "index";
 	}
 
-	// api call good to go - all repo calls converted
 	@RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
 		Scene nextScene = dbService.getScene(id);
@@ -53,7 +51,7 @@ public class ViewsController {
 		return "StoryPlay";
 	}
 
-	// api call good to go - all repo calls converted
+
 	@RequestMapping("/edit")
 	public String storyEdit(Model model, @RequestParam String sceneId) {
 		Scene editScene = dbService.getScene(sceneId);
@@ -63,7 +61,7 @@ public class ViewsController {
 		return "StoryEdit";
 	}
 
-	// api call good to go
+
 	@RequestMapping("/saveScene")
 	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
 
@@ -91,7 +89,6 @@ public class ViewsController {
 
 	}
 
-	// api call good to go - all repo calls converted
 	@RequestMapping("/deleteStory")
 	public String storyDelete(Model model, @RequestParam String id) {
 		
@@ -104,7 +101,6 @@ public class ViewsController {
 		return "index";
 	}
 
-	// all api calls good to go
 	@RequestMapping("/deleteScene")
 	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
@@ -122,7 +118,6 @@ public class ViewsController {
 		return "StoryEdit";
 	}
 
-	// api call good to go - all repo calls converted
 	@RequestMapping("/addScene")
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
 		if (id != null) {
@@ -137,7 +132,6 @@ public class ViewsController {
 		return "AddScene";
 	}
 
-	// all api calls good to go
 	// create story + starting scene
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription,
@@ -204,8 +198,6 @@ public class ViewsController {
 		return "testing";
 	}
 
-
-	// Error Handling
 	@ResponseBody
 	@ExceptionHandler(SceneNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
@@ -220,7 +212,6 @@ public class ViewsController {
 		return ex.getMessage();
 	}
 
-	// api call good to go
 	@RequestMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
 		Scene scene = dbService.getScene(sceneId);
@@ -228,7 +219,6 @@ public class ViewsController {
 		scene.setDescription(description);
 		
 		dbService.saveScene(scene);
-	//	sceneRepo.save(sceneToUpdate);
 		
 		return "StoryPlay";
 	}
