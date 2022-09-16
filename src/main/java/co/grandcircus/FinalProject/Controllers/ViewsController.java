@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -25,6 +24,7 @@ import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
 import co.grandcircus.FinalProject.Services.AdventureDBService;
 import co.grandcircus.FinalProject.Services.PexelService;
+import co.grandcircus.FinalProject.Services.WordService;
 
 @Controller
 public class ViewsController {
@@ -34,6 +34,9 @@ public class ViewsController {
 
 	@Autowired
 	AdventureDBService dbService;
+	
+	@Autowired
+	WordService wordService;
 
 	@RequestMapping("/")
 	public String index(Model model) {
@@ -188,12 +191,32 @@ public class ViewsController {
 	}
 
 	@RequestMapping("/test-pexel")
-	public String randomName(Model model)
+	public String randomName(Model model, @RequestParam String text)
 			throws URISyntaxException, IOException, InterruptedException {
+
+
+		String keywords = wordService.getExtractedKeywords(text);
 		
-		String photo = service.getRandomTinyPhotoUrl("asdfkjhalkjherfkjlhio3e89743");
+		model.addAttribute("keywords", keywords);
 		
-		model.addAttribute("photo", photo);
+//		WordResponse responseMap = wordService.getWordResponse(text);
+//		//test
+//		System.out.println("WordResponse **************************");
+//		
+//		ArrayList<String> stringList = new ArrayList<>();
+//	    Iterator<Map.Entry<String, Integer>> iterator = responseMap.getKeywordMap().entrySet().iterator();
+//	    
+//	    while (iterator.hasNext()) {
+//	        Map.Entry<String, Integer> entry = iterator.next();
+//	        System.out.println(entry.getKey() + ":" + entry.getValue());
+//	        stringList.add(entry.getKey());
+//	    }
+//		
+//	  //test
+//	  		System.out.println("End of while **************************");
+//	    String response = stringList.toString();
+//	    
+//		model.addAttribute("response", response);
 
 		return "testing";
 	}
