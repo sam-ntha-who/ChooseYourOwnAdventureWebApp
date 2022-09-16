@@ -61,34 +61,6 @@ public class ViewsController {
 		return "StoryEdit";
 	}
 
-
-	@RequestMapping("/saveScene")
-	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
-
-		Scene sceneToUpdate = dbService.getScene(parentId);
-		List<Scene> listToUpdate;
-		if (sceneToUpdate.getChildList()== null) {
-			listToUpdate = new ArrayList<>();
-		} else {
-			listToUpdate = sceneToUpdate.getChildList();
-		}
-
-		Story thisStory = dbService.getStory(sceneToUpdate.getStoryId());
-
-		Scene newOption = new Scene();
-		newOption = new Scene(SceneID.createSceneID(thisStory, newOption,
-				dbService.getScene(scene.getParentId())), 
-				thisStory.getId(), sceneToUpdate.getParentId(), sceneToUpdate.getDescription(), newOption.getOption());
-
-		listToUpdate.add(newOption);
-		sceneToUpdate.setChildList(listToUpdate);
-		dbService.saveScene(sceneToUpdate);
-		dbService.saveScene(newOption);
-
-		return "StoryEdit";
-
-	}
-
 	@RequestMapping("/deleteStory")
 	public String storyDelete(Model model, @RequestParam String id) {
 		
@@ -175,8 +147,7 @@ public class ViewsController {
 			newOption.setStoryTitle(storyName);
 			addOptions.add(newOption);
 			scene.setChildList(addOptions);
-			// still need to test further
-
+	
 			dbService.saveScene(scene);
 			dbService.saveScene(newOption);
 			model.addAttribute("scene", scene);
