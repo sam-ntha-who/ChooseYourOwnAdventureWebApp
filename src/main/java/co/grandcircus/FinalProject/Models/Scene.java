@@ -23,7 +23,7 @@ public class Scene{
 	// photo url
 	private String photoUrl;
 	// scene tree
-	List<Scene> childList;
+	private List<Scene> childList;
 	// for the DB this may need to wind up being Integer v int	
 	private int pathLength;
 	// bool for pathLength

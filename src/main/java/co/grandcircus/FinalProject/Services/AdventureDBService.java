@@ -1,19 +1,23 @@
 package co.grandcircus.FinalProject.Services;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
-
 import co.grandcircus.FinalProject.Controllers.SceneNotFoundException;
+import co.grandcircus.FinalProject.Controllers.StoryNotFoundException;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
 import co.grandcircus.FinalProject.Repositories.SceneRepository;
@@ -21,8 +25,6 @@ import co.grandcircus.FinalProject.Repositories.SceneRepository;
 @Service
 public class AdventureDBService {
 
-	@Autowired
-	SceneRepository sceneRepo;
 
 	private RestTemplate rt = new RestTemplate();
 
@@ -30,8 +32,40 @@ public class AdventureDBService {
 		
 		String url = "http://localhost:8080/save-scene";
 		
-		Scene response = rt.postForObject(url, rt, Scene.class, scene);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		try {
+			URI uri = new URI(url);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		HttpEntity<Scene> httpEntity = new HttpEntity<>(scene, headers);
+
+		Scene response = rt.postForObject(url, httpEntity, Scene.class);
+		return response;
+				
+	}
+	
+	public Story saveStory(Story story) {
 		
+		String url = "http://localhost:8080/save-story";
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		try {
+			URI uri = new URI(url);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		HttpEntity<Story> httpEntity = new HttpEntity<>(story, headers);
+
+		Story response = rt.postForObject(url, httpEntity, Story.class);
 		return response;
 	}
 	
@@ -43,19 +77,14 @@ public class AdventureDBService {
 
 		return setPathLength(response);
 	}
-
-//	public Story getStory(String sceneId) {
-//	String url = "http://localhost:8080/";
-//}
 	
-	public String getStoryName(String storyId) {
+	public Story getStory(String storyId) {
 
-		String url = "http://localhost:8080/find-story-name/{storyId}";
+		String url = "http://localhost:8080/story/{storyId}";
 
-		String response = rt.getForObject(url, String.class, storyId);
+		Story response = rt.getForObject(url, Story.class, storyId);
 
 		return response;
-
 	}
 
 	public Story[] getAllStories() {
@@ -86,26 +115,14 @@ public class AdventureDBService {
 
 	}
 
-//	public void saveScene(Scene scene) {
-//		String url = "http://localhost:8080/save-scene/";
-//		
-//		rt.postForEntity(url, scene, null, null);
-//	
-//	}
-
 	public Scene setPathLength(Scene scene) {
 
 		if (scene.getChildList() == null) {
 			return scene;
 		}
 	
-
-
 		for(Scene s : scene.getChildList()) {
-			
-//			//testing
-//			System.out.println(s);
-		
+				
 			int pathLength = getScenePathLength(s);
 			s.setPathLength(pathLength);
 			//boolean pathlenght test
@@ -122,22 +139,20 @@ public class AdventureDBService {
 	}
 
 	private int getScenePathLength(Scene scene) {
-//		//testing
-//		System.out.println("getScenePathLength method runs...I promise");
+
 		int pathLength = 0;
-		List<Scene> childList = sceneRepo.findByParentId(scene.getId());
+
+		List<Scene> childList = getScene(scene.getId()).getChildList();
 		scene.setChildList(childList);
 		
 		if (scene.getChildList() == null) {
-//			//testing
-//			System.out.println("childless yo!");
+
 			return pathLength;
 		}
 
 		
 		for (Scene s : scene.getChildList()) {
-//			//testing
-//			System.out.println("Pathlength is currently "+ pathLength);
+
 			pathLength = Math.max(pathLength, getScenePathLength(s));
 		}
 
@@ -170,15 +185,5 @@ public class AdventureDBService {
 		}
 		
 	}
-
-
-	// Error Handling
-	@ResponseBody
-	@ExceptionHandler(SceneNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	String sceneNotFoundHandler(SceneNotFoundException ex) {
-		return ex.getMessage();
-	}
-
 
 }
