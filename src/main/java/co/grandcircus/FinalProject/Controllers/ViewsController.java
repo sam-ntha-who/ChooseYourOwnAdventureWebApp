@@ -192,19 +192,6 @@ public class ViewsController {
 		return "testing";
 	}
 
-	@ResponseBody
-	@ExceptionHandler(SceneNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	String sceneNotFoundHandler(SceneNotFoundException ex) {
-		return ex.getMessage();
-	}
-
-	@ResponseBody
-	@ExceptionHandler(StoryNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	String storyNotFoundHandler(StoryNotFoundException ex) {
-		return ex.getMessage();
-	}
 
 	@RequestMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {

@@ -5,22 +5,16 @@ import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
-import co.grandcircus.FinalProject.Controllers.SceneNotFoundException;
-import co.grandcircus.FinalProject.Controllers.StoryNotFoundException;
+
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
-import co.grandcircus.FinalProject.Repositories.SceneRepository;
+
 
 @Service
 public class AdventureDBService {
@@ -34,12 +28,6 @@ public class AdventureDBService {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		try {
-			URI uri = new URI(url);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
 	
 		HttpEntity<Scene> httpEntity = new HttpEntity<>(scene, headers);
 
@@ -54,13 +42,6 @@ public class AdventureDBService {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-
-		try {
-			URI uri = new URI(url);
-		} catch (URISyntaxException e) {
-
-			e.printStackTrace();
-		}
 	
 		HttpEntity<Story> httpEntity = new HttpEntity<>(story, headers);
 
@@ -125,14 +106,10 @@ public class AdventureDBService {
 				
 			int pathLength = getScenePathLength(s);
 			s.setPathLength(pathLength);
-			//boolean pathlenght test
+
 			
 			setPathBool(scene.getChildList());
-			
-			
-			
-//			//testing
-//			System.out.println("path length from setPathLength " + s.getPathLength());
+
 		}
 		
 		return scene;
