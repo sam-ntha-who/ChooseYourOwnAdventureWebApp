@@ -53,20 +53,21 @@ public class WordService {
 		Map<String, Integer> keywordsMap = keywordMapper.convertValue(jsonResponse.get("keyword"),
 				new TypeReference<Map<String, Integer>>() {});
 		
-		// convert key in the first key-value pair in topicsMap to a string
-		Map.Entry<String, Double> topicsMapEntry1 = topicsMap.entrySet().iterator().next();
-		String mainTopic = topicsMapEntry1.getKey();
+		// convert key-value maps to List of map Entry
+		List<Entry<String, Double>> topicsEntryList = topicsMap.entrySet()
+		        .stream()
+		        .limit(2)
+		        .collect(Collectors.toList());
 		
-		// convert key in the first 2 key-value pairs in keywordsMap to a string
-		List<Entry<String, Integer>> keywordsMapEntry1and2 = keywordsMap.entrySet()
+		List<Entry<String, Integer>> keywordsEntryList = keywordsMap.entrySet()
 		        .stream()
 		        .limit(2)
 		        .collect(Collectors.toList());
 		
 		// build extractedKeywords
-		String extractedKeywords = topicsMapEntry1.getKey() + " "
-				+ keywordsMapEntry1and2.get(0).getKey() + " "
-				+ keywordsMapEntry1and2.get(1).getKey();
+		String extractedKeywords = topicsEntryList.get(0).getKey() + " "
+				+ keywordsEntryList.get(0).getKey() + " "
+				+ keywordsEntryList.get(1).getKey();
 		
 		return extractedKeywords;
 	}
