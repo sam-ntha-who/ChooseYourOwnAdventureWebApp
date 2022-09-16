@@ -1,7 +1,6 @@
 package co.grandcircus.FinalProject.Services;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpRequest;
 import java.util.List;
 
