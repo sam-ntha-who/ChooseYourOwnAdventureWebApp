@@ -50,8 +50,7 @@ public class ViewsController {
 		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
-
-
+	
 	@RequestMapping("/edit")
 	public String storyEdit(Model model, @RequestParam String sceneId) {
 		Scene editScene = dbService.getScene(sceneId);
@@ -168,7 +167,6 @@ public class ViewsController {
 
 		return "testing";
 	}
-
 
 	@RequestMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
