@@ -16,16 +16,32 @@
 	<br>
 	<div class="story-body"><br>${scene.description}<br></div>
 
-	<div class="story-body">
-		<c:if test="${scene.childList == null}">
-	<h2><br>The end<br></h2><br>
-	</c:if>
-	</div><br>
+	
+	<center><br><br>
+	<c:if test = "${scene.childList == null}">
+	The end
+	</c:if><br><br>
+	</center>
+	<!-- this is causing a lot of trouble up here, moved it down to the options display -->
+<!-- 	<div class="options"> -->
+<%-- 	<c:forEach items="${scene.childList}" var="child">
+	${child.pathLength}
+	<c:if test="${child.longest != child.shortest}">
+	<c:if test ="${child.longest == true}" >Longest </c:if>
+	<c:if test ="${child.shortest == true}" >Shortest </c:if></c:if>
+	</c:forEach> --%>
+<!-- 	<div class="option"><br> -->
+<%-- 	<a href="play?id=${child.id}">
+	${child.option}</a>
+	</div><br> --%>
 
 	<div class="options">
 
 			<c:forEach items="${scene.childList}" var="child">
-					${child.pathLength}
+					<%-- ${child.pathLength} --%>
+	<c:if test="${child.longest != child.shortest}">
+	<c:if test ="${child.longest == true}" >Possible Longest Path</c:if>
+	<c:if test ="${child.shortest == true}" >Possible Shortest Path</c:if></c:if>
 					<div class="option">
 						<br> <a href="play?id=${child.id}"> ${child.option}</a>
 					</div>

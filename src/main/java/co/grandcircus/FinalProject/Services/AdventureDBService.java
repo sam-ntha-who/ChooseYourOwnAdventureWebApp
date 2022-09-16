@@ -30,7 +30,7 @@ public class AdventureDBService {
 
 	public Scene saveScene(Scene scene) {
 		
-		String url = "http://localhost:8080/save-scene";
+		String url = "http://localhost:8081/save-scene";
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -38,7 +38,6 @@ public class AdventureDBService {
 		try {
 			URI uri = new URI(url);
 		} catch (URISyntaxException e) {
-		
 			e.printStackTrace();
 		}
 	
@@ -51,7 +50,7 @@ public class AdventureDBService {
 	
 	public Story saveStory(Story story) {
 		
-		String url = "http://localhost:8080/save-story";
+		String url = "http://localhost:8081/save-story";
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -59,7 +58,11 @@ public class AdventureDBService {
 		try {
 			URI uri = new URI(url);
 		} catch (URISyntaxException e) {
+<<<<<<< HEAD
 			
+=======
+	
+>>>>>>> deletePopUp
 			e.printStackTrace();
 		}
 	
@@ -71,7 +74,7 @@ public class AdventureDBService {
 	
 	public Scene getScene(String id) {
 
-		String url = "http://localhost:8080/read-scene/{id}";
+		String url = "http://localhost:8081/read-scene/{id}";
 
 		Scene response = rt.getForObject(url, Scene.class, id);
 
@@ -80,7 +83,7 @@ public class AdventureDBService {
 	
 	public Story getStory(String storyId) {
 
-		String url = "http://localhost:8080/story/{storyId}";
+		String url = "http://localhost:8081/story/{storyId}";
 
 		Story response = rt.getForObject(url, Story.class, storyId);
 
@@ -89,7 +92,7 @@ public class AdventureDBService {
 
 	public Story[] getAllStories() {
 
-		String url = "http://localhost:8080/allStories";
+		String url = "http://localhost:8081/allStories";
 
 		Story[] response = rt.getForObject(url, Story[].class);
 
@@ -98,7 +101,7 @@ public class AdventureDBService {
 
 	public void deleteScene(String id) {
 
-		String url = "http://localhost:8080/delete-scene-tree/";
+		String url = "http://localhost:8081/delete-scene-tree/";
 		HttpRequest httpRequest = HttpRequest.newBuilder().DELETE().uri(URI.create(url + id)).build();
 
 		rt.delete(httpRequest.uri());
@@ -107,7 +110,7 @@ public class AdventureDBService {
 
 	public void deleteStory(String id) {
 
-		String url = "http://localhost:8080/delete-story/";
+		String url = "http://localhost:8081/delete-story/";
 
 		HttpRequest httpRequest = HttpRequest.newBuilder().DELETE().uri(URI.create(url + id)).build();
 
@@ -125,9 +128,15 @@ public class AdventureDBService {
 		for(Scene s : scene.getChildList()) {
 				
 			int pathLength = getScenePathLength(s);
-			
 			s.setPathLength(pathLength);
-
+			//boolean pathlenght test
+			
+			setPathBool(scene.getChildList());
+			
+			
+			
+//			//testing
+//			System.out.println("path length from setPathLength " + s.getPathLength());
 		}
 		
 		return scene;
@@ -151,6 +160,33 @@ public class AdventureDBService {
 		}
 
 		return pathLength + 1;
+	}
+	//path boolean method
+	
+	private static void setPathBool(List<Scene> childList) {
+		for(Scene s : childList) {
+			s.setLongest(false);
+			s.setShortest(false);
+		}
+		Scene shortest = childList.get(0);
+		Scene longest = childList.get(0);
+		for(Scene s : childList) {
+			if(shortest.getPathLength() > s.getPathLength()) {
+				shortest = s;
+			}
+			if(longest.getPathLength() < s.getPathLength()) {
+				longest = s;
+			}
+		}
+		for(Scene s : childList) {
+			if(shortest.getPathLength() == s.getPathLength()) {
+				s.setShortest(true);
+			}
+			if(longest.getPathLength() == s.getPathLength()) {
+				s.setLongest(true);
+			}
+		}
+		
 	}
 
 }

@@ -26,6 +26,26 @@ public class Scene{
 	private List<Scene> childList;
 	// for the DB this may need to wind up being Integer v int	
 	private int pathLength;
+	// bool for pathLength
+	boolean shortest;
+	boolean longest;
+	
+	public boolean isShortest() {
+		return shortest;
+	}
+
+	public void setShortest(boolean shortest) {
+		this.shortest = shortest;
+	}
+
+	public boolean isLongest() {
+		return longest;
+	}
+
+	public void setLongest(boolean longest) {
+		this.longest = longest;
+	}
+
 	
 	
 //	
