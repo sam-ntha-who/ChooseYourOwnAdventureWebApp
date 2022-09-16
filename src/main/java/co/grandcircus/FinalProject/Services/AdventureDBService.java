@@ -38,7 +38,7 @@ public class AdventureDBService {
 		try {
 			URI uri = new URI(url);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 	
@@ -59,7 +59,7 @@ public class AdventureDBService {
 		try {
 			URI uri = new URI(url);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		}
 	
