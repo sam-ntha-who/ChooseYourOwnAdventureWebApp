@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,20 +22,12 @@ import co.grandcircus.FinalProject.HelperFunctions.StoryID;
 import co.grandcircus.FinalProject.Models.Photo;
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
-import co.grandcircus.FinalProject.Repositories.SceneRepository;
-import co.grandcircus.FinalProject.Repositories.StoryRepository;
 import co.grandcircus.FinalProject.Services.AdventureDBService;
 import co.grandcircus.FinalProject.Services.PexelService;
 import co.grandcircus.FinalProject.Services.WordService;
 
 @Controller
 public class ViewsController {
-
-	@Autowired
-	StoryRepository storyRepo;
-
-	@Autowired
-	SceneRepository sceneRepo;
 
 	@Autowired
 	PexelService service;
@@ -47,7 +38,6 @@ public class ViewsController {
 	@Autowired
 	WordService wordService;
 
-	// api call good to go
 	@RequestMapping("/")
 	public String index(Model model) {
 		Story[] list = dbService.getAllStories();
@@ -57,15 +47,13 @@ public class ViewsController {
 		return "index";
 	}
 
-	// api call good to go - all repo calls converted
 	@RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
 		Scene nextScene = dbService.getScene(id);
 		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
-
-	// api call good to go - all repo calls converted
+	
 	@RequestMapping("/edit")
 	public String storyEdit(Model model, @RequestParam String sceneId) {
 		Scene editScene = dbService.getScene(sceneId);
@@ -75,35 +63,6 @@ public class ViewsController {
 		return "StoryEdit";
 	}
 
-	// api call needs to be done for save
-	@RequestMapping("/save-scene")
-	public String saveScene(@RequestBody Scene scene, @PathVariable String parentId) {
-
-		Scene sceneToUpdate = dbService.getScene(parentId);
-		List<Scene> listToUpdate;
-		if (sceneToUpdate.getChildList()== null) {
-			listToUpdate = new ArrayList<>();
-		} else {
-			listToUpdate = sceneToUpdate.getChildList();
-		}
-
-		Story thisStory = dbService.getStory(sceneToUpdate.getStoryId());
-
-		Scene newOption = new Scene();
-		newOption = new Scene(SceneID.createSceneID(thisStory, newOption,
-				dbService.getScene(scene.getParentId())), 
-				thisStory.getId(), sceneToUpdate.getParentId(), sceneToUpdate.getDescription(), newOption.getOption());
-
-		listToUpdate.add(newOption);
-		sceneToUpdate.setChildList(listToUpdate);
-		sceneRepo.save(sceneToUpdate);
-	//	dbService.saveScene(sceneToUpdate);
-
-		return "StoryEdit";
-
-	}
-
-	// api call good to go - all repo calls converted
 	@RequestMapping("/deleteStory")
 	public String storyDelete(Model model, @RequestParam String id) {
 		
@@ -112,27 +71,10 @@ public class ViewsController {
 		Story[] list = dbService.getAllStories();
 		List<Story> storyList = Arrays.asList(list);
 		model.addAttribute("storyList", storyList);
-
-		List<Photo> thumbnailList1 = service.getPexels("Hike");
-		List<Photo> thumbnailList2 = service.getPexels("Story");
-		List<Photo> thumbnailList3 = service.getPexels("Question");
-
-		Photo thumbnail1 = thumbnailList1.get(0);
-		Photo thumbnail2 = thumbnailList2.get(0);
-		Photo thumbnail3 = thumbnailList3.get(0);
-
-		List<String> photoList = new ArrayList<>();
-		photoList.add(thumbnail1.getSrc().getOriginal());
-		photoList.add(thumbnail2.getSrc().getOriginal());
-		photoList.add(thumbnail3.getSrc().getOriginal());
-		model.addAttribute("photoList", photoList);
 		
 		return "index";
 	}
 
-
-	// api call needs to be done for save
-	// all other api calls good to go
 	@RequestMapping("/deleteScene")
 	public String sceneDelete(Model model, @RequestParam String id, @RequestParam String optionId) {
 		Scene thisScene = dbService.getScene(id);
@@ -141,17 +83,15 @@ public class ViewsController {
 		List<Scene> optionsToChange = parentScene.getChildList();
 		optionsToChange.remove(Integer.parseInt(optionId));
 		parentScene.setChildList(optionsToChange);
-		// this one!
-		sceneRepo.save(parentScene);
+		dbService.saveScene(parentScene);
 		dbService.deleteScene(id);
-		//model.addAttribute("type", "Scene");
+
 		model.addAttribute("storyTitle", story.getTitle());
 		model.addAttribute("scene", parentScene);
 		
 		return "StoryEdit";
 	}
 
-	// api call good to go - all repo calls converted
 	@RequestMapping("/addScene")
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
 		if (id != null) {
@@ -166,8 +106,6 @@ public class ViewsController {
 		return "AddScene";
 	}
 
-	// api call is needs to be done for save scene/story
-	// all other api calls good to go
 	// create story + starting scene
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription,
@@ -187,10 +125,9 @@ public class ViewsController {
 			newScene.setStoryTitle(storyName);
 			newStory.setPhotoUrl(service.getRandomTinyPhotoUrl(photoUrl));
 			newScene.setPhotoUrl(service.getRandomLandscapePhotoUrl(photoUrl));
-			
-			storyRepo.save(newStory);
-			sceneRepo.save(newScene);
-			// dbServices.save(newScene);
+
+			dbService.saveScene(newScene);
+			dbService.saveStory(newStory);
 			
 			model.addAttribute("scene", newScene);
 
@@ -212,11 +149,9 @@ public class ViewsController {
 			newOption.setStoryTitle(storyName);
 			addOptions.add(newOption);
 			scene.setChildList(addOptions);
-			// still need to test further
-			sceneRepo.save(scene);
-			sceneRepo.save(newOption);
-
-
+	
+			dbService.saveScene(scene);
+			dbService.saveScene(newOption);
 			model.addAttribute("scene", scene);
 		}
 
@@ -256,33 +191,14 @@ public class ViewsController {
 		return "testing";
 	}
 
-//	@RequestMapping("/test-Story-Name/{storyId}")
-//	public String randomerName(Model model, @PathVariable("storyId") String storyId) {
-//		
-//	}
-
-	// Error Handling
-	@ResponseBody
-	@ExceptionHandler(SceneNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	String sceneNotFoundHandler(SceneNotFoundException ex) {
-		return ex.getMessage();
-	}
-
-	@ResponseBody
-	@ExceptionHandler(StoryNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	String storyNotFoundHandler(StoryNotFoundException ex) {
-		return ex.getMessage();
-	}
-	// save api call needs to be done
-	// other api call good to go
-	@PostMapping("/updateScene")
+	@RequestMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
-		Scene sceneToUpdate = dbService.getScene(sceneId);
-		sceneToUpdate.setDescription(description);
-		sceneRepo.save(sceneToUpdate);
-		model.addAttribute("scene", sceneToUpdate);
+		Scene scene = dbService.getScene(sceneId);
+		model.addAttribute("scene", scene);
+		scene.setDescription(description);
+		
+		dbService.saveScene(scene);
+		
 		return "StoryPlay";
 	}
 
