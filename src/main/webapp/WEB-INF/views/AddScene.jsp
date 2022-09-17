@@ -29,8 +29,8 @@
 			<textArea id="sceneDescription" name="sceneDescription" placeholder="Scene Description, (where does this choice lead)" rows="50"
 				cols="100"></textArea>
 			<br>
-			<textArea id="photoUrl" name="photoUrl" placeholder="Keyword for image associated with ${msg}" rows="50" cols="100"></textArea><br>
-			<%-- 			<textarea id="sceneName" name="sceneName" rows="50" cols="100">Option
+			<%--<input type="text" id="keyword" name="keyword" placeholder="Keyword for image associated with ${msg}"><br>
+			 			<textarea id="sceneName" name="sceneName" rows="50" cols="100">Option
 		</textarea>
 			<br>
 --%>

@@ -10,6 +10,9 @@
 <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
-
+	<div class="picList">
+	<c:forEach var="pic" items="${picList}" varStatus="i">
+	<div class="column">
+	<a href="addPicture?id=${scene.id}&pic=${pic.src.landscape}&"><img src="${pic.src.tiny}"></a></div></c:forEach></div>
 </body>
 </html>
