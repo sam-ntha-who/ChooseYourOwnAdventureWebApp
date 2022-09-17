@@ -155,21 +155,25 @@ public class ViewsController {
 			model.addAttribute("scene", parentScene);
 		}
 
-//		if (!keyword.equals("")) {
-//			List<Photo> picList = service.getPexels(keyword);
-//			model.addAttribute("picList", picList);
-//			model.addAttribute("scene", scene);
-//			return "PicSelect";
-//		}
-
 		return "StoryPlay";
 
+	}
+	
+	@RequestMapping("/changePicture")
+	public String changePicture(@RequestParam String id, Model model) {
+		
+		Scene scene = dbService.getScene(id);
+		String keyword = wordService.getExtractedKeywords(scene.getDescription());
+		
+		List<Photo> picList = service.getPexels(keyword);
+		model.addAttribute("picList", picList);
+		model.addAttribute("scene", scene);
+		return "PicSelect";
 	}
 
 	@RequestMapping("/addPicture")
 	public String addPicture(@RequestParam String pic, @RequestParam String id, Model model) {
 		
-		System.out.println(pic);
 		Scene scene = dbService.getScene(id);
 		scene.setPhotoUrl(pic + "&cs=tinysrgb&fit=crop&h=627&w=1200");
 		dbService.saveScene(scene);
