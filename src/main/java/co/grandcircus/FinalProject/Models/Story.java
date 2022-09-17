@@ -1,13 +1,7 @@
 package co.grandcircus.FinalProject.Models;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-
-@Document("stories")
 public class Story {
 
-	@Id
 	private String id;
 	private String title;
 	private String startingSceneId;

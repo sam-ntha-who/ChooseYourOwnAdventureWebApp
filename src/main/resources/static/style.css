@@ -84,11 +84,18 @@ a {
 
 .story-body {
 	margin: auto;
-	width: 75%;
 	text-align: center;
 	background-color: black;
 	color: red;
-	width: 50%;
+	width: 40%;
+}
+
+.path-length {
+	margin: auto;
+	text-align: center;
+	background-color: black;
+	color: red;
+	width: 300px;
 }
 
 .options {
