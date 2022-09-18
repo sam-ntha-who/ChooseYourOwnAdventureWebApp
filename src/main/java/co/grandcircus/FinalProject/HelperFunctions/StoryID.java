@@ -1,10 +1,6 @@
 package co.grandcircus.FinalProject.HelperFunctions;
 
-import co.grandcircus.FinalProject.Models.Story;
-
 public class StoryID {
-
-	private Story story;
 
 	public static String createStoryID(String title) {
 

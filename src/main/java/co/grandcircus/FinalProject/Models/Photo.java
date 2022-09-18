@@ -1,6 +1,5 @@
 package co.grandcircus.FinalProject.Models;
 
-import java.util.List;
 
 public class Photo {
 

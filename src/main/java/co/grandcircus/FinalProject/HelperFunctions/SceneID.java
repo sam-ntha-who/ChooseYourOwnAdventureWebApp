@@ -5,14 +5,6 @@ import co.grandcircus.FinalProject.Models.Story;
 
 public class SceneID {
 
-	// need title keyword from story
-	private Story story;
-	// need parent/prior scene 
-	private Scene parentScene;
-
-	// need story scene 
-	private Scene scene;
-	// creating scene ids for options
 	public static String createSceneID(Story story, Scene scene, Scene parentScene) {
 		// will remain the same
 		String storyId = story.getId();
