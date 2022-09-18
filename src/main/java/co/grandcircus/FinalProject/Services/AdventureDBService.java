@@ -53,8 +53,17 @@ public class AdventureDBService {
 		String url = "http://localhost:8081/read-scene/{id}";
 
 		Scene response = rt.getForObject(url, Scene.class, id);
-
-		return setPathLength(response);
+		return response;
+	}
+	
+	public void getTree(Scene scene) {
+		List<Scene> childList = getScene(scene.getId()).getChildList();
+		scene.setChildList(childList);
+		if (childList != null) {
+		for (Scene s : childList) {
+			getTree(s);
+		}
+		}
 	}
 	
 	public Story getStory(String storyId) {

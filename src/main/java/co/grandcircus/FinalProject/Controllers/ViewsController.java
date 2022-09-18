@@ -5,18 +5,16 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import co.grandcircus.FinalProject.HelperFunctions.CalculatePathLength;
 import co.grandcircus.FinalProject.HelperFunctions.SceneID;
 import co.grandcircus.FinalProject.HelperFunctions.StoryID;
-
 import co.grandcircus.FinalProject.Models.Scene;
 import co.grandcircus.FinalProject.Models.Story;
 import co.grandcircus.FinalProject.Services.AdventureDBService;
@@ -47,6 +45,9 @@ public class ViewsController {
 	@RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
 		Scene nextScene = dbService.getScene(id);
+		dbService.getTree(nextScene);
+		CalculatePathLength calculatePathLength = new CalculatePathLength();
+		calculatePathLength.setPathLength(nextScene);
 		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
