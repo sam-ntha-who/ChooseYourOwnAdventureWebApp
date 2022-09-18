@@ -82,6 +82,10 @@ a {
 	padding: 5px;
 }
 
+.imgLink {
+	background-color:transparent;
+}
+
 .story-body {
 	margin: auto;
 	text-align: center;
@@ -142,4 +146,20 @@ input[type="text"], textarea {
 	background-color: #ff0000;
 	height: 150px;
 	width: 300px;
+}
+
+.picList {
+	margin: auto;
+}
+
+.picList:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.column {
+	text-align: center;
+	float: right;
+	width: 33.33%;
 }

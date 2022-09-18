@@ -37,7 +37,7 @@ public class PexelService {
 	private RestTemplate restTemplate = new RestTemplate();
 
 	public List<Photo> getPexels(String search) {
-		String url = "https://api.pexels.com/v1/search?query={search}";
+		String url = "https://api.pexels.com/v1/search?query={search}&per_page=9";
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", apiKey);
