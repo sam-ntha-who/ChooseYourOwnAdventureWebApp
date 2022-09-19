@@ -43,6 +43,10 @@ public class WordService {
 		// 'topic' is a map of words that most closely relate to the input text and a score (Double)
 		// of how well those topics relate to the overall text meaning.
 		// additional logic can be added to better use this score, for now, we'll use the top-scoring topic.
+		
+		String extractedKeywords = "";
+		try {
+		
 		ObjectMapper topicMapper = new ObjectMapper();
 		Map<String, Double> topicsMap = topicMapper.convertValue(jsonResponse.get("topic"),
 				new TypeReference<Map<String, Double>>() {});
@@ -65,9 +69,14 @@ public class WordService {
 		        .collect(Collectors.toList());
 		
 		// build extractedKeywords
-		String extractedKeywords = topicsEntryList.get(0).getKey() + " "
+		extractedKeywords = topicsEntryList.get(0).getKey() + " "
 				+ keywordsEntryList.get(0).getKey() + " "
 				+ keywordsEntryList.get(1).getKey();
+		
+		} catch (Exception e) {
+			
+			extractedKeywords = text;
+		}
 		
 		return extractedKeywords;
 	}

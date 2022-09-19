@@ -5,14 +5,14 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import co.grandcircus.FinalProject.HelperFunctions.CalculatePathLength;
 import co.grandcircus.FinalProject.HelperFunctions.SceneID;
 import co.grandcircus.FinalProject.HelperFunctions.StoryID;
 import co.grandcircus.FinalProject.Models.Photo;
@@ -43,9 +43,12 @@ public class ViewsController {
 		return "index";
 	}
 
-	@RequestMapping("/play")
+    @RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
 		Scene nextScene = dbService.getScene(id);
+		dbService.getTree(nextScene);
+		CalculatePathLength calculatePathLength = new CalculatePathLength();
+		calculatePathLength.setPathLength(nextScene);
 		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
@@ -109,6 +112,7 @@ public class ViewsController {
 			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice) {
 		
 		Scene scene;
+		Scene parentScene;
 		String newKeyword = wordService.getExtractedKeywords(sceneDescription);
 
 		// if no parentId then you are creating a new story and a new scene.
@@ -130,12 +134,13 @@ public class ViewsController {
 			dbService.saveScene(scene);
 			dbService.saveStory(newStory);
 
+			parentScene=scene;
 			model.addAttribute("scene", scene);
 
 		} else {
 			List<Scene> addOptions = new ArrayList<Scene>();
 			// scene that we are adding a new option to
-			Scene parentScene = dbService.getScene(parentId);
+			parentScene = dbService.getScene(parentId);
 			Story thisStory = dbService.getStory(parentScene.getStoryId());
 			if (parentScene.getChildList() != null) {
 				addOptions = parentScene.getChildList();
@@ -154,8 +159,9 @@ public class ViewsController {
 			dbService.saveScene(scene);
 			model.addAttribute("scene", parentScene);
 		}
-
-		return "StoryPlay";
+		
+		
+		return "redirect:/play?id=" + parentScene.getId();
 
 	}
 	
