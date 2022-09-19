@@ -112,6 +112,7 @@ public class ViewsController {
 			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice) {
 		
 		Scene scene;
+		Scene parentScene = null;
 		String newKeyword = wordService.getExtractedKeywords(sceneDescription);
 
 		// if no parentId then you are creating a new story and a new scene.
@@ -138,7 +139,7 @@ public class ViewsController {
 		} else {
 			List<Scene> addOptions = new ArrayList<Scene>();
 			// scene that we are adding a new option to
-			Scene parentScene = dbService.getScene(parentId);
+			parentScene = dbService.getScene(parentId);
 			Story thisStory = dbService.getStory(parentScene.getStoryId());
 			if (parentScene.getChildList() != null) {
 				addOptions = parentScene.getChildList();
@@ -158,7 +159,7 @@ public class ViewsController {
 			model.addAttribute("scene", parentScene);
 		}
 
-		return "StoryPlay";
+		return "redirect:/play?id=" + parentScene.getId();
 
 	}
 	
