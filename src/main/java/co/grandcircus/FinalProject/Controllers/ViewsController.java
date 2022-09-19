@@ -112,7 +112,7 @@ public class ViewsController {
 			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice) {
 		
 		Scene scene;
-		Scene parentScene = null;
+		Scene parentScene;
 		String newKeyword = wordService.getExtractedKeywords(sceneDescription);
 
 		// if no parentId then you are creating a new story and a new scene.
@@ -134,6 +134,7 @@ public class ViewsController {
 			dbService.saveScene(scene);
 			dbService.saveStory(newStory);
 
+			parentScene=scene;
 			model.addAttribute("scene", scene);
 
 		} else {
@@ -158,7 +159,8 @@ public class ViewsController {
 			dbService.saveScene(scene);
 			model.addAttribute("scene", parentScene);
 		}
-
+		
+		
 		return "redirect:/play?id=" + parentScene.getId();
 
 	}
