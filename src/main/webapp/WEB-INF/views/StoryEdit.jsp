@@ -58,8 +58,7 @@
 	</div>
 
 	<footer><br><br>
-		<a href="/play?id=${scene.id}">&#9746; Stop Editing</a>&emsp;&emsp;<a href="/">&#8962; Home</a>
-		</div>
+		<img src="${scene.photoUrl}" width="175px"><br><a href="/changePicture?id=${scene.id}">Change Picture</a><br><br><a href="/play?id=${scene.id}">&#9746; Stop Editing</a>&emsp;&emsp;<a href="/">&#8962; Home</a>
 	</footer>
 </body>
 </html>

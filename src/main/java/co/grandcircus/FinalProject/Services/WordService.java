@@ -47,7 +47,7 @@ public class WordService {
 		Map<String, Double> topicsMap = topicMapper.convertValue(jsonResponse.get("topic"),
 				new TypeReference<Map<String, Double>>() {});
 		
-		// map JSON response ('keyword' of key-value pairs) to a Map<String, Intger>
+		// map JSON response ('keyword' of key-value pairs) to a Map<String, Integer>
 		// 'keyword' is a map of words and their frequency (Integer) in the text
 		ObjectMapper keywordMapper = new ObjectMapper();
 		Map<String, Integer> keywordsMap = keywordMapper.convertValue(jsonResponse.get("keyword"),
