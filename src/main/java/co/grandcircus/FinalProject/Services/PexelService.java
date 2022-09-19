@@ -25,6 +25,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import co.grandcircus.FinalProject.Models.PexelsResponse;
 import co.grandcircus.FinalProject.Models.Photo;
 
 @Service

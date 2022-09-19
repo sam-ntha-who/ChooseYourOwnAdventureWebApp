@@ -1,10 +1,8 @@
-package co.grandcircus.FinalProject.Services;
+package co.grandcircus.FinalProject.Models;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import co.grandcircus.FinalProject.Models.Photo;
 
 public class PexelsResponse {
 	

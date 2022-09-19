@@ -30,8 +30,9 @@ public class CalculatePathLength {
 
 		int pathLength = 0;
 		// this is referencing the getScene within the DB Service
-		List<Scene> childList = scene.getChildList();
-		scene.setChildList(childList);
+		// didn't notice just how redundant this was lmao
+//		List<Scene> childList = scene.getChildList();
+//		scene.setChildList(childList);
 		
 		if (scene.getChildList() == null) {
 
