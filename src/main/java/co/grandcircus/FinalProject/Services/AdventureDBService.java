@@ -17,7 +17,7 @@ public class AdventureDBService {
 
 	public Scene saveScene(Scene scene) {
 
-		String url = "http://localhost:8081/save-scene";
+		String url = "http://cyoawebappapi-env.eba-nvqgee5v.us-east-2.elasticbeanstalk.com/save-scene";
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -31,7 +31,7 @@ public class AdventureDBService {
 
 	public Story saveStory(Story story) {
 
-		String url = "http://localhost:8081/save-story";
+		String url = "http://cyoawebappapi-env.eba-nvqgee5v.us-east-2.elasticbeanstalk.com/save-story";
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -45,7 +45,7 @@ public class AdventureDBService {
 
 	public Scene getScene(String id) {
 
-		String url = "http://localhost:8081/read-scene/{id}";
+		String url = "http://cyoawebappapi-env.eba-nvqgee5v.us-east-2.elasticbeanstalk.com/read-scene/{id}";
 
 		Scene response = rt.getForObject(url, Scene.class, id);
 
@@ -54,7 +54,7 @@ public class AdventureDBService {
 
 	public Story getStory(String storyId) {
 
-		String url = "http://localhost:8081/story/{storyId}";
+		String url = "http://cyoawebappapi-env.eba-nvqgee5v.us-east-2.elasticbeanstalk.com/story/{storyId}";
 
 		Story response = rt.getForObject(url, Story.class, storyId);
 
@@ -63,7 +63,7 @@ public class AdventureDBService {
 
 	public Story[] getAllStories() {
 
-		String url = "http://localhost:8081/allStories";
+		String url = "http://cyoawebappapi-env.eba-nvqgee5v.us-east-2.elasticbeanstalk.com/allStories";
 
 		Story[] response = rt.getForObject(url, Story[].class);
 
@@ -72,7 +72,7 @@ public class AdventureDBService {
 
 	public void deleteScene(String id) {
 
-		String url = "http://localhost:8081/delete-scene-tree/";
+		String url = "http://cyoawebappapi-env.eba-nvqgee5v.us-east-2.elasticbeanstalk.com/delete-scene-tree/";
 
 		HttpRequest httpRequest = HttpRequest.newBuilder().DELETE().uri(URI.create(url + id)).build();
 
@@ -82,7 +82,7 @@ public class AdventureDBService {
 
 	public void deleteStory(String id) {
 
-		String url = "http://localhost:8081/delete-story/";
+		String url = "http://cyoawebappapi-env.eba-nvqgee5v.us-east-2.elasticbeanstalk.com/delete-story/";
 
 		HttpRequest httpRequest = HttpRequest.newBuilder().DELETE().uri(URI.create(url + id)).build();
 

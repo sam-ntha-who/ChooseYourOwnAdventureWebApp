@@ -7,7 +7,7 @@ plugins {
 
 group = 'co.grandcircus'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
@@ -19,7 +19,7 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	// added for JSP rendering
-	providedRuntime 'javax.servlet:jstl'
+	implementation 'javax.servlet:jstl'
 	providedRuntime 'org.apache.tomcat.embed:tomcat-embed-jasper'
 }
 
