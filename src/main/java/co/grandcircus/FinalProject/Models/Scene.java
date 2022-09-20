@@ -2,8 +2,8 @@ package co.grandcircus.FinalProject.Models;
 
 import java.util.List;
 
-public class Scene{
-	
+public class Scene {
+
 	private String id;
 	private String storyId;
 	private String storyTitle;
@@ -16,15 +16,14 @@ public class Scene{
 	boolean shortest;
 	boolean longest;
 
-
-	//constructors
+	// constructors
 	public Scene() {
 	}
-	
+
 	public Scene(String id) {
 		this.id = id;
 	}
-	
+
 	// constructor for setting a scene that isn't startingScene
 	public Scene(String id, String storyId, String parentId, String option, String description) {
 		this.id = id;
@@ -33,10 +32,10 @@ public class Scene{
 		this.option = option;
 		this.description = description;
 	}
-	
+
 	// constructor with current fields
-	public Scene(String id, String storyId, String storyTitle, String parentId, String description,
-		String option, String photoUrl, List<Scene> childList) {
+	public Scene(String id, String storyId, String storyTitle, String parentId, String description, String option,
+			String photoUrl, List<Scene> childList) {
 		this.id = id;
 		this.storyId = storyId;
 		this.storyTitle = storyTitle;
@@ -46,7 +45,7 @@ public class Scene{
 		this.photoUrl = photoUrl;
 		this.childList = childList;
 	}
-	
+
 	// for setting starting scene - will stay the same post treeConversion
 	public Scene(String storyId, String description, String parentId) {
 		this.storyId = storyId;
@@ -54,8 +53,7 @@ public class Scene{
 		this.parentId = parentId;
 	}
 
-	
-	//getters and setters
+	// getters and setters
 	public String getId() {
 		return id;
 	}
@@ -83,6 +81,7 @@ public class Scene{
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -130,15 +129,15 @@ public class Scene{
 	public boolean isShortest() {
 		return shortest;
 	}
-	
+
 	public void setShortest(boolean shortest) {
 		this.shortest = shortest;
 	}
-	
+
 	public boolean isLongest() {
 		return longest;
 	}
-	
+
 	public void setLongest(boolean longest) {
 		this.longest = longest;
 	}

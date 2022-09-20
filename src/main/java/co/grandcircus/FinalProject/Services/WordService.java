@@ -25,8 +25,8 @@ public class WordService {
 	private RestTemplate restTemplate = new RestTemplate();
 
 	public String getExtractedKeywords(String text) {
-		
-		//build HttpEntity
+
+		// build HttpEntity
 		String url = "https://twinword-topic-tagging.p.rapidapi.com/generate/?text={text}";
 
 		HttpHeaders headers = new HttpHeaders();
@@ -34,50 +34,48 @@ public class WordService {
 		headers.set("X-RapidAPI-Host", "twinword-topic-tagging.p.rapidapi.com");
 
 		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-		
-		//use HttpEntity in restTemplate response and return as JsonNode
-		JsonNode jsonResponse = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
-				JsonNode.class, text).getBody(); // this is a key-value list of all properties for this object
-		
+
+		// use HttpEntity in restTemplate response and return as JsonNode
+		JsonNode jsonResponse = restTemplate.exchange(url, HttpMethod.GET, requestEntity, JsonNode.class, text)
+				.getBody(); // this is a key-value list of all properties for this object
+
 		// map JSON response ('topic' of key-value pairs) to a Map<String, Double>
-		// 'topic' is a map of words that most closely relate to the input text and a score (Double)
+		// 'topic' is a map of words that most closely relate to the input text and a
+		// score (Double)
 		// of how well those topics relate to the overall text meaning.
-		// additional logic can be added to better use this score, for now, we'll use the top-scoring topic.
-		
+		// additional logic can be added to better use this score, for now, we'll use
+		// the top-scoring topic.
 		String extractedKeywords = "";
 		try {
-		
-		ObjectMapper topicMapper = new ObjectMapper();
-		Map<String, Double> topicsMap = topicMapper.convertValue(jsonResponse.get("topic"),
-				new TypeReference<Map<String, Double>>() {});
-		
-		// map JSON response ('keyword' of key-value pairs) to a Map<String, Integer>
-		// 'keyword' is a map of words and their frequency (Integer) in the text
-		ObjectMapper keywordMapper = new ObjectMapper();
-		Map<String, Integer> keywordsMap = keywordMapper.convertValue(jsonResponse.get("keyword"),
-				new TypeReference<Map<String, Integer>>() {});
-		
-		// convert key-value maps to List of map Entry
-		List<Entry<String, Double>> topicsEntryList = topicsMap.entrySet()
-		        .stream()
-		        .limit(2)
-		        .collect(Collectors.toList());
-		
-		List<Entry<String, Integer>> keywordsEntryList = keywordsMap.entrySet()
-		        .stream()
-		        .limit(2)
-		        .collect(Collectors.toList());
-		
-		// build extractedKeywords
-		extractedKeywords = topicsEntryList.get(0).getKey() + " "
-				+ keywordsEntryList.get(0).getKey() + " "
-				+ keywordsEntryList.get(1).getKey();
-		
+
+			ObjectMapper topicMapper = new ObjectMapper();
+			Map<String, Double> topicsMap = topicMapper.convertValue(jsonResponse.get("topic"),
+					new TypeReference<Map<String, Double>>() {
+					});
+
+			// map JSON response ('keyword' of key-value pairs) to a Map<String, Integer>
+			// 'keyword' is a map of words and their frequency (Integer) in the text
+			ObjectMapper keywordMapper = new ObjectMapper();
+			Map<String, Integer> keywordsMap = keywordMapper.convertValue(jsonResponse.get("keyword"),
+					new TypeReference<Map<String, Integer>>() {
+					});
+
+			// convert key-value maps to List of map Entry
+			List<Entry<String, Double>> topicsEntryList = topicsMap.entrySet().stream().limit(2)
+					.collect(Collectors.toList());
+
+			List<Entry<String, Integer>> keywordsEntryList = keywordsMap.entrySet().stream().limit(2)
+					.collect(Collectors.toList());
+
+			// build extractedKeywords
+			extractedKeywords = topicsEntryList.get(0).getKey() + " " + keywordsEntryList.get(0).getKey() + " "
+					+ keywordsEntryList.get(1).getKey();
+
 		} catch (Exception e) {
-			
+
 			extractedKeywords = text;
 		}
-		
+
 		return extractedKeywords;
 	}
 

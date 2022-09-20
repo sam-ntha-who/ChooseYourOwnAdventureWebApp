@@ -37,7 +37,7 @@ public class ViewsController {
 	public String index(Model model) {
 		Story[] list = dbService.getAllStories();
 		List<Story> storyList = Arrays.asList(list);
-		
+
 		model.addAttribute("storyList", storyList);
 
 		return "index";
@@ -46,9 +46,9 @@ public class ViewsController {
 	@RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
 		Scene nextScene = dbService.getScene(id);
-		
+
 		model.addAttribute("scene", nextScene);
-		
+
 		return "StoryPlay";
 	}
 
@@ -56,10 +56,10 @@ public class ViewsController {
 	public String storyEdit(Model model, @RequestParam String sceneId) {
 		Scene editScene = dbService.getScene(sceneId);
 		Story story = dbService.getStory(editScene.getStoryId());
-		
+
 		model.addAttribute("storyTitle", story.getTitle());
 		model.addAttribute("scene", editScene);
-		
+
 		return "StoryEdit";
 	}
 
@@ -69,7 +69,7 @@ public class ViewsController {
 		dbService.deleteStory(id);
 		Story[] list = dbService.getAllStories();
 		List<Story> storyList = Arrays.asList(list);
-		
+
 		model.addAttribute("storyList", storyList);
 
 		return "index";
@@ -81,10 +81,10 @@ public class ViewsController {
 		Scene parentScene = dbService.getScene(thisScene.getParentId());
 		Story story = dbService.getStory(thisScene.getStoryId());
 		List<Scene> optionsToChange = parentScene.getChildList();
-		
+
 		optionsToChange.remove(Integer.parseInt(optionId));
 		parentScene.setChildList(optionsToChange);
-		
+
 		dbService.saveScene(parentScene);
 		dbService.deleteScene(id);
 
@@ -98,17 +98,17 @@ public class ViewsController {
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
 		if (id != null) {
 			Scene scene = dbService.getScene(id);
-			
+
 			model.addAttribute("id", id);
 			model.addAttribute("title", scene.getStoryTitle());
-			
+
 		} else {
-			
+
 			model.addAttribute("title", "Enter Story Name");
 		}
-		
+
 		model.addAttribute("msg", msg);
-		
+
 		return "AddScene";
 	}
 
@@ -141,7 +141,7 @@ public class ViewsController {
 			dbService.saveStory(newStory);
 
 			parentScene = scene;
-			
+
 			model.addAttribute("scene", scene);
 
 		} else {
@@ -149,7 +149,7 @@ public class ViewsController {
 			// scene that we are adding a new option to
 			parentScene = dbService.getScene(parentId);
 			Story thisStory = dbService.getStory(parentScene.getStoryId());
-			
+
 			if (parentScene.getChildList() != null) {
 				addOptions = parentScene.getChildList();
 			}
@@ -165,7 +165,7 @@ public class ViewsController {
 
 			dbService.saveScene(parentScene);
 			dbService.saveScene(scene);
-			
+
 			model.addAttribute("scene", parentScene);
 		}
 
@@ -180,10 +180,10 @@ public class ViewsController {
 		String keyword = wordService.getExtractedKeywords(scene.getDescription());
 
 		List<Photo> picList = service.getPexels(keyword);
-		
+
 		model.addAttribute("picList", picList);
 		model.addAttribute("scene", scene);
-		
+
 		return "PicSelect";
 	}
 
@@ -192,9 +192,9 @@ public class ViewsController {
 
 		Scene scene = dbService.getScene(id);
 		scene.setPhotoUrl(pic + "&cs=tinysrgb&fit=crop&h=627&w=1200");
-		
+
 		dbService.saveScene(scene);
-		
+
 		model.addAttribute("scene", scene);
 
 		return "StoryPlay";
@@ -219,7 +219,7 @@ public class ViewsController {
 		dbService.saveScene(scene);
 
 		model.addAttribute("scene", scene);
-		
+
 		return "StoryPlay";
 	}
 

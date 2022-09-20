@@ -7,25 +7,25 @@ public class Story {
 	private String startingSceneId;
 	private String photoUrl;
 
-	//constructors
+	// constructors
 	public Story() {
 	}
-	
+
 	public Story(String title, String startingSceneId) {
 		this.title = title;
 		this.startingSceneId = startingSceneId;
 	}
-		
-	//getters and setters
-	
+
+	// getters and setters
+
 	public String getPhotoUrl() {
 		return photoUrl;
 	}
-	
+
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
 	}
-	
+
 	public String getId() {
 		return id;
 	}
