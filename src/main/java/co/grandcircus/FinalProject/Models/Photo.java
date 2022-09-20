@@ -1,13 +1,12 @@
 package co.grandcircus.FinalProject.Models;
 
-import java.util.List;
-
 public class Photo {
 
 	private Integer id;
 	private PhotoSRC src;
 
 	
+	// getters & setters
 	public Integer getId() {
 		return id;
 	}

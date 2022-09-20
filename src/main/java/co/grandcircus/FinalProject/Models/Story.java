@@ -25,6 +25,7 @@ public class Story {
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
 	}
+	
 	public String getId() {
 		return id;
 	}

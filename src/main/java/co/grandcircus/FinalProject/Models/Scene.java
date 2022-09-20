@@ -3,51 +3,19 @@ package co.grandcircus.FinalProject.Models;
 import java.util.List;
 
 public class Scene{
-
-
-	// sceneId
+	
 	private String id;
 	private String storyId;
 	private String storyTitle;
-	// previous sceneId
 	private String parentId;
-	// actual scene
 	private String description;
-	// wording for the choice that the user is making to get to this scene ie "turn left" "open the door" etc (to be accessed from parentScene)
 	private String option;
-	// photo url
 	private String photoUrl;
-	// scene tree
 	private List<Scene> childList;
-	// for the DB this may need to wind up being Integer v int	
 	private int pathLength;
-	// bool for pathLength
 	boolean shortest;
 	boolean longest;
-	
-	public boolean isShortest() {
-		return shortest;
-	}
 
-	public void setShortest(boolean shortest) {
-		this.shortest = shortest;
-	}
-
-	public boolean isLongest() {
-		return longest;
-	}
-
-	public void setLongest(boolean longest) {
-		this.longest = longest;
-	}
-
-	
-	
-//	
-//	@Override
-//	public String toString() {
-//		return "Scene [storyTitle=" + storyTitle + ", option=" + option + "]";
-//	}
 
 	//constructors
 	public Scene() {
@@ -66,7 +34,6 @@ public class Scene{
 		this.description = description;
 	}
 	
-
 	// constructor with current fields
 	public Scene(String id, String storyId, String storyTitle, String parentId, String description,
 		String option, String photoUrl, List<Scene> childList) {
@@ -87,6 +54,7 @@ public class Scene{
 		this.parentId = parentId;
 	}
 
+	
 	//getters and setters
 	public String getId() {
 		return id;
@@ -157,6 +125,22 @@ public class Scene{
 
 	public void setPathLength(int pathLength) {
 		this.pathLength = pathLength;
+	}
+
+	public boolean isShortest() {
+		return shortest;
+	}
+	
+	public void setShortest(boolean shortest) {
+		this.shortest = shortest;
+	}
+	
+	public boolean isLongest() {
+		return longest;
+	}
+	
+	public void setLongest(boolean longest) {
+		this.longest = longest;
 	}
 
 }

@@ -1,11 +1,12 @@
 package co.grandcircus.FinalProject.Models;
 
 public class PhotoSRC {
+	
 	private String original;
 	private String landscape;
 	private String tiny;
 
-
+	//getters & setters
 	public String getTiny() {
 		return tiny;
 	}

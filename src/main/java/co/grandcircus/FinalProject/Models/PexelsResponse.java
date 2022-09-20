@@ -11,6 +11,7 @@ public class PexelsResponse {
 	private List<Photo> photos;
 	
 	
+	// getters & setters
 	public Integer getTotalResults() {
 		return totalResults;
 	}
