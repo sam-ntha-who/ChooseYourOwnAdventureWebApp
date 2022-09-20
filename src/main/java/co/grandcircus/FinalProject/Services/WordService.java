@@ -41,8 +41,7 @@ public class WordService {
 
 		// map JSON response ('topic' of key-value pairs) to a Map<String, Double>
 		// 'topic' is a map of words that most closely relate to the input text and a
-		// score (Double)
-		// of how well those topics relate to the overall text meaning.
+		// score (Double) of how well those topics relate to the overall text meaning.
 		// additional logic can be added to better use this score, for now, we'll use
 		// the top-scoring topic.
 		String extractedKeywords = "";
