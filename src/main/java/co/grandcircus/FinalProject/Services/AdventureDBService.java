@@ -56,15 +56,15 @@ public class AdventureDBService {
 		return response;
 	}
 	
-	public void getTree(Scene scene) {
-		List<Scene> childList = getScene(scene.getId()).getChildList();
-		scene.setChildList(childList);
-		if (childList != null) {
-		for (Scene s : childList) {
-			getTree(s);
-		}
-		}
-	}
+//	public void getTree(Scene scene) {
+//		List<Scene> childList = getScene(scene.getId()).getChildList();
+//		scene.setChildList(childList);
+//		if (childList != null) {
+//		for (Scene s : childList) {
+//			getTree(s);
+//		}
+//		}
+//	}
 	
 	public Story getStory(String storyId) {
 

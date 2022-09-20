@@ -46,9 +46,9 @@ public class ViewsController {
     @RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
 		Scene nextScene = dbService.getScene(id);
-		dbService.getTree(nextScene);
-		CalculatePathLength calculatePathLength = new CalculatePathLength();
-		calculatePathLength.setPathLength(nextScene);
+//		dbService.getTree(nextScene);
+//		CalculatePathLength calculatePathLength = new CalculatePathLength();
+//		calculatePathLength.setPathLength(nextScene);
 		model.addAttribute("scene", nextScene);
 		return "StoryPlay";
 	}
