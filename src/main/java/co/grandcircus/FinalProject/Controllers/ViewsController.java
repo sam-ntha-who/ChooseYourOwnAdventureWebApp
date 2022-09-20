@@ -37,15 +37,18 @@ public class ViewsController {
 	public String index(Model model) {
 		Story[] list = dbService.getAllStories();
 		List<Story> storyList = Arrays.asList(list);
+		
 		model.addAttribute("storyList", storyList);
 
 		return "index";
 	}
 
-    @RequestMapping("/play")
+	@RequestMapping("/play")
 	public String play(Model model, @RequestParam String id) {
 		Scene nextScene = dbService.getScene(id);
+		
 		model.addAttribute("scene", nextScene);
+		
 		return "StoryPlay";
 	}
 
@@ -53,8 +56,10 @@ public class ViewsController {
 	public String storyEdit(Model model, @RequestParam String sceneId) {
 		Scene editScene = dbService.getScene(sceneId);
 		Story story = dbService.getStory(editScene.getStoryId());
+		
 		model.addAttribute("storyTitle", story.getTitle());
 		model.addAttribute("scene", editScene);
+		
 		return "StoryEdit";
 	}
 
@@ -62,9 +67,9 @@ public class ViewsController {
 	public String storyDelete(Model model, @RequestParam String id) {
 
 		dbService.deleteStory(id);
-		// model.addAttribute("type", "Story");
 		Story[] list = dbService.getAllStories();
 		List<Story> storyList = Arrays.asList(list);
+		
 		model.addAttribute("storyList", storyList);
 
 		return "index";
@@ -76,8 +81,10 @@ public class ViewsController {
 		Scene parentScene = dbService.getScene(thisScene.getParentId());
 		Story story = dbService.getStory(thisScene.getStoryId());
 		List<Scene> optionsToChange = parentScene.getChildList();
+		
 		optionsToChange.remove(Integer.parseInt(optionId));
 		parentScene.setChildList(optionsToChange);
+		
 		dbService.saveScene(parentScene);
 		dbService.deleteScene(id);
 
@@ -90,15 +97,18 @@ public class ViewsController {
 	@RequestMapping("/addScene")
 	public String addScene(Model model, @RequestParam(required = false) String id, @RequestParam String msg) {
 		if (id != null) {
-			// Scene scene = sceneRepo.findById(id).orElseThrow(() -> new
-			// SceneNotFoundException(id));
 			Scene scene = dbService.getScene(id);
+			
 			model.addAttribute("id", id);
 			model.addAttribute("title", scene.getStoryTitle());
+			
 		} else {
+			
 			model.addAttribute("title", "Enter Story Name");
 		}
+		
 		model.addAttribute("msg", msg);
+		
 		return "AddScene";
 	}
 
@@ -106,7 +116,7 @@ public class ViewsController {
 	@RequestMapping("/createScene")
 	public String createScene(Model model, @RequestParam String storyName, @RequestParam String sceneDescription,
 			@RequestParam(required = false) String parentId, @RequestParam(required = false) String sceneChoice) {
-		
+
 		Scene scene;
 		Scene parentScene;
 		String newKeyword = wordService.getExtractedKeywords(sceneDescription);
@@ -130,7 +140,8 @@ public class ViewsController {
 			dbService.saveScene(scene);
 			dbService.saveStory(newStory);
 
-			parentScene=scene;
+			parentScene = scene;
+			
 			model.addAttribute("scene", scene);
 
 		} else {
@@ -138,6 +149,7 @@ public class ViewsController {
 			// scene that we are adding a new option to
 			parentScene = dbService.getScene(parentId);
 			Story thisStory = dbService.getStory(parentScene.getStoryId());
+			
 			if (parentScene.getChildList() != null) {
 				addOptions = parentScene.getChildList();
 			}
@@ -153,34 +165,38 @@ public class ViewsController {
 
 			dbService.saveScene(parentScene);
 			dbService.saveScene(scene);
+			
 			model.addAttribute("scene", parentScene);
 		}
-		
-		
+
 		return "redirect:/play?id=" + parentScene.getId();
 
 	}
-	
+
 	@RequestMapping("/changePicture")
 	public String changePicture(@RequestParam String id, Model model) {
-		
+
 		Scene scene = dbService.getScene(id);
 		String keyword = wordService.getExtractedKeywords(scene.getDescription());
-		
+
 		List<Photo> picList = service.getPexels(keyword);
+		
 		model.addAttribute("picList", picList);
 		model.addAttribute("scene", scene);
+		
 		return "PicSelect";
 	}
 
 	@RequestMapping("/addPicture")
 	public String addPicture(@RequestParam String pic, @RequestParam String id, Model model) {
-		
+
 		Scene scene = dbService.getScene(id);
 		scene.setPhotoUrl(pic + "&cs=tinysrgb&fit=crop&h=627&w=1200");
-		dbService.saveScene(scene);
-		model.addAttribute("scene", scene);
 		
+		dbService.saveScene(scene);
+		
+		model.addAttribute("scene", scene);
+
 		return "StoryPlay";
 	}
 
@@ -188,30 +204,9 @@ public class ViewsController {
 	public String randomName(Model model, @RequestParam String text)
 			throws URISyntaxException, IOException, InterruptedException {
 
-		// TODO: logic to autoload photos or allow user to choose keyword
-
 		String keywords = wordService.getExtractedKeywords(text);
 
 		model.addAttribute("keywords", keywords);
-
-//		WordResponse responseMap = wordService.getWordResponse(text);
-//		//test
-//		System.out.println("WordResponse **************************");
-//		
-//		ArrayList<String> stringList = new ArrayList<>();
-//	    Iterator<Map.Entry<String, Integer>> iterator = responseMap.getKeywordMap().entrySet().iterator();
-//	    
-//	    while (iterator.hasNext()) {
-//	        Map.Entry<String, Integer> entry = iterator.next();
-//	        System.out.println(entry.getKey() + ":" + entry.getValue());
-//	        stringList.add(entry.getKey());
-//	    }
-//		
-//	  //test
-//	  		System.out.println("End of while **************************");
-//	    String response = stringList.toString();
-//	    
-//		model.addAttribute("response", response);
 
 		return "testing";
 	}
@@ -219,11 +214,12 @@ public class ViewsController {
 	@RequestMapping("/updateScene")
 	public String updateScene(Model model, @RequestParam String description, @RequestParam String sceneId) {
 		Scene scene = dbService.getScene(sceneId);
-		model.addAttribute("scene", scene);
 		scene.setDescription(description);
 
 		dbService.saveScene(scene);
 
+		model.addAttribute("scene", scene);
+		
 		return "StoryPlay";
 	}
 
