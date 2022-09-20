@@ -5,7 +5,7 @@ The DIY Storytime web app makes use of a RESTful API to communicate with a No-SQ
 
 This app consumes three APIs - a RESTful API of our own creation, that performs all database functionality. The other two APIs are allow for appropriate photos to be displayed for each story and scene: TwinWord API (https://www.twinword.com/api/) uses text analysis to read scene descriptions and determine keywords, while Pexels API (https://www.pexels.com/api/) is responsible for retrieving relevant photos based on the TwinWord response.
 
-# The API: 
+# The API
 
 Our API performs all of the crud functionality via HTTP Requests from the web app and upon initialization copies the stories and scenes from a master collections into the collections that the user can create, read, update & delete. It assembles the tree structure whenever something is changed via the play function and caluclates the pathlengths and boolean for longest and shortest paths so that the app is updated dynamically. 
 
